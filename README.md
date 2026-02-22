@@ -1,10 +1,10 @@
 # Hi, I'm Xudong Zhu 👋
 
-![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?style=flat-square&logo=arch-linux&logoColor=white)
-![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
-![fish shell](https://img.shields.io/badge/fish%20shell-34C534?style=flat-square&logo=fish-shell&logoColor=white)
-![OpenCode](https://img.shields.io/badge/OpenCode-AI%20Coding%20Tool-black?style=flat-square)
-![Research](https://img.shields.io/badge/focus-LLM%20Interpretability-black?style=flat-square)
+![Arch Linux](https://img.shields.io/badge/system-Arch%20Linux-1793D1?style=flat-square&logo=arch-linux&logoColor=white)
+![Neovim](https://img.shields.io/badge/editor-Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
+![fish shell](https://img.shields.io/badge/shell-fish-FF9E0F?style=flat-square&logo=fish-shell&logoColor=white)
+![OpenCode](https://img.shields.io/badge/tool-OpenCode-8B5CF6?style=flat-square)
+![Research](https://img.shields.io/badge/research-LLM%20Interpretability-DC2626?style=flat-square)
 
 PhD student at The Ohio State University working on understanding and controlling large language models. I also vibe code research prototypes, developer tools, and AI systems.
 
