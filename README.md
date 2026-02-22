@@ -20,9 +20,9 @@ PhD student at The Ohio State University working on understanding and controllin
 
 ## GitHub Stats
 
-<p>
-  <img height="160" src="https://github-readme-stats.vercel.app/api?username=xzAscC&show_icons=true&hide_border=true&rank_icon=github" alt="GitHub stats" />
-  <img height="160" src="https://github-readme-stats.vercel.app/api/top-langs/?username=xzAscC&layout=compact&hide_border=true" alt="Top languages" />
+<p align="center">
+  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github" />
+  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact" />
 </p>
 
 ## Recent Projects
