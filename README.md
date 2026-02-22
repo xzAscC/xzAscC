@@ -1,5 +1,11 @@
 # Hi, I'm Xudong Zhu 👋
 
+![Arch Linux](https://img.shields.io/badge/Arch%20Linux-1793D1?style=flat-square&logo=arch-linux&logoColor=white)
+![Neovim](https://img.shields.io/badge/Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
+![fish shell](https://img.shields.io/badge/fish%20shell-34C534?style=flat-square&logo=fish-shell&logoColor=white)
+![OpenCode](https://img.shields.io/badge/OpenCode-AI%20Coding%20Tool-black?style=flat-square)
+![Research](https://img.shields.io/badge/focus-LLM%20Interpretability-black?style=flat-square)
+
 PhD student at The Ohio State University working on understanding and controlling large language models. I also vibe code research prototypes, developer tools, and AI systems.
 
 ## About Me
@@ -24,7 +30,7 @@ PhD student at The Ohio State University working on understanding and controllin
 - Understanding Linear Steering (ongoing)  
   Investigating the geometry, linearity, and causal structure of steering directions in LLM representation space.
 
-- AbsTopK: Rethinking Sparse Autoencoders For Bidirectional Features [arXiv](https://arxiv.org/abs/2510.00404), [OpenReview](https://openreview.net/forum?id=EEs6I4cO7S)  
+- AbsTopK: Rethinking Sparse Autoencoders For Bidirectional Features [ArXiv](https://arxiv.org/abs/2510.00404), [OpenReview](https://openreview.net/forum?id=EEs6I4cO7S)  
   Developed a principled proximal-gradient framework that unifies SAE variants (ReLU, JumpReLU, TopK) and reveals that non-negativity constraints prevent bidirectional feature representation. Proposed AbsTopK, a magnitude-based sparse operator that recovers complete semantic axes and improves interpretability and steering in LLMs.
 
 - From Emergence to Control: Probing and Modulating Self-Reflection in Language Models  [Arxiv](https://arxiv.org/abs/2506.12217)  
