@@ -21,8 +21,8 @@ PhD student at The Ohio State University working on understanding and controllin
 ## GitHub Stats
 
 <p align="center">
-  <img height="160" src="https://github-readme-stats-iota-livid-84.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&date_range=2026" />
-  <img height="160" src="https://github-readme-stats-iota-livid-84.vercel.app/api/top-langs/?username=xzAscC&layout=compact&date_range=2026" />
+  <img height="160" src="https://github-readme-stats-iota-livid-84.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=default&include_all_commits=true&commits_year=2026" />
+  <img height="160" src="https://github-readme-stats-iota-livid-84.vercel.app/api/top-langs/?username=xzAscC&layout=compact" />
 </p>
 
 ## Recent Projects
