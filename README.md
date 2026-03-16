@@ -44,3 +44,7 @@ For a full list of publications:
 ---
 
 If you are interested in collaboration, feel free to open an issue or connect with me.
+
+## Acknowledgments
+
+GitHub stats cards are powered by [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Many thanks to the authors for building and maintaining it.
