@@ -1,29 +1,13 @@
 # Hi, I'm Xudong Zhu 👋
 
-![Arch Linux](https://img.shields.io/badge/system-Arch%20Linux-1793D1?style=flat-square&logo=arch-linux&logoColor=white)
-![Neovim](https://img.shields.io/badge/editor-Neovim-57A143?style=flat-square&logo=neovim&logoColor=white)
-![fish shell](https://img.shields.io/badge/shell-fish-FF9E0F?style=flat-square&logo=fish-shell&logoColor=white)
-![OpenCode](https://img.shields.io/badge/tool-OpenCode-8B5CF6?style=flat-square)
-![Research](https://img.shields.io/badge/research-LLM%20Interpretability-DC2626?style=flat-square)
+![Arch Linux](https://img.shields.io/badge/Arch%20Linux-Hyprland-1793D1?style=flat-square&logo=arch-linux&logoColor=white)
+![Neovim/Fish/OpenCode](https://img.shields.io/badge/Neovim%2FFish-OpenCode-8B5CF6?style=flat-square&labelColor=333&logo=neovim&logoColor=white)
+![Research](https://img.shields.io/badge/Research-Representation%20Learning-DC2626?style=flat-square)
+[![Email](https://img.shields.io/badge/Email-zhu.3944%40osu.edu-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:zhu.3944@osu.edu)
+[![Google Scholar](https://img.shields.io/badge/Google-Scholar-4285F4?style=flat-square&logo=google-scholar&logoColor=white)](https://scholar.google.com/citations?user=U55yracAAAAJ&hl=zh-CN)
+[![OpenReview](https://img.shields.io/badge/OpenReview-Profile-00B4D8?style=flat-square)](https://openreview.net/profile?id=%7EXudong_Zhu1)
 
 PhD student at The Ohio State University working on understanding and controlling large language models. I also vibe code research prototypes, developer tools, and AI systems.
-
-## About Me
-
-- I am a PhD student in Computer Science & Engineering at The Ohio State University.
-
-- My research focuses on mechanistic interpretability, and sparse representations in LLMs.
-
-- I study how internal representations encode concepts and how we can steer model behavior with interpretable directions.
-
-- My goal is to make LLMs more transparent, controllable, and reliable.
-
-## GitHub Stats
-
-<p align="center">
-  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github" />
-  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact" />
-</p>
 
 ## Recent Projects
 
@@ -36,10 +20,12 @@ PhD student at The Ohio State University working on understanding and controllin
 - From Emergence to Control: Probing and Modulating Self-Reflection in Language Models  [Arxiv](https://arxiv.org/abs/2506.12217)  
   Showed that linear directions in representation space can enable and control self-reflection behavior in pretrained LLMs without finetuning.
 
-For a full list of publications:
+## GitHub Stats
 
-- [Google Scholar](https://scholar.google.com/citations?user=U55yracAAAAJ&hl=zh-CN)  
-- [OpenReview](https://openreview.net/profile?id=%7EXudong_Zhu1)
+<p align="center">
+  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github" />
+  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact" />
+</p>
 
 ---
 
