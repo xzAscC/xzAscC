@@ -6,6 +6,7 @@
 [![Email](https://img.shields.io/badge/Email-zhu.3944%40osu.edu-EA4335?style=flat-square&logo=gmail&logoColor=white)](mailto:zhu.3944@osu.edu)
 [![Google Scholar](https://img.shields.io/badge/Google-Scholar-4285F4?style=flat-square&logo=google-scholar&logoColor=white)](https://scholar.google.com/citations?user=U55yracAAAAJ&hl=zh-CN)
 [![OpenReview](https://img.shields.io/badge/OpenReview-Profile-00B4D8?style=flat-square)](https://openreview.net/profile?id=%7EXudong_Zhu1)
+[![Website](https://img.shields.io/badge/Website-xzascc.github.io-4285F4?style=flat-square&logo=github&logoColor=white)](https://xzascc.github.io/)
 
 PhD student at The Ohio State University working on understanding and controlling large language models. I also vibe code research prototypes, developer tools, and AI systems.
 
