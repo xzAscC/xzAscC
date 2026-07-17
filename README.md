@@ -24,27 +24,35 @@ I work on representation learning for large language models.
 
 ---
 
-## Recent Projects
+## Research
 
-- Training Dynamics & Concept Modification (ongoing) [Code](https://github.com/xzAscC/RankAnalysis)  
-  Analyzing training dynamics methods to understand how post-training modifies different concepts in LLMs.
-
-- Not All Tokens Are Equally Useful for Steering: Robust Directions and Prefix Steering [Code](https://github.com/xzAscC/RobustDiM-PrefixSteering), [Project Page](https://xzascc.github.io/RobustDiM-PrefixSteering/)  
-  Proposed Robust DiM for token-selective steering-direction construction and Prefix Steering for early-token intervention, improving activation steering quality while better preserving general capability.
-
-- AbsTopK: Rethinking Sparse Autoencoders For Bidirectional Features [ArXiv](https://arxiv.org/abs/2510.00404), [OpenReview](https://openreview.net/forum?id=EEs6I4cO7S)  
-  Developed a principled proximal-gradient framework that unifies SAE variants (ReLU, JumpReLU, TopK) and reveals that non-negativity constraints prevent bidirectional feature representation. Proposed AbsTopK, a magnitude-based sparse operator that recovers complete semantic axes and improves interpretability and steering in LLMs.
-
-- From Emergence to Control: Probing and Modulating Self-Reflection in Language Models  [Arxiv](https://arxiv.org/abs/2506.12217)  
-  Showed that linear directions in representation space can enable and control self-reflection behavior in pretrained LLMs without finetuning.
+<p align="center">
+  <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering">
+    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering" />
+  </a>
+  <a href="https://github.com/xzAscC/ProbingReflection">
+    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection" />
+  </a>
+</p>
+<p align="center">
+  <a href="https://github.com/xzAscC/RankAnalysis">
+    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis" />
+  </a>
+  <a href="https://github.com/xzAscC/sae">
+    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae" />
+  </a>
+</p>
 
 ## Dev
 
-- LLMUsage [Code](https://github.com/xzAscC/LLMUsage)  
-  Local-first ChatGPT / GLM / Grok / Claude subscription usage in the Hyprland bar (CLI + Quickshell), reusing OpenCode auth.
-
-- Personal Dotfiles [Code](https://github.com/xzAscC/dotfiles)  
-  Stow-managed fish, Neovim, and OpenCode config for a Hyprland / Arch setup.
+<p align="center">
+  <a href="https://github.com/xzAscC/LLMUsage">
+    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage" />
+  </a>
+  <a href="https://github.com/xzAscC/dotfiles">
+    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles" />
+  </a>
+</p>
 
 ## GitHub Stats
 
