@@ -24,58 +24,36 @@ I work on representation learning for large language models.
 
 ---
 
-## Research
+### Research
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering">
-        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&description_lines_count=2" width="400" height="120" alt="RobustDiM-PrefixSteering" />
-      </a>
-    </td>
-    <td width="50%" valign="top">
-      <a href="https://github.com/xzAscC/ProbingReflection">
-        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&description_lines_count=2" width="400" height="120" alt="ProbingReflection" />
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="https://github.com/xzAscC/RankAnalysis">
-        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis&description_lines_count=2" width="400" height="120" alt="RankAnalysis" />
-      </a>
-    </td>
-    <td width="50%" valign="top">
-      <a href="https://github.com/xzAscC/sae">
-        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae&description_lines_count=2" width="400" height="120" alt="sae" />
-      </a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+<a href="https://github.com/xzAscC/RobustDiM-PrefixSteering"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" /><source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" /><img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" /></picture></a>
+<a href="https://github.com/xzAscC/ProbingReflection"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" /><source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" /><img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" /></picture></a>
+<a href="https://github.com/xzAscC/RankAnalysis"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" /><source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" /><img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" /></picture></a>
+<a href="https://github.com/xzAscC/sae"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" /><source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" /><img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" /></picture></a>
+</div>
 
-## Dev
+### Dev
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <a href="https://github.com/xzAscC/LLMUsage">
-        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&description_lines_count=2" width="400" height="120" alt="LLMUsage" />
-      </a>
-    </td>
-    <td width="50%" valign="top">
-      <a href="https://github.com/xzAscC/dotfiles">
-        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&description_lines_count=2" width="400" height="120" alt="dotfiles" />
-      </a>
-    </td>
-  </tr>
-</table>
+<div align="center">
+<a href="https://github.com/xzAscC/LLMUsage"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" /><source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" /><img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" /></picture></a>
+<a href="https://github.com/xzAscC/dotfiles"><picture><source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" /><source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" /><img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" /></picture></a>
+</div>
 
-## GitHub Stats
+### GitHub Stats
 
-<p align="center">
-  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github" />
-  <img height="160" src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact" />
-</p>
+<div align="center">
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false&ring_color=14b8a6" />
+<source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false&ring_color=0d9488" />
+<img src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false&ring_color=14b8a6" width="49%" />
+</picture>
+<picture>
+<source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" />
+<source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=false" />
+<img src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=false" width="49%" />
+</picture>
+</div>
 
 ---
 
