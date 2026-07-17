@@ -14,7 +14,7 @@ I work on representation learning for large language models.
 </p>
 
 <p>
-  <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github" alt="Visits" /></a>
+  <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github&v=2" alt="Visits" /></a>
   <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/years/xzAscC?style=flat-square&color=black&logo=github" alt="Years" /></a>
   <a href="https://github.com/xzAscC?tab=repositories"><img src="https://badges.strrl.dev/repos/xzAscC?style=flat-square&color=black&logo=github" alt="Repos" /></a>
   <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/commits/monthly/xzAscC?style=flat-square&color=black&logo=github" alt="Commits this month" /></a>
