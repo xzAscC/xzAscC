@@ -26,33 +26,49 @@ I work on representation learning for large language models.
 
 ## Research
 
-<p align="center">
-  <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering">
-    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering" />
-  </a>
-  <a href="https://github.com/xzAscC/ProbingReflection">
-    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection" />
-  </a>
-</p>
-<p align="center">
-  <a href="https://github.com/xzAscC/RankAnalysis">
-    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis" />
-  </a>
-  <a href="https://github.com/xzAscC/sae">
-    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae" />
-  </a>
-</p>
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering">
+        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&description_lines_count=2" width="400" height="120" alt="RobustDiM-PrefixSteering" />
+      </a>
+    </td>
+    <td width="50%" valign="top">
+      <a href="https://github.com/xzAscC/ProbingReflection">
+        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&description_lines_count=2" width="400" height="120" alt="ProbingReflection" />
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://github.com/xzAscC/RankAnalysis">
+        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RankAnalysis&description_lines_count=2" width="400" height="120" alt="RankAnalysis" />
+      </a>
+    </td>
+    <td width="50%" valign="top">
+      <a href="https://github.com/xzAscC/sae">
+        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=sae&description_lines_count=2" width="400" height="120" alt="sae" />
+      </a>
+    </td>
+  </tr>
+</table>
 
 ## Dev
 
-<p align="center">
-  <a href="https://github.com/xzAscC/LLMUsage">
-    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage" />
-  </a>
-  <a href="https://github.com/xzAscC/dotfiles">
-    <img height="135" src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles" />
-  </a>
-</p>
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <a href="https://github.com/xzAscC/LLMUsage">
+        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&description_lines_count=2" width="400" height="120" alt="LLMUsage" />
+      </a>
+    </td>
+    <td width="50%" valign="top">
+      <a href="https://github.com/xzAscC/dotfiles">
+        <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&description_lines_count=2" width="400" height="120" alt="dotfiles" />
+      </a>
+    </td>
+  </tr>
+</table>
 
 ## GitHub Stats
 
