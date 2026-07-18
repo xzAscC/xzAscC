@@ -85,14 +85,14 @@ I work on representation learning for large language models.
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&ring_color=14b8a6&v=4" />
           <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&ring_color=0d9488&v=4" />
-          <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&ring_color=14b8a6&v=4" height="165" alt="GitHub Stats" />
+          <img src="https://github-readme-stats-sigma-five.vercel.app/api?username=xzAscC&show_icons=true&rank_icon=github&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&ring_color=14b8a6&v=4" width="419" alt="GitHub Stats" />
         </picture>
       </td>
       <td>
         <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact&card_width=400&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-          <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact&card_width=400&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-          <img src="https://github-readme-stats-sigma-five.vercel.app/api/top-langs/?username=xzAscC&layout=compact&card_width=400&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="165" alt="Top Languages" />
+          <source media="(prefers-color-scheme: dark)" srcset="./assets/languages-dark.svg" />
+          <source media="(prefers-color-scheme: light)" srcset="./assets/languages-light.svg" />
+          <img src="./assets/languages-dark.svg" width="419" alt="Top Languages by Repository" />
         </picture>
       </td>
     </tr>
@@ -105,4 +105,4 @@ If you are interested in collaboration, feel free to open an issue or connect wi
 
 ## Acknowledgments
 
-GitHub stats cards are powered by [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Many thanks to the authors for building and maintaining it.
+GitHub activity stats are powered by [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Many thanks to the authors for building and maintaining it.
