@@ -57,7 +57,7 @@ I work on representation learning for large language models.
   </a>
 </div>
 
-### Dev
+### Building in Public
 
 <div align="center">
   <a href="https://github.com/xzAscC/LLMUsage">
