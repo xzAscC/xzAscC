@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" viewBox="0 0 419 165" role="img" aria-labelledby="title desc">
+  <title id="title">Top Languages by Repository</title>
+  <desc id="desc">Python 77.78 percent; TeX 5.56 percent; SCSS 5.56 percent; Lua 5.56 percent; TypeScript 5.56 percent.</desc>
+  <defs>
+    <clipPath id="bar-clip">
+      <rect x="20" y="48" width="379" height="8" rx="4" />
+    </clipPath>
+    <style>
+      .heading { font: 600 15.25px 'Segoe UI', Ubuntu, sans-serif; fill: #5eead4; }
+      .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
+    </style>
+  </defs>
+
+  <text x="20" y="29" class="heading">Top Languages by Repository</text>
+
+  <g clip-path="url(#bar-clip)">
+    <rect x="20.00" y="48" width="294.78" height="8" fill="#3572A5" />
+    <rect x="314.78" y="48" width="21.06" height="8" fill="#3D6117" />
+    <rect x="335.83" y="48" width="21.06" height="8" fill="#c6538c" />
+    <rect x="356.89" y="48" width="21.06" height="8" fill="#000080" />
+    <rect x="377.94" y="48" width="21.06" height="8" fill="#3178c6" />
+  </g>
+
+  <g class="label">
+    <circle cx="25" cy="82" r="5" fill="#3572A5" />
+    <text x="39" y="86">Python 77.78%</text>
+    <circle cx="225" cy="82" r="5" fill="#3D6117" />
+    <text x="239" y="86">TeX 5.56%</text>
+    <circle cx="25" cy="108" r="5" fill="#c6538c" />
+    <text x="39" y="112">SCSS 5.56%</text>
+    <circle cx="225" cy="108" r="5" fill="#000080" />
+    <text x="239" y="112">Lua 5.56%</text>
+    <circle cx="25" cy="134" r="5" fill="#3178c6" />
+    <text x="39" y="138">TypeScript 5.56%</text>
+  </g>
+</svg>
