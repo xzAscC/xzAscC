@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" viewBox="0 0 419 165" role="img" aria-labelledby="title desc">
   <title id="title">Top Languages by Repository</title>
-  <desc id="desc">Python 77.73 percent; TeX 5.36 percent; TypeScript 4.68 percent; Lua 3.44 percent; Shell 2.63 percent; Other 6.15 percent.</desc>
+  <desc id="desc">Python 77.73 percent; TeX 5.36 percent; TypeScript 4.64 percent; Lua 3.52 percent; Shell 2.60 percent; Other 6.14 percent.</desc>
   <defs>
     <clipPath id="bar-clip">
       <rect x="20" y="48" width="379" height="8" rx="4" />
@@ -16,10 +16,10 @@
   <g clip-path="url(#bar-clip)">
     <rect x="20.00" y="48" width="294.62" height="8" fill="#3572A5" />
     <rect x="314.62" y="48" width="20.32" height="8" fill="#3D6117" />
-    <rect x="334.94" y="48" width="17.74" height="8" fill="#3178c6" />
-    <rect x="352.68" y="48" width="13.05" height="8" fill="#000080" />
-    <rect x="365.74" y="48" width="9.96" height="8" fill="#89e051" />
-    <rect x="375.70" y="48" width="23.30" height="8" fill="#64748b" />
+    <rect x="334.94" y="48" width="17.59" height="8" fill="#3178c6" />
+    <rect x="352.53" y="48" width="13.32" height="8" fill="#000080" />
+    <rect x="365.85" y="48" width="9.87" height="8" fill="#89e051" />
+    <rect x="375.72" y="48" width="23.28" height="8" fill="#64748b" />
   </g>
 
   <g class="label">
@@ -28,12 +28,12 @@
     <circle cx="225" cy="82" r="5" fill="#3D6117" />
     <text x="239" y="86">TeX 5.36%</text>
     <circle cx="25" cy="108" r="5" fill="#3178c6" />
-    <text x="39" y="112">TypeScript 4.68%</text>
+    <text x="39" y="112">TypeScript 4.64%</text>
     <circle cx="225" cy="108" r="5" fill="#000080" />
-    <text x="239" y="112">Lua 3.44%</text>
+    <text x="239" y="112">Lua 3.52%</text>
     <circle cx="25" cy="134" r="5" fill="#89e051" />
-    <text x="39" y="138">Shell 2.63%</text>
+    <text x="39" y="138">Shell 2.60%</text>
     <circle cx="225" cy="134" r="5" fill="#64748b" />
-    <text x="239" y="138">Other 6.15%</text>
+    <text x="239" y="138">Other 6.14%</text>
   </g>
 </svg>
