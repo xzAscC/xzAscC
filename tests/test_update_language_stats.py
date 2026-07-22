@@ -14,6 +14,7 @@ import os
 import tempfile
 import time
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from scripts.update_language_stats import (
@@ -114,6 +115,21 @@ class TestDisplayedLanguages(unittest.TestCase):
         expected_other = sum(float(10 - i) for i in range(5, 10))
         self.assertAlmostEqual(result[-1][1], expected_other, places=10)
 
+    def test_seven_languages_collapses_only_last_two(self) -> None:
+        weights = {f"Lang{i}": float(7 - i) for i in range(7)}
+        result = displayed_languages(weights)
+        self.assertEqual(
+            result,
+            [
+                ("Lang0", 7.0),
+                ("Lang1", 6.0),
+                ("Lang2", 5.0),
+                ("Lang3", 4.0),
+                ("Lang4", 3.0),
+                ("Other", 3.0),
+            ],
+        )
+
     def test_preferred_order_breaks_weight_ties(self) -> None:
         # Equal weights: Python (preferred index 0) ranks before TeX (index 1).
         weights = {"TeX": 1.0, "Python": 1.0}
@@ -145,17 +161,33 @@ class TestRenderSvg(unittest.TestCase):
 
     def test_unknown_language_uses_fallback_color(self) -> None:
         svg = render_svg([("FictionalLang", 1.0)], dark=False)
-        # LANGUAGE_COLORS fallback for unknown entries is #64748b.
-        self.assertIn("#64748b", svg)
+        self.assertEqual(svg.count('fill="#64748b"'), 2)
 
-    def test_dark_and_light_themes_differ(self) -> None:
+    def test_dark_and_light_themes_use_expected_colors(self) -> None:
         dark = render_svg([("Python", 1.0)], dark=True)
         light = render_svg([("Python", 1.0)], dark=False)
-        self.assertNotEqual(dark, light)
+        self.assertIn("fill: #5eead4", dark)
+        self.assertIn("fill: #94a3b8", dark)
+        self.assertIn("fill: #0d9488", light)
+        self.assertIn("fill: #334155", light)
 
     def test_desc_lists_each_language_percentage(self) -> None:
         svg = render_svg([("Python", 0.5), ("TeX", 0.5)], dark=False)
-        self.assertIn("50.00 percent", svg)
+        self.assertIn(
+            '<desc id="desc">Python 50.00 percent; TeX 50.00 percent.</desc>',
+            svg,
+        )
+
+    def test_long_language_name_is_truncated_in_legend_only(self) -> None:
+        name = "SomeVeryLongLanguageName"
+        svg = render_svg([(name, 1.0)], dark=False)
+        self.assertIn("SomeVeryLongLan… 100.00%", svg)
+        self.assertIn(f"{name} 100.00 percent", svg)
+
+    def test_output_is_well_formed_svg(self) -> None:
+        svg = render_svg([("Python", 1.0)], dark=False)
+        root = ET.fromstring(svg)
+        self.assertEqual(root.tag, "{http://www.w3.org/2000/svg}svg")
 
 
 class TestWriteIfChanged(unittest.TestCase):
