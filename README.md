@@ -7,7 +7,7 @@ PhD @ [The Ohio State University](https://www.osu.edu/), advised by [Zhihui Zhu]
 I work on representation learning for large language models.
 
 <p>
-  <a href="https://xzascc.github.io/"><img src="https://img.shields.io/badge/xzascc.github.io-14b8a6?style=flat-square&logo=safari&logoColor=white" alt="Website" /></a>
+  <a href="https://xudongzhu.com/"><img src="https://img.shields.io/badge/xudongzhu.com-14b8a6?style=flat-square&logo=safari&logoColor=white" alt="Website" /></a>
   <a href="mailto:zhu.3944@osu.edu"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
   <a href="https://scholar.google.com/citations?user=U55yracAAAAJ&hl=zh-CN"><img src="https://img.shields.io/badge/Scholar-4285F4?style=flat-square&logo=google-scholar&logoColor=white" alt="Google Scholar" /></a>
   <a href="https://x.com/XudongZhu3944"><img src="https://img.shields.io/badge/X-@XudongZhu3944-000000?style=flat-square&logo=x&logoColor=white" alt="X: @XudongZhu3944" /></a>
