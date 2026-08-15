@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" viewBox="0 0 419 165" role="img" aria-labelledby="title desc">
+  <title id="title">XzAscC's GitHub Stats</title>
+  <desc id="desc">Total Stars 38; Commits This Month 0; Public Repositories 30; Followers 33.</desc>
+  <defs>
+    <style>
+      .heading { font: 600 15.25px 'Segoe UI', Ubuntu, sans-serif; fill: #0f766e; }
+      .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; fill: #334155; }
+      .value { font: 600 12px 'Segoe UI', Ubuntu, sans-serif; fill: #334155; text-anchor: end; }
+    </style>
+  </defs>
+  <rect width="419" height="165" rx="4" fill="#ffffff" stroke="#e2e8f0" stroke-opacity="0" />
+  <text x="20" y="29" class="heading">XzAscC's GitHub Stats</text>
+  <circle cx="25" cy="50" r="4" fill="#d97706" />
+  <text x="39" y="54" class="label">Total Stars:</text>
+  <text x="286" y="54" class="value">38</text>
+  <circle cx="25" cy="76" r="4" fill="#d97706" />
+  <text x="39" y="80" class="label">Commits This Month:</text>
+  <text x="286" y="80" class="value">0</text>
+  <circle cx="25" cy="102" r="4" fill="#d97706" />
+  <text x="39" y="106" class="label">Public Repositories:</text>
+  <text x="286" y="106" class="value">30</text>
+  <circle cx="25" cy="128" r="4" fill="#d97706" />
+  <text x="39" y="132" class="label">Followers:</text>
+  <text x="286" y="132" class="value">33</text>
+</svg>
