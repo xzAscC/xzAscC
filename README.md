@@ -29,30 +29,30 @@ I work on representation learning for large language models.
 <div align="center">
   <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&description_lines_count=2&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-      <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=RobustDiM-PrefixSteering&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="135" alt="RobustDiM-PrefixSteering" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-robustdim-prefixsteering-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-robustdim-prefixsteering-light.svg" />
+      <img src="./assets/pin-robustdim-prefixsteering-dark.svg" height="135" alt="RobustDiM-PrefixSteering" />
     </picture>
   </a>
   <a href="https://github.com/xzAscC/ProbingReflection">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&description_lines_count=2&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-      <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=ProbingReflection&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="135" alt="ProbingReflection" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-probingreflection-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-probingreflection-light.svg" />
+      <img src="./assets/pin-probingreflection-dark.svg" height="135" alt="ProbingReflection" />
     </picture>
   </a>
   <a href="https://github.com/xzAscC/PostDyn">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=PostDyn&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=PostDyn&description_lines_count=2&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-      <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=PostDyn&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="135" alt="PostDyn" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-postdyn-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-postdyn-light.svg" />
+      <img src="./assets/pin-postdyn-dark.svg" height="135" alt="PostDyn" />
     </picture>
   </a>
   <a href="https://github.com/GoXzascc/AbsTopK-SAE">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=GoXzascc&repo=AbsTopK-SAE&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=GoXzascc&repo=AbsTopK-SAE&description_lines_count=2&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-      <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=GoXzascc&repo=AbsTopK-SAE&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="135" alt="AbsTopK-SAE" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" />
+      <img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="135" alt="AbsTopK-SAE" />
     </picture>
   </a>
 </div>
@@ -62,16 +62,16 @@ I work on representation learning for large language models.
 <div align="center">
   <a href="https://github.com/xzAscC/LLMUsage">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&description_lines_count=2&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-      <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=LLMUsage&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="135" alt="LLMUsage" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-llmusage-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-llmusage-light.svg" />
+      <img src="./assets/pin-llmusage-dark.svg" height="135" alt="LLMUsage" />
     </picture>
   </a>
   <a href="https://github.com/xzAscC/dotfiles">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&description_lines_count=2&bg_color=ffffff&title_color=0d9488&icon_color=d97706&text_color=334155&border_color=e2e8f0&hide_border=true&v=4" />
-      <img src="https://github-readme-stats-sigma-five.vercel.app/api/pin/?username=xzAscC&repo=dotfiles&description_lines_count=2&bg_color=0d1117&title_color=5eead4&icon_color=f59e0b&text_color=94a3b8&border_color=1e3a32&hide_border=true&v=4" height="135" alt="dotfiles" />
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-dotfiles-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-dotfiles-light.svg" />
+      <img src="./assets/pin-dotfiles-dark.svg" height="135" alt="dotfiles" />
     </picture>
   </a>
 </div>
