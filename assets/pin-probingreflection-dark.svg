@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="135" viewBox="0 0 400 135" role="img" aria-labelledby="title desc">
+  <title id="title">xzAscC/ProbingReflection</title>
+  <desc id="desc">[TMLR 2026] From Emergence to Control: Probing and Modulating Self-Reflection in Language Models.. 3 stars, 0 forks, primary language Python.</desc>
+  <defs>
+    <style>
+      .title { font: 600 15.25px 'Segoe UI', Ubuntu, sans-serif; fill: #5eead4; }
+      .body { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
+      .meta { font: 400 11px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
+      .icon { font: 400 11px 'Segoe UI', Ubuntu, sans-serif; fill: #f59e0b; }
+    </style>
+  </defs>
+  <rect x="2" y="2" width="396" height="131" rx="4" fill="#0d1117" stroke="#c2410c" stroke-width="4" />
+  <text x="20" y="33" class="title">xzAscC/ProbingReflection</text>
+  <text x="20" y="63" class="body">[TMLR 2026] From Emergence to Control: Probing</text>
+  <text x="20" y="81" class="body">and Modulating Self-Reflection in Language Model…</text>
+  <circle cx="24" cy="115" r="5" fill="#5eead4" />
+  <text x="35" y="119" class="meta">Python</text>
+  <text x="86" y="119" class="icon">★</text>
+  <text x="101" y="119" class="meta">3</text>
+  <text x="132" y="119" class="icon">⑂</text>
+  <text x="147" y="119" class="meta">0</text>
+</svg>
