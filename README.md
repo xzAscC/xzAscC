@@ -79,24 +79,11 @@ I work on representation learning for large language models.
 ### GitHub Stats
 
 <div align="center">
-  <table>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-dark.svg" />
-          <source media="(prefers-color-scheme: light)" srcset="./assets/stats-light.svg" />
-          <img src="./assets/stats-dark.svg" width="419" height="195" alt="GitHub Stats" />
-        </picture>
-      </td>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="./assets/languages-dark.svg" />
-          <source media="(prefers-color-scheme: light)" srcset="./assets/languages-light.svg" />
-          <img src="./assets/languages-dark.svg" width="419" alt="Top Languages by Repository" />
-        </picture>
-      </td>
-    </tr>
-  </table>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/overview-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="./assets/overview-light.svg" />
+    <img src="./assets/overview-dark.svg" alt="GitHub Stats" />
+  </picture>
 </div>
 
 ---
@@ -105,4 +92,4 @@ If you are interested in collaboration, feel free to open an issue or connect wi
 
 ## Acknowledgments
 
-Profile metrics are regenerated weekly as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics and rank follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); card styling is inspired by the same project.
+Profile metrics are regenerated weekly as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the rank letter and ring fill are hardcoded. Card styling is inspired by the same project.
