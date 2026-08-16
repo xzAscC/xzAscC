@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="419" height="195" viewBox="0 0 419 195" role="img" aria-labelledby="title desc">
-  <title id="title">XzAscC's GitHub Stats, Rank: B+</title>
+  <title id="title">XzAscC's GitHub Stats, Rank: A</title>
   <desc id="desc">Total Stars Earned: 38, Total Commits: 1.4k, Total PRs: 57, Total Issues: 117, Contributed to (last year): 6.</desc>
   <defs>
     <style>
@@ -8,7 +8,7 @@
       .value { text-anchor: end; }
       .rank-text { font: 800 24px 'Segoe UI', Ubuntu, sans-serif; fill: #334155; }
       .rank-circle-rim { stroke: #0f766e; fill: none; stroke-width: 6; opacity: 0.2; }
-      .rank-circle { stroke: #0f766e; fill: none; stroke-width: 6; stroke-linecap: round; opacity: 0.8; transform-origin: center; transform: rotate(-90deg); }
+      .rank-circle { stroke: #0f766e; fill: none; stroke-width: 6; stroke-linecap: round; opacity: 0.8; }
     </style>
   </defs>
   <rect x="0.5" y="0.5" width="418" height="194" rx="4.5" fill="#ffffff" stroke="#e2e8f0" stroke-width="1" />
@@ -30,7 +30,7 @@
   <text x="280" y="155" class="stat value">6</text>
   <g data-testid="rank-circle" transform="translate(350, 97.5)">
     <circle class="rank-circle-rim" cx="0" cy="0" r="40" />
-    <circle class="rank-circle" cx="0" cy="0" r="40" stroke-dasharray="251.3274" stroke-dashoffset="119.0835" />
-    <text class="rank-text" x="0" y="1" text-anchor="middle" dominant-baseline="central">B+</text>
+    <circle class="rank-circle" cx="0" cy="0" r="40" transform="rotate(-90)" stroke-dasharray="251.3274" stroke-dashoffset="118.1239" />
+    <text class="rank-text" x="0" y="1" text-anchor="middle" dominant-baseline="central">A</text>
   </g>
 </svg>
