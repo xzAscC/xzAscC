@@ -1,39 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" viewBox="0 0 419 165" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="419" height="195" viewBox="0 0 419 195" role="img" aria-labelledby="title desc">
   <title id="title">Top Languages by Repository</title>
-  <desc id="desc">Python 74.15 percent; TeX 5.11 percent; QML 5.08 percent; TypeScript 3.98 percent; Lua 3.87 percent; Other 7.80 percent.</desc>
+  <desc id="desc">Python 74.16 percent; TeX 5.11 percent; QML 5.08 percent; TypeScript 3.98 percent; Lua 3.87 percent; Other 7.80 percent.</desc>
   <defs>
     <clipPath id="bar-clip">
-      <rect x="20" y="48" width="379" height="8" rx="4" />
+      <rect x="20" y="58" width="379" height="8" rx="4" />
     </clipPath>
     <style>
-      .heading { font: 600 15.25px 'Segoe UI', Ubuntu, sans-serif; fill: #5eead4; }
+      .heading { font: 600 18px 'Segoe UI', Ubuntu, sans-serif; fill: #5eead4; }
       .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; fill: #94a3b8; }
     </style>
   </defs>
+  <rect x="0.5" y="0.5" width="418" height="194" rx="4.5" fill="#0d1117" stroke="#1e3a32" stroke-width="1" />
 
-  <text x="20" y="29" class="heading">Top Languages by Repository</text>
+  <text x="25" y="32" class="heading">Top Languages by Repository</text>
 
   <g clip-path="url(#bar-clip)">
-    <rect x="20.00" y="48" width="281.05" height="8" fill="#3572A5" />
-    <rect x="301.05" y="48" width="19.36" height="8" fill="#3D6117" />
-    <rect x="320.40" y="48" width="19.27" height="8" fill="#64748b" />
-    <rect x="339.68" y="48" width="15.09" height="8" fill="#3178c6" />
-    <rect x="354.77" y="48" width="14.67" height="8" fill="#000080" />
-    <rect x="369.44" y="48" width="29.56" height="8" fill="#64748b" />
+    <rect x="20.00" y="58" width="281.06" height="8" fill="#3572A5" />
+    <rect x="301.06" y="58" width="19.37" height="8" fill="#3D6117" />
+    <rect x="320.43" y="58" width="19.26" height="8" fill="#64748b" />
+    <rect x="339.68" y="58" width="15.09" height="8" fill="#3178c6" />
+    <rect x="354.77" y="58" width="14.67" height="8" fill="#000080" />
+    <rect x="369.44" y="58" width="29.56" height="8" fill="#64748b" />
   </g>
 
   <g class="label">
-    <circle cx="25" cy="82" r="5" fill="#3572A5" />
-    <text x="39" y="86">Python 74.15%</text>
-    <circle cx="225" cy="82" r="5" fill="#3D6117" />
-    <text x="239" y="86">TeX 5.11%</text>
-    <circle cx="25" cy="108" r="5" fill="#64748b" />
-    <text x="39" y="112">QML 5.08%</text>
-    <circle cx="225" cy="108" r="5" fill="#3178c6" />
-    <text x="239" y="112">TypeScript 3.98%</text>
-    <circle cx="25" cy="134" r="5" fill="#000080" />
-    <text x="39" y="138">Lua 3.87%</text>
-    <circle cx="225" cy="134" r="5" fill="#64748b" />
-    <text x="239" y="138">Other 7.80%</text>
+    <circle cx="25" cy="92" r="5" fill="#3572A5" />
+    <text x="39" y="96">Python 74.16%</text>
+    <circle cx="225" cy="92" r="5" fill="#3D6117" />
+    <text x="239" y="96">TeX 5.11%</text>
+    <circle cx="25" cy="124" r="5" fill="#64748b" />
+    <text x="39" y="128">QML 5.08%</text>
+    <circle cx="225" cy="124" r="5" fill="#3178c6" />
+    <text x="239" y="128">TypeScript 3.98%</text>
+    <circle cx="25" cy="156" r="5" fill="#000080" />
+    <text x="39" y="160">Lua 3.87%</text>
+    <circle cx="225" cy="156" r="5" fill="#64748b" />
+    <text x="239" y="160">Other 7.80%</text>
   </g>
 </svg>
