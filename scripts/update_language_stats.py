@@ -147,6 +147,8 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
     total = sum(weight for _, weight in entries)
     heading_color = "#5eead4" if dark else "#0f766e"
     label_color = "#94a3b8" if dark else "#334155"
+    background = "#0d1117" if dark else "#ffffff"
+    border = "#1e3a32" if dark else "#e2e8f0"
     descriptions = "; ".join(
         f"{name} {weight / total * 100:.2f} percent" for name, weight in entries
     )
@@ -160,7 +162,7 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
             else BAR_WIDTH * weight / total
         )
         segments.append(
-            f'    <rect x="{current_x:.2f}" y="48" width="{width:.2f}" '
+            f'    <rect x="{current_x:.2f}" y="58" width="{width:.2f}" '
             + f'height="8" fill="{LANGUAGE_COLORS.get(name, "#64748b")}" />'
         )
         current_x += width
@@ -171,8 +173,8 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
         row = index // 2
         circle_x = 25 + column * 200
         text_x = 39 + column * 200
-        circle_y = 82 + row * 26
-        text_y = 86 + row * 26
+        circle_y = 92 + row * 32
+        text_y = 96 + row * 32
         label = name if len(name) <= 16 else f"{name[:15]}…"
         color = LANGUAGE_COLORS.get(name, "#64748b")
         legends.extend(
@@ -185,23 +187,25 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
 
     return "\n".join(
         (
-            '<svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" '
-            + 'viewBox="0 0 419 165" role="img" aria-labelledby="title desc">',
+            '<svg xmlns="http://www.w3.org/2000/svg" width="419" height="195" '
+            + 'viewBox="0 0 419 195" role="img" aria-labelledby="title desc">',
             '  <title id="title">Top Languages by Repository</title>',
             f'  <desc id="desc">{escape(descriptions)}.</desc>',
             "  <defs>",
             '    <clipPath id="bar-clip">',
-            '      <rect x="20" y="48" width="379" height="8" rx="4" />',
+            '      <rect x="20" y="58" width="379" height="8" rx="4" />',
             "    </clipPath>",
             "    <style>",
-            "      .heading { font: 600 15.25px 'Segoe UI', Ubuntu, sans-serif; "
+            "      .heading { font: 600 18px 'Segoe UI', Ubuntu, sans-serif; "
             + f"fill: {heading_color}; }}",
             "      .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; "
             + f"fill: {label_color}; }}",
             "    </style>",
             "  </defs>",
+            f'  <rect x="0.5" y="0.5" width="418" height="194" rx="4.5" '
+            f'fill="{background}" stroke="{border}" stroke-width="1" />',
             "",
-            '  <text x="20" y="29" class="heading">Top Languages by Repository</text>',
+            '  <text x="25" y="32" class="heading">Top Languages by Repository</text>',
             "",
             '  <g clip-path="url(#bar-clip)">',
             *segments,

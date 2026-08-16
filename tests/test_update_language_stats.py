@@ -189,6 +189,20 @@ class TestRenderSvg(unittest.TestCase):
         root = ET.fromstring(svg)
         self.assertEqual(root.tag, "{http://www.w3.org/2000/svg}svg")
 
+    def test_card_has_matching_stats_frame(self) -> None:
+        light = render_svg([("Python", 1.0)], dark=False)
+        dark = render_svg([("Python", 1.0)], dark=True)
+        light_card = ET.fromstring(light).find("{http://www.w3.org/2000/svg}rect")
+        dark_card = ET.fromstring(dark).find("{http://www.w3.org/2000/svg}rect")
+        self.assertIsNotNone(light_card)
+        self.assertIsNotNone(dark_card)
+        if light_card is None or dark_card is None:
+            raise AssertionError("Language card is missing its frame")
+        self.assertEqual(light_card.attrib["stroke"], "#e2e8f0")
+        self.assertEqual(dark_card.attrib["stroke"], "#1e3a32")
+        self.assertEqual(light_card.attrib["fill"], "#ffffff")
+        self.assertEqual(dark_card.attrib["fill"], "#0d1117")
+
 
 class TestWriteIfChanged(unittest.TestCase):
     """write_if_changed: idempotent writer to avoid spurious git diffs."""
