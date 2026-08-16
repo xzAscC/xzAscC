@@ -148,7 +148,7 @@ class TestRenderSvg(unittest.TestCase):
 
     def test_empty_entries_raises_runtime_error(self) -> None:
         with self.assertRaises(RuntimeError):
-            render_svg([], dark=False)
+            _ = render_svg([], dark=False)
 
     def test_contains_title_text(self) -> None:
         svg = render_svg([("Python", 1.0)], dark=False)
@@ -168,7 +168,7 @@ class TestRenderSvg(unittest.TestCase):
         light = render_svg([("Python", 1.0)], dark=False)
         self.assertIn("fill: #5eead4", dark)
         self.assertIn("fill: #94a3b8", dark)
-        self.assertIn("fill: #0d9488", light)
+        self.assertIn("fill: #0f766e", light)
         self.assertIn("fill: #334155", light)
 
     def test_desc_lists_each_language_percentage(self) -> None:
@@ -193,37 +193,33 @@ class TestRenderSvg(unittest.TestCase):
 class TestWriteIfChanged(unittest.TestCase):
     """write_if_changed: idempotent writer to avoid spurious git diffs."""
 
-    def setUp(self) -> None:
-        self._td = tempfile.TemporaryDirectory()
-        self.tmp_path = Path(self._td.name)
-
-    def tearDown(self) -> None:
-        self._td.cleanup()
-
     def test_writes_new_file_when_missing(self) -> None:
-        path = self.tmp_path / "out.svg"
-        write_if_changed(path, "<svg/>")
-        self.assertEqual(path.read_text(encoding="utf-8"), "<svg/>")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "out.svg"
+            write_if_changed(path, "<svg/>")
+            self.assertEqual(path.read_text(encoding="utf-8"), "<svg/>")
 
     def test_overwrites_when_content_differs(self) -> None:
-        path = self.tmp_path / "out.svg"
-        path.write_text("old", encoding="utf-8")
-        write_if_changed(path, "new")
-        self.assertEqual(path.read_text(encoding="utf-8"), "new")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "out.svg"
+            _ = path.write_text("old", encoding="utf-8")
+            write_if_changed(path, "new")
+            self.assertEqual(path.read_text(encoding="utf-8"), "new")
 
     def test_preserves_file_when_content_unchanged(self) -> None:
         # Critical for the workflow: identical content must NOT trigger a
         # rewrite, otherwise the weekly commit is polluted by no-op bumps
         # in mtime (and potentially byte-identical rewrites on weird FSes).
-        path = self.tmp_path / "out.svg"
-        path.write_text("same", encoding="utf-8")
-        mtime_before = os.path.getmtime(path)
-        # Sleep past filesystem mtime granularity (HFS+ is 1s; ext4 is ns).
-        time.sleep(0.05)
-        write_if_changed(path, "same")
-        mtime_after = os.path.getmtime(path)
-        self.assertEqual(mtime_before, mtime_after)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "out.svg"
+            _ = path.write_text("same", encoding="utf-8")
+            mtime_before = os.path.getmtime(path)
+            # Sleep past filesystem mtime granularity (HFS+ is 1s; ext4 is ns).
+            time.sleep(0.05)
+            write_if_changed(path, "same")
+            mtime_after = os.path.getmtime(path)
+            self.assertEqual(mtime_before, mtime_after)
 
 
 if __name__ == "__main__":
-    unittest.main()
+    _ = unittest.main()
