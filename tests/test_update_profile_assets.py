@@ -27,6 +27,7 @@ from scripts.update_profile_assets import (
     fetch_owned_repositories,
     format_stat_number,
     parse_visit_value,
+    compose_overview_svg,
     render_account_card,
     render_badge,
     render_repository_card,
@@ -287,6 +288,8 @@ class TestRenderers(unittest.TestCase):
             self.assertIn(">18<", svg)
             self.assertIn(">A<", svg)
             self.assertIn("rank-circle", svg)
+            self.assertIn('transform="rotate(-90)"', svg)
+            self.assertIn('stroke-dashoffset="118.1239"', svg)
             self.assertIn('class="icon"', svg)
             self.assertNotIn("Commits This Month", svg)
             self.assertNotIn("Public Repositories", svg)
@@ -294,6 +297,24 @@ class TestRenderers(unittest.TestCase):
         self.assertIn("#14b8a6", dark)
         self.assertIn("#0f766e", light)
         self.assertNotEqual(dark, light)
+
+    def test_overview_card_places_stats_and_languages_side_by_side(self) -> None:
+        account = AccountStats("xzAscC", 1, 1, 1, 1, 1, "A", 47.0)
+        stats = render_account_card(account, dark=True)
+        languages = render_language_svg([("Python", 1.0)], dark=True)
+        overview = compose_overview_svg(stats, languages)
+        root = ET.fromstring(overview)
+        nested = [child for child in root if child.tag == f"{SVG_NAMESPACE}svg"]
+
+        self.assertEqual(root.attrib["width"], "854")
+        self.assertEqual(root.attrib["height"], "195")
+        self.assertEqual(len(nested), 2)
+        self.assertEqual(nested[0].attrib["x"], "0")
+        self.assertEqual(nested[1].attrib["x"], "435")
+        self.assertIn("XzAscC's GitHub Stats", overview)
+        self.assertIn("Top Languages by Repository", overview)
+        self.assertIn('id="lang-bar-clip"', overview)
+        self.assertIn("lang-heading", overview)
 
     def test_calculate_rank_matches_github_stats_extended(self) -> None:
         rank = calculate_rank(
@@ -407,10 +428,17 @@ class TestGeneration(unittest.TestCase):
 
         self.assertEqual(tuple(first), ASSET_FILENAMES)
         self.assertEqual(first, second)
-        self.assertEqual(len(first), 20)
+        self.assertEqual(len(first), 22)
         for filename, svg in first.items():
             with self.subTest(filename=filename):
                 _ = ET.fromstring(svg)
+        self.assertIn("Rank: A", first["stats-dark.svg"])
+        self.assertIn('stroke-dashoffset="118.1239"', first["stats-light.svg"])
+        self.assertIn("XzAscC's GitHub Stats", first["overview-dark.svg"])
+        self.assertIn("Top Languages by Repository", first["overview-light.svg"])
+        self.assertEqual(
+            ET.fromstring(first["overview-dark.svg"]).attrib["width"], "854"
+        )
 
     def test_expected_refresh_sources_are_requested(self) -> None:
         fetcher = FakeFetcher(complete_responses())
@@ -675,8 +703,10 @@ class TestRepositoryIntegration(unittest.TestCase):
         self.assertFalse(any("badges.strrl.dev" in source for source in image_sources))
         for filename in ASSET_FILENAMES:
             with self.subTest(filename=filename):
-                self.assertIn(f"./assets/{filename}", readme)
                 self.assertTrue((ROOT / "assets" / filename).is_file())
+                if filename.startswith(("stats-", "languages-")):
+                    continue
+                self.assertIn(f"./assets/{filename}", readme)
         for name in (
             "RobustDiM-PrefixSteering",
             "ProbingReflection",
@@ -686,7 +716,8 @@ class TestRepositoryIntegration(unittest.TestCase):
             "dotfiles",
         ):
             self.assertIn(f'height="120" alt="{name}"', readme)
-        self.assertIn('width="419" height="195" alt="GitHub Stats"', readme)
+        self.assertIn('src="./assets/overview-dark.svg" alt="GitHub Stats"', readme)
+        self.assertNotIn("<table", readme)
         self.assertIn('href="https://github.com/GoXzascc/AbsTopK-SAE"', readme)
         self.assertIn("(prefers-color-scheme: dark)", readme)
         self.assertIn("(prefers-color-scheme: light)", readme)

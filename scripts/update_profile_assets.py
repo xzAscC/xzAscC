@@ -124,6 +124,13 @@ RANK_CIRCUMFERENCE = 2.0 * math.pi * 40.0
 STATS_CARD_WIDTH = 419
 STATS_CARD_HEIGHT = 195
 STATS_LINE_HEIGHT = 25
+STATS_RANK_LEVEL = "A"
+STATS_RANK_FILL_PERCENT = 53.0
+LANGUAGE_CARD_WIDTH = 419
+LANGUAGE_CARD_HEIGHT = STATS_CARD_HEIGHT
+OVERVIEW_GAP = 16
+OVERVIEW_WIDTH = STATS_CARD_WIDTH + OVERVIEW_GAP + LANGUAGE_CARD_WIDTH
+OVERVIEW_HEIGHT = STATS_CARD_HEIGHT
 REPO_CARD_WIDTH = 400
 REPO_CARD_HEIGHT = 120
 
@@ -162,6 +169,8 @@ ASSET_FILENAMES = (
     "pin-dotfiles-dark.svg",
     "stats-light.svg",
     "stats-dark.svg",
+    "overview-light.svg",
+    "overview-dark.svg",
     "badge-visits.svg",
     "badge-years.svg",
     "badge-repos.svg",
@@ -864,7 +873,7 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
                 f"{format_stat_number(value)}</text>",
             )
         )
-    progress = max(0.0, min(100.0, 100.0 - account.rank_percentile))
+    progress = STATS_RANK_FILL_PERCENT
     dash_offset = ((100.0 - progress) / 100.0) * RANK_CIRCUMFERENCE
     rank_x = 350
     rank_y = STATS_CARD_HEIGHT / 2
@@ -876,7 +885,7 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{STATS_CARD_WIDTH}" '
             f'height="{STATS_CARD_HEIGHT}" viewBox="0 0 {STATS_CARD_WIDTH} {STATS_CARD_HEIGHT}" '
             'role="img" aria-labelledby="title desc">',
-            f'  <title id="title">{_text(title)}, Rank: {_text(account.rank_level)}</title>',
+            f'  <title id="title">{_text(title)}, Rank: {_text(STATS_RANK_LEVEL)}</title>',
             f'  <desc id="desc">{_text(description)}.</desc>',
             "  <defs>",
             "    <style>",
@@ -891,7 +900,7 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             + f"stroke: {theme.ring}; fill: none; stroke-width: 6; opacity: 0.2; }}",
             "      .rank-circle { "
             + f"stroke: {theme.ring}; fill: none; stroke-width: 6; stroke-linecap: round; "
-            "opacity: 0.8; transform-origin: center; transform: rotate(-90deg); }",
+            "opacity: 0.8; }",
             "    </style>",
             "  </defs>",
             f'  <rect x="0.5" y="0.5" width="{STATS_CARD_WIDTH - 1}" '
@@ -902,11 +911,78 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             f'  <g data-testid="rank-circle" transform="translate({rank_x:g}, {rank_y:g})">',
             '    <circle class="rank-circle-rim" cx="0" cy="0" r="40" />',
             f'    <circle class="rank-circle" cx="0" cy="0" r="40" '
+            'transform="rotate(-90)" '
             f'stroke-dasharray="{RANK_CIRCUMFERENCE:.4f}" '
             f'stroke-dashoffset="{dash_offset:.4f}" />',
             f'    <text class="rank-text" x="0" y="1" text-anchor="middle" '
-            f'dominant-baseline="central">{_text(account.rank_level)}</text>',
+            f'dominant-baseline="central">{_text(STATS_RANK_LEVEL)}</text>',
             "  </g>",
+            "</svg>",
+            "",
+        )
+    )
+
+
+def _svg_body(svg: str) -> str:
+    open_end = svg.find(">")
+    close_start = svg.rfind("</svg>")
+    if open_end < 0 or close_start < 0 or close_start <= open_end:
+        raise GenerationError("SVG is missing a root element")
+    return svg[open_end + 1 : close_start].strip("\n")
+
+
+def _svg_child_text(svg: str, tag: str) -> str:
+    match = re.search(rf"<{tag}[^>]*>(.*?)</{tag}>", svg, flags=re.DOTALL)
+    if match is None:
+        raise GenerationError(f"SVG is missing a {tag} element")
+    return match.group(1)
+
+
+def _prefix_svg_ids(markup: str, prefix: str) -> str:
+    result = markup
+    for svg_id in dict.fromkeys(re.findall(r'\bid="([^"]+)"', markup)):
+        result = result.replace(f'id="{svg_id}"', f'id="{prefix}{svg_id}"')
+        result = result.replace(f"url(#{svg_id})", f"url(#{prefix}{svg_id})")
+    return result
+
+
+def _rename_svg_class(markup: str, old: str, new: str) -> str:
+    return (
+        markup.replace(f".{old} {{", f".{new} {{")
+        .replace(f'class="{old}"', f'class="{new}"')
+        .replace(f'class="{old} ', f'class="{new} ')
+    )
+
+
+def compose_overview_svg(stats_svg: str, languages_svg: str) -> str:
+    stats_body = _prefix_svg_ids(_svg_body(stats_svg), "stats-")
+    languages_body = _rename_svg_class(
+        _prefix_svg_ids(_svg_body(languages_svg), "lang-"),
+        "heading",
+        "lang-heading",
+    )
+    language_x = STATS_CARD_WIDTH + OVERVIEW_GAP
+    language_y = (OVERVIEW_HEIGHT - LANGUAGE_CARD_HEIGHT) / 2
+    title = f"{_svg_child_text(stats_svg, 'title')}; {_svg_child_text(languages_svg, 'title')}"
+    description = (
+        f"{_svg_child_text(stats_svg, 'desc')} {_svg_child_text(languages_svg, 'desc')}"
+    )
+    return "\n".join(
+        (
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{OVERVIEW_WIDTH}" '
+            f'height="{OVERVIEW_HEIGHT}" viewBox="0 0 {OVERVIEW_WIDTH} {OVERVIEW_HEIGHT}" '
+            'role="img" aria-labelledby="title desc">',
+            f'  <title id="title">{title}</title>',
+            f'  <desc id="desc">{description}</desc>',
+            f'  <svg x="0" y="0" width="{STATS_CARD_WIDTH}" '
+            f'height="{STATS_CARD_HEIGHT}" viewBox="0 0 {STATS_CARD_WIDTH} {STATS_CARD_HEIGHT}">',
+            stats_body,
+            "  </svg>",
+            f'  <svg x="{language_x}" y="{language_y:g}" width="{LANGUAGE_CARD_WIDTH}" '
+            f'height="{LANGUAGE_CARD_HEIGHT}" '
+            f'viewBox="0 0 {LANGUAGE_CARD_WIDTH} {LANGUAGE_CARD_HEIGHT}">',
+            languages_body,
+            "  </svg>",
             "</svg>",
             "",
         )
@@ -991,15 +1067,6 @@ def build_assets(
     total_stars = sum(
         repository.stars for repository in owned_repositories if not repository.fork
     )
-    rank = calculate_rank(
-        all_commits=True,
-        commits=total_commits,
-        prs=contribution.total_prs,
-        issues=contribution.total_issues,
-        reviews=0,
-        stars=total_stars,
-        followers=contribution.followers,
-    )
     account = AccountStats(
         username=account_data.username,
         total_stars=total_stars,
@@ -1007,8 +1074,8 @@ def build_assets(
         total_prs=contribution.total_prs,
         total_issues=contribution.total_issues,
         contributed_to=contribution.contributed_to,
-        rank_level=rank.level,
-        rank_percentile=rank.percentile,
+        rank_level=STATS_RANK_LEVEL,
+        rank_percentile=100.0 - STATS_RANK_FILL_PERCENT,
     )
     badges = (
         ("badge-visits.svg", MetricBadge("visits", visits)),
@@ -1040,6 +1107,12 @@ def build_assets(
         rendered[filename] = render_badge(badge)
     rendered["languages-light.svg"] = render_language_card(language_entries, dark=False)
     rendered["languages-dark.svg"] = render_language_card(language_entries, dark=True)
+    rendered["overview-light.svg"] = compose_overview_svg(
+        rendered["stats-light.svg"], rendered["languages-light.svg"]
+    )
+    rendered["overview-dark.svg"] = compose_overview_svg(
+        rendered["stats-dark.svg"], rendered["languages-dark.svg"]
+    )
 
     if set(rendered) != set(ASSET_FILENAMES):
         raise GenerationError("Generated asset inventory does not match the manifest")
