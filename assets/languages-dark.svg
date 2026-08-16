@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" viewBox="0 0 419 165" role="img" aria-labelledby="title desc">
   <title id="title">Top Languages by Repository</title>
-  <desc id="desc">Python 74.15 percent; TeX 5.11 percent; QML 5.08 percent; TypeScript 4.04 percent; Lua 3.74 percent; Other 7.88 percent.</desc>
+  <desc id="desc">Python 74.15 percent; TeX 5.11 percent; QML 5.08 percent; TypeScript 3.98 percent; Lua 3.87 percent; Other 7.80 percent.</desc>
   <defs>
     <clipPath id="bar-clip">
       <rect x="20" y="48" width="379" height="8" rx="4" />
@@ -17,9 +17,9 @@
     <rect x="20.00" y="48" width="281.05" height="8" fill="#3572A5" />
     <rect x="301.05" y="48" width="19.36" height="8" fill="#3D6117" />
     <rect x="320.40" y="48" width="19.27" height="8" fill="#64748b" />
-    <rect x="339.68" y="48" width="15.30" height="8" fill="#3178c6" />
-    <rect x="354.98" y="48" width="14.17" height="8" fill="#000080" />
-    <rect x="369.14" y="48" width="29.86" height="8" fill="#64748b" />
+    <rect x="339.68" y="48" width="15.09" height="8" fill="#3178c6" />
+    <rect x="354.77" y="48" width="14.67" height="8" fill="#000080" />
+    <rect x="369.44" y="48" width="29.56" height="8" fill="#64748b" />
   </g>
 
   <g class="label">
@@ -30,10 +30,10 @@
     <circle cx="25" cy="108" r="5" fill="#64748b" />
     <text x="39" y="112">QML 5.08%</text>
     <circle cx="225" cy="108" r="5" fill="#3178c6" />
-    <text x="239" y="112">TypeScript 4.04%</text>
+    <text x="239" y="112">TypeScript 3.98%</text>
     <circle cx="25" cy="134" r="5" fill="#000080" />
-    <text x="39" y="138">Lua 3.74%</text>
+    <text x="39" y="138">Lua 3.87%</text>
     <circle cx="225" cy="134" r="5" fill="#64748b" />
-    <text x="239" y="138">Other 7.88%</text>
+    <text x="239" y="138">Other 7.80%</text>
   </g>
 </svg>
