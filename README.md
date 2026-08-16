@@ -14,10 +14,10 @@ I work on representation learning for large language models.
 </p>
 
 <p>
-  <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github&v=2" alt="Visits" /></a>
-  <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/years/xzAscC?style=flat-square&color=black&logo=github" alt="Years" /></a>
-  <a href="https://github.com/xzAscC?tab=repositories"><img src="https://badges.strrl.dev/repos/xzAscC?style=flat-square&color=black&logo=github" alt="Repos" /></a>
-  <a href="https://github.com/xzAscC"><img src="https://badges.strrl.dev/commits/monthly/xzAscC?style=flat-square&color=black&logo=github" alt="Commits this month" /></a>
+  <a href="https://github.com/xzAscC"><img src="./assets/badge-visits.svg" alt="Visits" /></a>
+  <a href="https://github.com/xzAscC"><img src="./assets/badge-years.svg" alt="Years" /></a>
+  <a href="https://github.com/xzAscC?tab=repositories"><img src="./assets/badge-repos.svg" alt="Repos" /></a>
+  <a href="https://github.com/xzAscC"><img src="./assets/badge-commits-monthly.svg" alt="Commits this month" /></a>
 </p>
 
 </div>
@@ -31,28 +31,28 @@ I work on representation learning for large language models.
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-robustdim-prefixsteering-dark.svg" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/pin-robustdim-prefixsteering-light.svg" />
-      <img src="./assets/pin-robustdim-prefixsteering-dark.svg" height="135" alt="RobustDiM-PrefixSteering" />
+      <img src="./assets/pin-robustdim-prefixsteering-dark.svg" height="120" alt="RobustDiM-PrefixSteering" />
     </picture>
   </a>
   <a href="https://github.com/xzAscC/ProbingReflection">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-probingreflection-dark.svg" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/pin-probingreflection-light.svg" />
-      <img src="./assets/pin-probingreflection-dark.svg" height="135" alt="ProbingReflection" />
+      <img src="./assets/pin-probingreflection-dark.svg" height="120" alt="ProbingReflection" />
     </picture>
   </a>
   <a href="https://github.com/xzAscC/PostDyn">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-postdyn-dark.svg" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/pin-postdyn-light.svg" />
-      <img src="./assets/pin-postdyn-dark.svg" height="135" alt="PostDyn" />
+      <img src="./assets/pin-postdyn-dark.svg" height="120" alt="PostDyn" />
     </picture>
   </a>
   <a href="https://github.com/GoXzascc/AbsTopK-SAE">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" />
-      <img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="135" alt="AbsTopK-SAE" />
+      <img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="120" alt="AbsTopK-SAE" />
     </picture>
   </a>
 </div>
@@ -64,14 +64,14 @@ I work on representation learning for large language models.
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-llmusage-dark.svg" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/pin-llmusage-light.svg" />
-      <img src="./assets/pin-llmusage-dark.svg" height="135" alt="LLMUsage" />
+      <img src="./assets/pin-llmusage-dark.svg" height="120" alt="LLMUsage" />
     </picture>
   </a>
   <a href="https://github.com/xzAscC/dotfiles">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-dotfiles-dark.svg" />
       <source media="(prefers-color-scheme: light)" srcset="./assets/pin-dotfiles-light.svg" />
-      <img src="./assets/pin-dotfiles-dark.svg" height="135" alt="dotfiles" />
+      <img src="./assets/pin-dotfiles-dark.svg" height="120" alt="dotfiles" />
     </picture>
   </a>
 </div>
@@ -85,7 +85,7 @@ I work on representation learning for large language models.
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-dark.svg" />
           <source media="(prefers-color-scheme: light)" srcset="./assets/stats-light.svg" />
-          <img src="./assets/stats-dark.svg" width="419" alt="GitHub Stats" />
+          <img src="./assets/stats-dark.svg" width="419" height="195" alt="GitHub Stats" />
         </picture>
       </td>
       <td>
@@ -105,4 +105,4 @@ If you are interested in collaboration, feel free to open an issue or connect wi
 
 ## Acknowledgments
 
-GitHub activity stats are powered by [github-readme-stats](https://github.com/anuraghazra/github-readme-stats). Many thanks to the authors for building and maintaining it.
+Profile metrics are regenerated weekly as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics and rank follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); card styling is inspired by the same project.
