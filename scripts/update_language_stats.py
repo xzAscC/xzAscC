@@ -4,7 +4,9 @@ from __future__ import annotations
 import json
 import os
 from html import escape
+from http.client import HTTPResponse
 from pathlib import Path
+from typing import cast
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
@@ -61,10 +63,14 @@ def fetch_repositories(
             f"https://api.github.com/users/{quote(username, safe='')}/repos"
             f"?type=owner&per_page=100&page={page}"
         )
-        with urlopen(Request(url, headers=headers), timeout=30) as response:
-            batch = json.load(response)
-        if not isinstance(batch, list):
+        response = cast(
+            HTTPResponse, urlopen(Request(url, headers=headers), timeout=30)
+        )
+        with response:
+            raw_batch = cast(object, json.load(response))
+        if not isinstance(raw_batch, list):
             raise RuntimeError("GitHub returned an unexpected repositories response")
+        batch = cast(list[dict[str, object]], raw_batch)
         repositories.extend(batch)
         if len(batch) < 100:
             break
@@ -79,12 +85,16 @@ def fetch_repository_languages(
     if not isinstance(url, str):
         return {}
     try:
-        with urlopen(Request(url, headers=headers), timeout=30) as response:
-            data = json.load(response)
+        response = cast(
+            HTTPResponse, urlopen(Request(url, headers=headers), timeout=30)
+        )
+        with response:
+            raw_data = cast(object, json.load(response))
     except Exception:
         return {}
-    if not isinstance(data, dict):
+    if not isinstance(raw_data, dict):
         return {}
+    data = cast(dict[object, object], raw_data)
     return {
         name: byte_count
         for name, byte_count in data.items()
@@ -135,7 +145,7 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
         raise RuntimeError("No public repository languages were found")
 
     total = sum(weight for _, weight in entries)
-    heading_color = "#5eead4" if dark else "#0d9488"
+    heading_color = "#5eead4" if dark else "#0f766e"
     label_color = "#94a3b8" if dark else "#334155"
     descriptions = "; ".join(
         f"{name} {weight / total * 100:.2f} percent" for name, weight in entries
@@ -151,7 +161,7 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
         )
         segments.append(
             f'    <rect x="{current_x:.2f}" y="48" width="{width:.2f}" '
-            f'height="8" fill="{LANGUAGE_COLORS.get(name, "#64748b")}" />'
+            + f'height="8" fill="{LANGUAGE_COLORS.get(name, "#64748b")}" />'
         )
         current_x += width
 
@@ -169,14 +179,14 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
             (
                 f'    <circle cx="{circle_x}" cy="{circle_y}" r="5" fill="{color}" />',
                 f'    <text x="{text_x}" y="{text_y}">'
-                f"{escape(label)} {weight / total * 100:.2f}%</text>",
+                + f"{escape(label)} {weight / total * 100:.2f}%</text>",
             )
         )
 
     return "\n".join(
         (
             '<svg xmlns="http://www.w3.org/2000/svg" width="419" height="165" '
-            'viewBox="0 0 419 165" role="img" aria-labelledby="title desc">',
+            + 'viewBox="0 0 419 165" role="img" aria-labelledby="title desc">',
             '  <title id="title">Top Languages by Repository</title>',
             f'  <desc id="desc">{escape(descriptions)}.</desc>',
             "  <defs>",
@@ -185,9 +195,9 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
             "    </clipPath>",
             "    <style>",
             "      .heading { font: 600 15.25px 'Segoe UI', Ubuntu, sans-serif; "
-            f"fill: {heading_color}; }}",
+            + f"fill: {heading_color}; }}",
             "      .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; "
-            f"fill: {label_color}; }}",
+            + f"fill: {label_color}; }}",
             "    </style>",
             "  </defs>",
             "",
@@ -209,7 +219,7 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
 def write_if_changed(path: Path, content: str) -> None:
     if path.exists() and path.read_text(encoding="utf-8") == content:
         return
-    path.write_text(content, encoding="utf-8")
+    _ = path.write_text(content, encoding="utf-8")
 
 
 def main() -> None:
