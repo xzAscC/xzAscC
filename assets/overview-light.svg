@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="854" height="195" viewBox="0 0 854 195" role="img" aria-labelledby="title desc">
   <title id="title">XzAscC's GitHub Stats, Rank: A; Top Languages by Repository</title>
-  <desc id="desc">Total Stars Earned: 38, Total Commits: 968, Total PRs: 56, Total Issues: 2, Contributed to (last year): 4. Python 74.15 percent; TeX 5.11 percent; QML 5.08 percent; TypeScript 3.98 percent; Lua 3.87 percent; Other 7.80 percent.</desc>
+  <desc id="desc">Total Stars Earned: 39, Total Commits: 972, Total PRs: 56, Total Issues: 2, Contributed to (last year): 4. Python 75.32 percent; TeX 4.88 percent; QML 4.85 percent; TypeScript 3.80 percent; Lua 3.70 percent; Other 7.45 percent.</desc>
   <svg x="0" y="0" width="419" height="195" viewBox="0 0 419 195">
   <title id="stats-title">XzAscC's GitHub Stats, Rank: A</title>
-  <desc id="stats-desc">Total Stars Earned: 38, Total Commits: 968, Total PRs: 56, Total Issues: 2, Contributed to (last year): 4.</desc>
+  <desc id="stats-desc">Total Stars Earned: 39, Total Commits: 972, Total PRs: 56, Total Issues: 2, Contributed to (last year): 4.</desc>
   <defs>
     <style>
       .heading { font: 600 18px 'Segoe UI', Ubuntu, sans-serif; fill: #0f766e; }
@@ -18,10 +18,10 @@
   <text x="25" y="32" class="heading">XzAscC's GitHub Stats</text>
   <svg x="25" y="42" width="16" height="16" viewBox="0 0 16 16" class="icon" aria-hidden="true"><path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25zm0 2.445L6.615 5.5a.75.75 0 01-.564.41l-3.097.45 2.24 2.184a.75.75 0 01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z" fill="#d97706" /></svg>
   <text x="50" y="55" class="stat">Total Stars Earned</text>
-  <text x="280" y="55" class="stat value">38</text>
+  <text x="280" y="55" class="stat value">39</text>
   <svg x="25" y="67" width="16" height="16" viewBox="0 0 16 16" class="icon" aria-hidden="true"><path fill-rule="evenodd" d="M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z" fill="#d97706" /></svg>
   <text x="50" y="80" class="stat">Total Commits</text>
-  <text x="280" y="80" class="stat value">968</text>
+  <text x="280" y="80" class="stat value">972</text>
   <svg x="25" y="92" width="16" height="16" viewBox="0 0 16 16" class="icon" aria-hidden="true"><path fill-rule="evenodd" d="M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z" fill="#d97706" /></svg>
   <text x="50" y="105" class="stat">Total PRs</text>
   <text x="280" y="105" class="stat value">56</text>
@@ -39,7 +39,7 @@
   </svg>
   <svg x="435" y="0" width="419" height="195" viewBox="0 0 419 195">
   <title id="lang-title">Top Languages by Repository</title>
-  <desc id="lang-desc">Python 74.15 percent; TeX 5.11 percent; QML 5.08 percent; TypeScript 3.98 percent; Lua 3.87 percent; Other 7.80 percent.</desc>
+  <desc id="lang-desc">Python 75.32 percent; TeX 4.88 percent; QML 4.85 percent; TypeScript 3.80 percent; Lua 3.70 percent; Other 7.45 percent.</desc>
   <defs>
     <clipPath id="lang-bar-clip">
       <rect x="20" y="58" width="379" height="8" rx="4" />
@@ -54,27 +54,27 @@
   <text x="25" y="32" class="lang-heading">Top Languages by Repository</text>
 
   <g clip-path="url(#lang-bar-clip)">
-    <rect x="20.00" y="58" width="281.05" height="8" fill="#3572A5" />
-    <rect x="301.05" y="58" width="19.36" height="8" fill="#3D6117" />
-    <rect x="320.40" y="58" width="19.27" height="8" fill="#64748b" />
-    <rect x="339.68" y="58" width="15.09" height="8" fill="#3178c6" />
-    <rect x="354.77" y="58" width="14.67" height="8" fill="#000080" />
-    <rect x="369.44" y="58" width="29.56" height="8" fill="#64748b" />
+    <rect x="20.00" y="58" width="285.48" height="8" fill="#3572A5" />
+    <rect x="305.48" y="58" width="18.48" height="8" fill="#3D6117" />
+    <rect x="323.95" y="58" width="18.40" height="8" fill="#64748b" />
+    <rect x="342.35" y="58" width="14.40" height="8" fill="#3178c6" />
+    <rect x="356.75" y="58" width="14.01" height="8" fill="#000080" />
+    <rect x="370.76" y="58" width="28.24" height="8" fill="#64748b" />
   </g>
 
   <g class="label">
     <circle cx="25" cy="92" r="5" fill="#3572A5" />
-    <text x="39" y="96">Python 74.15%</text>
+    <text x="39" y="96">Python 75.32%</text>
     <circle cx="225" cy="92" r="5" fill="#3D6117" />
-    <text x="239" y="96">TeX 5.11%</text>
+    <text x="239" y="96">TeX 4.88%</text>
     <circle cx="25" cy="124" r="5" fill="#64748b" />
-    <text x="39" y="128">QML 5.08%</text>
+    <text x="39" y="128">QML 4.85%</text>
     <circle cx="225" cy="124" r="5" fill="#3178c6" />
-    <text x="239" y="128">TypeScript 3.98%</text>
+    <text x="239" y="128">TypeScript 3.80%</text>
     <circle cx="25" cy="156" r="5" fill="#000080" />
-    <text x="39" y="160">Lua 3.87%</text>
+    <text x="39" y="160">Lua 3.70%</text>
     <circle cx="225" cy="156" r="5" fill="#64748b" />
-    <text x="239" y="160">Other 7.80%</text>
+    <text x="239" y="160">Other 7.45%</text>
   </g>
   </svg>
 </svg>
