@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="419" height="195" viewBox="0 0 419 195" role="img" aria-labelledby="title desc">
   <title id="title">Top Languages by Repository</title>
-  <desc id="desc">Python 76.37 percent; TeX 4.66 percent; QML 4.51 percent; TypeScript 3.76 percent; Lua 3.39 percent; Other 7.31 percent.</desc>
+  <desc id="desc">Python 77.35 percent; TeX 4.47 percent; QML 4.32 percent; TypeScript 3.60 percent; Lua 3.25 percent; Other 7.00 percent.</desc>
   <defs>
     <clipPath id="bar-clip">
       <rect x="20" y="58" width="379" height="8" rx="4" />
@@ -15,26 +15,26 @@
   <text x="25" y="32" class="heading">Top Languages by Repository</text>
 
   <g clip-path="url(#bar-clip)">
-    <rect x="20.00" y="58" width="289.43" height="8" fill="#3572A5" />
-    <rect x="309.43" y="58" width="17.67" height="8" fill="#3D6117" />
-    <rect x="327.10" y="58" width="17.10" height="8" fill="#64748b" />
-    <rect x="344.20" y="58" width="14.25" height="8" fill="#3178c6" />
-    <rect x="358.46" y="58" width="12.84" height="8" fill="#000080" />
-    <rect x="371.30" y="58" width="27.70" height="8" fill="#64748b" />
+    <rect x="20.00" y="58" width="293.16" height="8" fill="#3572A5" />
+    <rect x="313.16" y="58" width="16.94" height="8" fill="#3D6117" />
+    <rect x="330.10" y="58" width="16.39" height="8" fill="#64748b" />
+    <rect x="346.49" y="58" width="13.66" height="8" fill="#3178c6" />
+    <rect x="360.15" y="58" width="12.31" height="8" fill="#000080" />
+    <rect x="372.45" y="58" width="26.55" height="8" fill="#64748b" />
   </g>
 
   <g class="label">
     <circle cx="25" cy="92" r="5" fill="#3572A5" />
-    <text x="39" y="96">Python 76.37%</text>
+    <text x="39" y="96">Python 77.35%</text>
     <circle cx="225" cy="92" r="5" fill="#3D6117" />
-    <text x="239" y="96">TeX 4.66%</text>
+    <text x="239" y="96">TeX 4.47%</text>
     <circle cx="25" cy="124" r="5" fill="#64748b" />
-    <text x="39" y="128">QML 4.51%</text>
+    <text x="39" y="128">QML 4.32%</text>
     <circle cx="225" cy="124" r="5" fill="#3178c6" />
-    <text x="239" y="128">TypeScript 3.76%</text>
+    <text x="239" y="128">TypeScript 3.60%</text>
     <circle cx="25" cy="156" r="5" fill="#000080" />
-    <text x="39" y="160">Lua 3.39%</text>
+    <text x="39" y="160">Lua 3.25%</text>
     <circle cx="225" cy="156" r="5" fill="#64748b" />
-    <text x="239" y="160">Other 7.31%</text>
+    <text x="239" y="160">Other 7.00%</text>
   </g>
 </svg>
