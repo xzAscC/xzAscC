@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-import base64
-import calendar
 import json
 import os
 import sys
@@ -10,19 +8,15 @@ import tempfile
 import xml.etree.ElementTree as ET
 from collections.abc import Mapping
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from html import escape
 from http.client import HTTPException, HTTPSConnection
 from pathlib import Path
 from typing import Protocol, cast
-from urllib.parse import quote, urlencode, urlsplit
+from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
-DEFAULT_USERNAME = os.environ.get("GITHUB_REPOSITORY_OWNER", "xzAscC")
-DISPLAY_NAME = "Xudong"
 GITHUB_API = "https://api.github.com"
-GITHUB_GRAPHQL = f"{GITHUB_API}/graphql"
 MAX_RESPONSE_BYTES = 1_000_000
 USER_AGENT = "xzAscC-profile-static-assets"
 LIGHT_ACCENT = "#404b91"
@@ -42,7 +36,6 @@ class Theme:
     text: str
     icon: str
     border: str
-    ring: str
     chip: str
     chip_text: str
 
@@ -53,7 +46,6 @@ DARK_THEME = Theme(
     text="#bdb2a7",
     icon="#e18a6e",
     border="#30363d",
-    ring="#aeb8ff",
     chip="#34395c",
     chip_text="#c8ceff",
 )
@@ -63,7 +55,6 @@ LIGHT_THEME = Theme(
     text="#6f655d",
     icon="#b65f45",
     border="#d8d0c4",
-    ring=LIGHT_ACCENT,
     chip="#e4e5f1",
     chip_text=LIGHT_ACCENT,
 )
@@ -77,36 +68,12 @@ STAT_ICONS = {
         "01.216.664l-.528 3.084 2.769-1.456a.75.75 0 01.698 0l2.77 1.456-.53-3.084a.75.75 "
         "0 01.216-.664l2.24-2.183-3.096-.45a.75.75 0 01-.564-.41L8 2.694v.001z"
     ),
-    "commits": (
-        "M1.643 3.143L.427 1.927A.25.25 0 000 2.104V5.75c0 .138.112.25.25.25h3.646a.25.25 "
-        "0 00.177-.427L2.715 4.215a6.5 6.5 0 11-1.18 4.458.75.75 0 10-1.493.154 8.001 "
-        "8.001 0 101.6-5.684zM7.75 4a.75.75 0 01.75.75v2.992l2.028.812a.75.75 0 "
-        "01-.557 1.392l-2.5-1A.75.75 0 017 8.25v-3.5A.75.75 0 017.75 4z"
-    ),
-    "prs": (
-        "M7.177 3.073L9.573.677A.25.25 0 0110 .854v4.792a.25.25 0 01-.427.177L7.177 "
-        "3.427a.25.25 0 010-.354zM3.75 2.5a.75.75 0 100 1.5.75.75 0 000-1.5zm-2.25.75a2.25 "
-        "2.25 0 113 2.122v5.256a2.251 2.251 0 11-1.5 0V5.372A2.25 2.25 0 011.5 3.25zM11 "
-        "2.5h-1V4h1a1 1 0 011 1v5.628a2.251 2.251 0 101.5 0V5A2.5 2.5 0 0011 2.5zm1 "
-        "10.25a.75.75 0 111.5 0 .75.75 0 01-1.5 0zM3.75 12a.75.75 0 100 1.5.75.75 0 000-1.5z"
-    ),
-    "issues": (
-        "M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 "
-        "0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"
-    ),
     "contribs": (
         "M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 "
         "0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 "
         "11.5v-9zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 011-1h8zM5 12.25v3.25a.25.25 "
         "0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 "
         "00-.25-.25h-3.5a.25.25 0 00-.25.25z"
-    ),
-    "calendar": (
-        "M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 "
-        "1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 "
-        "2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25"
-        ".25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-4H2.75a.25.25 0 0 0-.25.25V6h11V3.75a"
-        ".25.25 0 0 0-.25-.25Z"
     ),
     "fork": (
         "M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 "
@@ -116,26 +83,6 @@ STAT_ICONS = {
     ),
 }
 
-STATS_GRAPHQL_QUERY = """
-query($login: String!) {
-  user(login: $login) {
-    login
-    pullRequests(first: 1) { totalCount }
-    openIssues: issues(states: OPEN) { totalCount }
-    closedIssues: issues(states: CLOSED) { totalCount }
-  }
-}
-""".strip()
-
-STATS_CARD_WIDTH = 804
-STATS_CARD_HEIGHT = 120
-AVATAR_RADIUS = 38
-AVATAR_SIZE = 160
-AVATAR_HOST = "avatars.githubusercontent.com"
-AVATAR_MEDIA_TYPES = {
-    b"\xff\xd8\xff": "image/jpeg",
-    b"\x89PNG\r\n\x1a\n": "image/png",
-}
 REPO_CARD_WIDTH = 400
 REPO_CARD_HEIGHT = 120
 TITLE_CHAR_WIDTH = 8.6
@@ -208,8 +155,6 @@ ASSET_FILENAMES = (
     "pin-llmusage-dark.svg",
     "pin-dotfiles-light.svg",
     "pin-dotfiles-dark.svg",
-    "stats-light.svg",
-    "stats-dark.svg",
 )
 
 
@@ -221,35 +166,6 @@ class RepositoryStats:
     forks: int
     language: str | None
     venue: str | None = None
-
-
-@dataclass(frozen=True, slots=True)
-class ContributionStats:
-    total_prs: int
-    total_issues: int
-
-
-@dataclass(frozen=True, slots=True)
-class AccountStats:
-    display_name: str
-    total_stars: int
-    total_commits: int
-    monthly_commits: int
-    total_prs: int
-    total_issues: int
-    avatar_data_uri: str
-
-
-@dataclass(frozen=True, slots=True)
-class OwnedRepository:
-    stars: int
-    fork: bool
-
-
-@dataclass(frozen=True, slots=True)
-class AccountData:
-    username: str
-    avatar_url: str
 
 
 class GenerationError(RuntimeError):
@@ -332,12 +248,6 @@ def _mapping(value: object, context: str) -> dict[str, object]:
     return result
 
 
-def _list(value: object, context: str) -> list[object]:
-    if not isinstance(value, list):
-        raise GenerationError(f"{context} must be a JSON array")
-    return cast(list[object], value)
-
-
 def _field(data: Mapping[str, object], name: str, context: str) -> object:
     if name not in data:
         raise GenerationError(f"{context}.{name} is missing")
@@ -367,13 +277,6 @@ def _integer(data: Mapping[str, object], name: str, context: str) -> int:
     return value
 
 
-def _boolean(data: Mapping[str, object], name: str, context: str) -> bool:
-    value = _field(data, name, context)
-    if not isinstance(value, bool):
-        raise GenerationError(f"{context}.{name} must be a boolean")
-    return value
-
-
 def _fetch_json(fetcher: Fetcher, url: str, headers: Mapping[str, str]) -> object:
     return _json_object(_fetch_bytes(fetcher, url, headers), url)
 
@@ -393,37 +296,6 @@ def _fetch_bytes(
     if len(payload) > MAX_RESPONSE_BYTES:
         raise GenerationError(f"Response from {url} exceeds {MAX_RESPONSE_BYTES} bytes")
     return payload
-
-
-def fetch_owned_repositories(
-    fetcher: Fetcher, username: str, headers: Mapping[str, str]
-) -> tuple[OwnedRepository, ...]:
-    repositories: list[OwnedRepository] = []
-    encoded_username = quote(username, safe="")
-    for page in range(1, 12):
-        url = (
-            f"{GITHUB_API}/users/{encoded_username}/repos"
-            f"?type=owner&per_page=100&page={page}"
-        )
-        batch = _list(_fetch_json(fetcher, url, headers), url)
-        if page == 11:
-            if batch:
-                raise GenerationError(
-                    "GitHub repository pagination exceeded 1,000 repositories"
-                )
-            return tuple(repositories)
-        for index, item in enumerate(batch):
-            context = f"{url}[{index}]"
-            data = _mapping(item, context)
-            repositories.append(
-                OwnedRepository(
-                    stars=_integer(data, "stargazers_count", context),
-                    fork=_boolean(data, "fork", context),
-                )
-            )
-        if len(batch) < 100:
-            return tuple(repositories)
-    raise GenerationError("GitHub repository pagination ended unexpectedly")
 
 
 def fetch_repository(
@@ -446,143 +318,6 @@ def fetch_repository(
         forks=_integer(data, "forks_count", url),
         language=_optional_string(data, "language", url),
         venue=spec.venue,
-    )
-
-
-def fetch_account(
-    fetcher: Fetcher, username: str, headers: Mapping[str, str]
-) -> AccountData:
-    url = f"{GITHUB_API}/users/{quote(username, safe='')}"
-    data = _mapping(_fetch_json(fetcher, url, headers), url)
-    login = _string(data, "login", url)
-    if login.casefold() != username.casefold():
-        raise GenerationError(f"{url}.login does not match the requested account")
-    return AccountData(
-        username=login,
-        avatar_url=_string(data, "avatar_url", url),
-    )
-
-
-def fetch_avatar_data_uri(fetcher: Fetcher, avatar_url: str) -> str:
-    parsed = urlsplit(avatar_url)
-    if (
-        parsed.scheme != "https"
-        or parsed.hostname != AVATAR_HOST
-        or parsed.username is not None
-        or parsed.password is not None
-        or parsed.fragment
-    ):
-        raise GenerationError("avatar_url must be a GitHub avatar URL")
-    separator = "&" if parsed.query else "?"
-    url = f"{avatar_url}{separator}s={AVATAR_SIZE}"
-    payload = _fetch_bytes(fetcher, url, {"Accept": "image/*", "User-Agent": USER_AGENT})
-    for signature, media_type in AVATAR_MEDIA_TYPES.items():
-        if payload.startswith(signature):
-            encoded = base64.b64encode(payload).decode("ascii")
-            return f"data:{media_type};base64,{encoded}"
-    raise GenerationError(f"{url} did not return a JPEG or PNG image")
-
-
-def _search_total_count(
-    fetcher: Fetcher,
-    *,
-    resource: str,
-    query: str,
-    headers: Mapping[str, str],
-) -> int:
-    url = f"{GITHUB_API}/search/{resource}?{urlencode({'q': query, 'per_page': 1})}"
-    data = _mapping(_fetch_json(fetcher, url, headers), url)
-    if _boolean(data, "incomplete_results", url):
-        raise GenerationError(f"{url} returned incomplete results")
-    items = _list(_field(data, "items", url), f"{url}.items")
-    for index, item in enumerate(items):
-        _ = _mapping(item, f"{url}.items[{index}]")
-    return _integer(data, "total_count", url)
-
-
-def fetch_monthly_commits(
-    fetcher: Fetcher,
-    username: str,
-    now: datetime,
-    headers: Mapping[str, str],
-) -> int:
-    if now.tzinfo is None:
-        raise GenerationError("The generation time must include a timezone")
-    last_day = calendar.monthrange(now.year, now.month)[1]
-    date_range = f"{now.year:04d}-{now.month:02d}-01..{now.year:04d}-{now.month:02d}-{last_day:02d}"
-    return _search_total_count(
-        fetcher,
-        resource="commits",
-        query=f"author:{username} committer-date:{date_range}",
-        headers=headers,
-    )
-
-
-def fetch_total_commits(
-    fetcher: Fetcher,
-    username: str,
-    headers: Mapping[str, str],
-) -> int:
-    return _search_total_count(
-        fetcher,
-        resource="commits",
-        query=f"author:{username}",
-        headers=headers,
-    )
-
-
-def fetch_contribution_stats(
-    fetcher: Fetcher,
-    username: str,
-    headers: Mapping[str, str],
-) -> ContributionStats:
-    payload = json.dumps(
-        {"query": STATS_GRAPHQL_QUERY, "variables": {"login": username}},
-        separators=(",", ":"),
-    ).encode("utf-8")
-    request_headers = {
-        **dict(headers),
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
-    data = _mapping(
-        _json_object(
-            _fetch_bytes(fetcher, GITHUB_GRAPHQL, request_headers, payload),
-            GITHUB_GRAPHQL,
-        ),
-        GITHUB_GRAPHQL,
-    )
-    if "errors" in data and data["errors"] is not None:
-        raise GenerationError(f"{GITHUB_GRAPHQL} returned GraphQL errors")
-    root = _mapping(_field(data, "data", GITHUB_GRAPHQL), f"{GITHUB_GRAPHQL}.data")
-    user = _mapping(
-        _field(root, "user", f"{GITHUB_GRAPHQL}.data"), f"{GITHUB_GRAPHQL}.data.user"
-    )
-    login = _string(user, "login", f"{GITHUB_GRAPHQL}.data.user")
-    if login.casefold() != username.casefold():
-        raise GenerationError(f"{GITHUB_GRAPHQL}.data.user.login does not match")
-    pull_requests = _mapping(
-        _field(user, "pullRequests", f"{GITHUB_GRAPHQL}.data.user"),
-        f"{GITHUB_GRAPHQL}.data.user.pullRequests",
-    )
-    open_issues = _mapping(
-        _field(user, "openIssues", f"{GITHUB_GRAPHQL}.data.user"),
-        f"{GITHUB_GRAPHQL}.data.user.openIssues",
-    )
-    closed_issues = _mapping(
-        _field(user, "closedIssues", f"{GITHUB_GRAPHQL}.data.user"),
-        f"{GITHUB_GRAPHQL}.data.user.closedIssues",
-    )
-    return ContributionStats(
-        total_prs=_integer(
-            pull_requests, "totalCount", f"{GITHUB_GRAPHQL}.data.user.pullRequests"
-        ),
-        total_issues=_integer(
-            open_issues, "totalCount", f"{GITHUB_GRAPHQL}.data.user.openIssues"
-        )
-        + _integer(
-            closed_issues, "totalCount", f"{GITHUB_GRAPHQL}.data.user.closedIssues"
-        ),
     )
 
 
@@ -747,73 +482,6 @@ def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
     )
 
 
-def render_account_card(account: AccountStats, *, dark: bool) -> str:
-    theme = _theme(dark)
-    title = f"{account.display_name}'s GitHub Stats"
-    metrics = (
-        ("stars", "Stars earned", account.total_stars),
-        ("commits", "Total commits", account.total_commits),
-        ("calendar", "Commits this month", account.monthly_commits),
-        ("prs", "Pull requests", account.total_prs),
-        ("issues", "Issues", account.total_issues),
-    )
-    avatar_x = 25 + AVATAR_RADIUS
-    avatar_y = STATS_CARD_HEIGHT / 2
-    column_x = avatar_x + AVATAR_RADIUS + 30
-    column_width = (STATS_CARD_WIDTH - 25 - column_x) / len(metrics)
-    metric_nodes: list[str] = []
-    for index, (icon_name, label, value) in enumerate(metrics):
-        x = column_x + index * column_width
-        metric_nodes.extend(
-            (
-                f"  {_octicon(icon_name, x=x, y=64, fill=theme.icon, size=16)}",
-                f'  <text x="{x + 22:g}" y="78" class="value">'
-                f"{format_stat_number(value)}</text>",
-                f'  <text x="{x:g}" y="100" class="label">{_text(label)}</text>',
-            )
-        )
-    description = ", ".join(
-        f"{label}: {format_stat_number(value)}" for _, label, value in metrics
-    )
-    return "\n".join(
-        (
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{STATS_CARD_WIDTH}" '
-            f'height="{STATS_CARD_HEIGHT}" viewBox="0 0 {STATS_CARD_WIDTH} {STATS_CARD_HEIGHT}" '
-            'role="img" aria-labelledby="title desc">',
-            f'  <title id="title">{_text(title)}</title>',
-            f'  <desc id="desc">{_text(description)}.</desc>',
-            "  <defs>",
-            "    <style>",
-            "      .heading { font: 600 16px 'Segoe UI', Ubuntu, sans-serif; "
-            + f"fill: {theme.title}; }}",
-            "      .value { font: 700 18px 'Segoe UI', Ubuntu, sans-serif; "
-            + f"fill: {theme.title}; }}",
-            "      .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; "
-            + f"fill: {theme.text}; }}",
-            "      .avatar-ring { "
-            + f"stroke: {theme.ring}; fill: none; stroke-width: 3; opacity: 0.8; }}",
-            "    </style>",
-            '    <clipPath id="avatar-clip">',
-            f'      <circle cx="{avatar_x}" cy="{avatar_y:g}" r="{AVATAR_RADIUS}" />',
-            "    </clipPath>",
-            "  </defs>",
-            f'  <rect x="0.5" y="0.5" width="{STATS_CARD_WIDTH - 1}" '
-            f'height="{STATS_CARD_HEIGHT - 1}" rx="4.5" fill="{theme.background}" '
-            f'stroke="{theme.border}" stroke-width="1" />',
-            f'  <text x="{column_x}" y="38" class="heading">{_text(title)}</text>',
-            *metric_nodes,
-            f'  <image x="{avatar_x - AVATAR_RADIUS}" y="{avatar_y - AVATAR_RADIUS:g}" '
-            f'width="{2 * AVATAR_RADIUS}" height="{2 * AVATAR_RADIUS}" '
-            f'href="{account.avatar_data_uri}" clip-path="url(#avatar-clip)" '
-            'preserveAspectRatio="xMidYMid slice" />',
-            f'  <circle class="avatar-ring" cx="{avatar_x}" cy="{avatar_y:g}" '
-            f'r="{AVATAR_RADIUS}" />',
-            "</svg>",
-            "",
-        )
-    )
-
-
 def validate_svg(filename: str, content: str) -> None:
     try:
         root = ET.fromstring(content)
@@ -828,44 +496,17 @@ def validate_svg(filename: str, content: str) -> None:
         raise GenerationError(f"Generated {filename} is missing title or description")
 
 
-def build_assets(
-    fetcher: Fetcher,
-    *,
-    username: str,
-    now: datetime,
-) -> dict[str, str]:
+def build_assets(fetcher: Fetcher) -> dict[str, str]:
     headers = github_headers()
-    owned_repositories = fetch_owned_repositories(fetcher, username, headers)
-    repositories = tuple(
-        (spec, fetch_repository(fetcher, spec, headers)) for spec in REPOSITORIES
-    )
-    account_data = fetch_account(fetcher, username, headers)
-    avatar_data_uri = fetch_avatar_data_uri(fetcher, account_data.avatar_url)
-    monthly_commits = fetch_monthly_commits(fetcher, username, now, headers)
-    total_commits = fetch_total_commits(fetcher, username, headers)
-    contribution = fetch_contribution_stats(fetcher, username, headers)
-    total_stars = sum(
-        repository.stars for repository in owned_repositories if not repository.fork
-    )
-    account = AccountStats(
-        display_name=DISPLAY_NAME,
-        total_stars=total_stars,
-        total_commits=total_commits,
-        monthly_commits=monthly_commits,
-        total_prs=contribution.total_prs,
-        total_issues=contribution.total_issues,
-        avatar_data_uri=avatar_data_uri,
-    )
     rendered: dict[str, str] = {}
-    for spec, repository in repositories:
+    for spec in REPOSITORIES:
+        repository = fetch_repository(fetcher, spec, headers)
         rendered[f"{spec.asset_stem}-light.svg"] = render_repository_card(
             repository, dark=False
         )
         rendered[f"{spec.asset_stem}-dark.svg"] = render_repository_card(
             repository, dark=True
         )
-    rendered["stats-light.svg"] = render_account_card(account, dark=False)
-    rendered["stats-dark.svg"] = render_account_card(account, dark=True)
 
     if set(rendered) != set(ASSET_FILENAMES):
         raise GenerationError("Generated asset inventory does not match the manifest")
@@ -925,25 +566,14 @@ def _replace_changed_assets(assets_dir: Path, rendered: Mapping[str, str]) -> No
         ) from error
 
 
-def update_assets(
-    fetcher: Fetcher,
-    assets_dir: Path,
-    *,
-    username: str,
-    now: datetime,
-) -> None:
-    rendered = build_assets(fetcher, username=username, now=now)
+def update_assets(fetcher: Fetcher, assets_dir: Path) -> None:
+    rendered = build_assets(fetcher)
     _replace_changed_assets(assets_dir, rendered)
 
 
 def main() -> None:
     try:
-        update_assets(
-            network_fetch,
-            ASSETS,
-            username=DEFAULT_USERNAME,
-            now=datetime.now(timezone.utc),
-        )
+        update_assets(network_fetch, ASSETS)
     except GenerationError as error:
         print(f"Asset generation failed: {error}", file=sys.stderr)
         raise SystemExit(1) from error

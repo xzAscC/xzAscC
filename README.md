@@ -44,14 +44,6 @@
   <a href="https://github.com/xzAscC/dotfiles"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-dotfiles-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-dotfiles-light.svg" /><img src="./assets/pin-dotfiles-dark.svg" height="120" alt="dotfiles" /></picture></a>
 </div>
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/stats-light.svg" />
-    <img src="./assets/stats-dark.svg" alt="GitHub Stats" />
-  </picture>
-</p>
-
 ---
 
-<p align="center"><sub>Happy to chat about interpretability and LLM research — <a href="mailto:zhu.3944@osu.edu">email me</a>.<br />Cards are regenerated daily from public GitHub data by a GitHub Action; styling adapted from <a href="https://github.com/stats-organization/github-stats-extended">github-stats-extended</a>.</sub></p>
+<p align="center"><sub>Happy to chat about interpretability and LLM research — <a href="mailto:zhu.3944@osu.edu">email me</a>.<br />Project cards are regenerated daily from public GitHub data by a GitHub Action; styling adapted from <a href="https://github.com/stats-organization/github-stats-extended">github-stats-extended</a>.</sub></p>
