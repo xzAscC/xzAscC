@@ -19,17 +19,14 @@ from scripts.update_profile_assets import (
     LIGHT_THEME,
     AccountStats,
     GenerationError,
-    MetricBadge,
     RepositoryStats,
     REPOSITORIES,
     build_assets,
     fetch_monthly_commits,
     fetch_owned_repositories,
     format_stat_number,
-    parse_visit_value,
     compose_overview_svg,
     render_account_card,
-    render_badge,
     render_repository_card,
     update_assets,
 )
@@ -161,10 +158,6 @@ def complete_responses() -> dict[str, bytes]:
                 }
             }
         ),
-        "https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github&v=2": (
-            b'<svg xmlns="http://www.w3.org/2000/svg" role="img" '
-            b'aria-label="visits: 12.3k"><title>visits: 12.3k</title></svg>'
-        ),
     }
     pin_specs = (
         ("xzAscC", "RobustDiM-PrefixSteering"),
@@ -294,6 +287,7 @@ class TestRenderers(unittest.TestCase):
             username="xzAscC",
             total_stars=53,
             total_commits=10700,
+            monthly_commits=19,
             total_prs=1700,
             total_issues=22,
             contributed_to=18,
@@ -323,7 +317,8 @@ class TestRenderers(unittest.TestCase):
             self.assertIn('clip-path="url(#avatar-clip)"', svg)
             self.assertIn('<clipPath id="avatar-clip">', svg)
             self.assertIn('class="icon"', svg)
-            self.assertNotIn("Commits This Month", svg)
+            self.assertIn("Commits This Month", svg)
+            self.assertIn(">19<", svg)
             self.assertNotIn("Public Repositories", svg)
             self.assertNotIn("Followers", svg)
         self.assertIn("#aeb8ff", dark)
@@ -331,7 +326,7 @@ class TestRenderers(unittest.TestCase):
         self.assertNotEqual(dark, light)
 
     def test_overview_card_places_stats_and_languages_side_by_side(self) -> None:
-        account = AccountStats("xzAscC", 1, 1, 1, 1, 1, AVATAR_DATA_URI)
+        account = AccountStats("xzAscC", 1, 1, 1, 1, 1, 1, AVATAR_DATA_URI)
         stats = render_account_card(account, dark=True)
         languages = render_language_svg([("Python", 1.0)], dark=True)
         overview = compose_overview_svg(stats, languages)
@@ -355,35 +350,15 @@ class TestRenderers(unittest.TestCase):
         self.assertEqual(format_stat_number(10700), "10.7k")
         self.assertEqual(format_stat_number(1700), "1.7k")
 
-    def test_badge_is_valid_accessible_and_deterministic(self) -> None:
-        badge = MetricBadge(label="commits/month", value="19")
-        first = render_badge(badge)
-        second = render_badge(badge)
-        root = ET.fromstring(first)
-
-        self.assertEqual(first, second)
-        self.assertEqual(root.attrib["height"], "20")
-        self.assertEqual(root.attrib["aria-label"], "commits/month: 19")
-        self.assertIn("<title>commits/month: 19</title>", first)
-        self.assertIn("#0d1117", first)
-
     def test_all_small_light_theme_text_meets_wcag_aa_contrast(self) -> None:
         repository = render_repository_card(
             RepositoryStats("xzAscC/example", "Description", 1, 1, "Python"),
             dark=False,
         )
         account = render_account_card(
-            AccountStats("xzAscC", 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
+            AccountStats("xzAscC", 1, 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
         )
         language = render_language_svg([("Python", 1.0)], dark=False)
-        badge = render_badge(MetricBadge("visits", "100"))
-        badge_root = ET.fromstring(badge)
-        badge_stops = [
-            element.attrib["stop-color"]
-            for element in badge_root.iter(f"{SVG_NAMESPACE}stop")
-        ]
-        badge_rects = list(badge_root.iter(f"{SVG_NAMESPACE}rect"))
-        badge_group = next(badge_root.iter(f"{SVG_NAMESPACE}g"))
         pairs = (
             ("repository title", css_fill(repository, "title"), LIGHT_THEME.background),
             (
@@ -400,9 +375,6 @@ class TestRenderers(unittest.TestCase):
             ("account stat", css_fill(account, "stat"), LIGHT_THEME.background),
             ("language heading", css_fill(language, "heading"), "#ffffff"),
             ("language label", css_fill(language, "label"), "#ffffff"),
-            ("badge label gradient top", badge_group.attrib["fill"], badge_stops[0]),
-            ("badge label gradient bottom", badge_group.attrib["fill"], badge_stops[1]),
-            ("badge value", badge_group.attrib["fill"], badge_rects[1].attrib["fill"]),
         )
         for label, foreground, background in pairs:
             with self.subTest(label=label):
@@ -411,28 +383,6 @@ class TestRenderers(unittest.TestCase):
                     4.5,
                     f"{label}: {foreground} on {background}",
                 )
-
-
-class TestVisitParsing(unittest.TestCase):
-    def test_extracts_only_sanitized_display_value(self) -> None:
-        payload = (
-            b'<svg xmlns="http://www.w3.org/2000/svg">'
-            b"<title>visits: 12.3k</title><script>ignored()</script></svg>"
-        )
-        self.assertEqual(parse_visit_value(payload), "12.3k")
-
-    def test_rejects_malformed_or_unsafe_values(self) -> None:
-        cases = (
-            b"not xml",
-            b'<svg xmlns="http://www.w3.org/2000/svg"><title>visits</title></svg>',
-            b'<svg xmlns="http://www.w3.org/2000/svg"><title>visits: &lt;x&gt;</title></svg>',
-            b'<svg xmlns="http://www.w3.org/2000/svg"><title>stars: 12</title></svg>',
-            b"<html><title>visits: 12</title></html>",
-        )
-        for payload in cases:
-            with self.subTest(payload=payload):
-                with self.assertRaises(GenerationError):
-                    _ = parse_visit_value(payload)
 
 
 class TestGeneration(unittest.TestCase):
@@ -447,7 +397,8 @@ class TestGeneration(unittest.TestCase):
 
         self.assertEqual(tuple(first), ASSET_FILENAMES)
         self.assertEqual(first, second)
-        self.assertEqual(len(first), 22)
+        self.assertEqual(len(first), 18)
+        self.assertFalse(any(name.startswith("badge-") for name in first))
         for filename, svg in first.items():
             with self.subTest(filename=filename):
                 _ = ET.fromstring(svg)
@@ -493,10 +444,7 @@ class TestGeneration(unittest.TestCase):
             "https://avatars.githubusercontent.com/u/91479366?v=4&s=160",
             decoded_requests,
         )
-        self.assertIn(
-            "https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github&v=2",
-            decoded_requests,
-        )
+        self.assertFalse(any("badges.strrl.dev" in url for url in decoded_requests))
         language_requests = [
             url for url in decoded_requests if url.endswith("/languages")
         ]
@@ -512,11 +460,6 @@ class TestGeneration(unittest.TestCase):
             for url, headers in fetcher.request_headers
             if url.startswith("https://api.github.com/")
         ]
-        visits_headers = next(
-            headers
-            for url, headers in fetcher.request_headers
-            if url.startswith("https://badges.strrl.dev/")
-        )
         self.assertTrue(github_headers)
         self.assertTrue(
             all(
@@ -524,7 +467,6 @@ class TestGeneration(unittest.TestCase):
                 for headers in github_headers
             )
         )
-        self.assertNotIn("Authorization", visits_headers)
         avatar_headers = next(
             headers
             for url, headers in fetcher.request_headers
@@ -609,9 +551,7 @@ class TestGeneration(unittest.TestCase):
 
     def test_failed_refresh_leaves_every_existing_asset_untouched(self) -> None:
         responses = complete_responses()
-        responses[
-            "https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github&v=2"
-        ] = b"broken"
+        responses["https://api.github.com/graphql"] = b"broken"
         with tempfile.TemporaryDirectory() as directory:
             assets = Path(directory) / "nested" / "assets"
             assets.mkdir(parents=True)

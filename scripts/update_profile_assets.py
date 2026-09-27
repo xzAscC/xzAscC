@@ -32,8 +32,8 @@ DEFAULT_USERNAME = os.environ.get("GITHUB_REPOSITORY_OWNER", "xzAscC")
 GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = f"{GITHUB_API}/graphql"
 MAX_RESPONSE_BYTES = 1_000_000
+USER_AGENT = "xzAscC-profile-static-assets"
 LIGHT_ACCENT = "#404b91"
-VISIT_VALUE_PATTERN = re.compile(r"[0-9]+(?:[.,][0-9]+)*(?:[kKmMbB])?")
 
 
 @dataclass(frozen=True, slots=True)
@@ -188,10 +188,6 @@ ASSET_FILENAMES = (
     "stats-dark.svg",
     "overview-light.svg",
     "overview-dark.svg",
-    "badge-visits.svg",
-    "badge-years.svg",
-    "badge-repos.svg",
-    "badge-commits-monthly.svg",
     "languages-light.svg",
     "languages-dark.svg",
 )
@@ -219,16 +215,11 @@ class AccountStats:
     username: str
     total_stars: int
     total_commits: int
+    monthly_commits: int
     total_prs: int
     total_issues: int
     contributed_to: int
     avatar_data_uri: str
-
-
-@dataclass(frozen=True, slots=True)
-class MetricBadge:
-    label: str
-    value: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -241,9 +232,6 @@ class OwnedRepository:
 @dataclass(frozen=True, slots=True)
 class AccountData:
     username: str
-    public_repositories: int
-    followers: int
-    created_at: datetime
     avatar_url: str
 
 
@@ -260,20 +248,13 @@ class Fetcher(Protocol):
 def github_headers() -> dict[str, str]:
     headers = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "xzAscC-profile-static-assets",
+        "User-Agent": USER_AGENT,
         "X-GitHub-Api-Version": "2026-03-10",
     }
     token = os.environ.get("GITHUB_TOKEN")
     if token:
         headers["Authorization"] = f"Bearer {token}"
     return headers
-
-
-def public_headers() -> dict[str, str]:
-    return {
-        "Accept": "image/svg+xml",
-        "User-Agent": "xzAscC-profile-static-assets",
-    }
 
 
 def network_fetch(
@@ -488,20 +469,8 @@ def fetch_account(
     login = _string(data, "login", url)
     if login.casefold() != username.casefold():
         raise GenerationError(f"{url}.login does not match the requested account")
-    created_text = _string(data, "created_at", url)
-    try:
-        created_at = datetime.fromisoformat(created_text.replace("Z", "+00:00"))
-    except ValueError as error:
-        raise GenerationError(
-            f"{url}.created_at is not an ISO-8601 timestamp"
-        ) from error
-    if created_at.tzinfo is None:
-        raise GenerationError(f"{url}.created_at must include a timezone")
     return AccountData(
         username=login,
-        public_repositories=_integer(data, "public_repos", url),
-        followers=_integer(data, "followers", url),
-        created_at=created_at,
         avatar_url=_string(data, "avatar_url", url),
     )
 
@@ -518,9 +487,7 @@ def fetch_avatar_data_uri(fetcher: Fetcher, avatar_url: str) -> str:
         raise GenerationError("avatar_url must be a GitHub avatar URL")
     separator = "&" if parsed.query else "?"
     url = f"{avatar_url}{separator}s={AVATAR_SIZE}"
-    payload = _fetch_bytes(
-        fetcher, url, {"Accept": "image/*", "User-Agent": public_headers()["User-Agent"]}
-    )
+    payload = _fetch_bytes(fetcher, url, {"Accept": "image/*", "User-Agent": USER_AGENT})
     for signature, media_type in AVATAR_MEDIA_TYPES.items():
         if payload.startswith(signature):
             encoded = base64.b64encode(payload).decode("ascii")
@@ -691,52 +658,6 @@ def fetch_language_counts(
     return per_repository
 
 
-def parse_visit_value(payload: bytes) -> str:
-    if len(payload) > MAX_RESPONSE_BYTES:
-        raise GenerationError(f"Visits badge exceeds {MAX_RESPONSE_BYTES} bytes")
-    lowered = payload.lower()
-    if b"<!doctype" in lowered or b"<!entity" in lowered:
-        raise GenerationError("Visits badge contains a prohibited XML declaration")
-    try:
-        root = ET.fromstring(payload)
-    except ET.ParseError as error:
-        raise GenerationError(f"Visits badge returned invalid SVG: {error}") from error
-    if root.tag != "{http://www.w3.org/2000/svg}svg":
-        raise GenerationError("Visits badge does not have an SVG root")
-    title = next(
-        (
-            element.text
-            for element in root.iter()
-            if element.tag.rsplit("}", 1)[-1] == "title" and element.text
-        ),
-        None,
-    )
-    if title is None:
-        aria_label = root.attrib.get("aria-label")
-        title = aria_label if aria_label else None
-    if title is None:
-        raise GenerationError("Visits badge does not contain an accessible value")
-    label, separator, value = title.partition(":")
-    normalized = value.strip()
-    if (
-        not separator
-        or label.strip().casefold() != "visits"
-        or VISIT_VALUE_PATTERN.fullmatch(normalized) is None
-    ):
-        raise GenerationError("Visits badge contains an invalid displayed value")
-    return normalized
-
-
-def fetch_visits(fetcher: Fetcher, username: str) -> str:
-    encoded = quote(username, safe="")
-    url = (
-        f"https://badges.strrl.dev/visits/{encoded}/{encoded}"
-        "?style=flat-square&color=black&logo=github&v=2"
-    )
-    payload = _fetch_bytes(fetcher, url, public_headers())
-    return parse_visit_value(payload)
-
-
 def _theme(dark: bool) -> Theme:
     return DARK_THEME if dark else LIGHT_THEME
 
@@ -833,6 +754,7 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
     metrics = (
         ("stars", "Total Stars Earned", account.total_stars),
         ("commits", "Total Commits", account.total_commits),
+        ("commits", "Commits This Month", account.monthly_commits),
         ("prs", "Total PRs", account.total_prs),
         ("issues", "Total Issues", account.total_issues),
         ("contribs", "Contributed to (last year)", account.contributed_to),
@@ -957,46 +879,6 @@ def compose_overview_svg(stats_svg: str, languages_svg: str) -> str:
     )
 
 
-def render_badge(badge: MetricBadge) -> str:
-    label_width = 26 + len(badge.label) * 7
-    value_width = 14 + len(badge.value) * 7
-    width = label_width + value_width
-    accessible = f"{badge.label}: {badge.value}"
-    value_center = label_width + value_width / 2
-    return "\n".join(
-        (
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="20" '
-            + f'viewBox="0 0 {width} 20" role="img" aria-label="{escape(accessible)}">',
-            f"  <title>{_text(accessible)}</title>",
-            f"  <desc>{_text(accessible)}.</desc>",
-            '  <linearGradient id="surface" x2="0" y2="100%">',
-            '    <stop offset="0" stop-color="#29231f" />',
-            '    <stop offset="1" stop-color="#0d1117" />',
-            "  </linearGradient>",
-            f'  <rect width="{label_width}" height="20" fill="url(#surface)" />',
-            f'  <rect x="{label_width}" width="{value_width}" height="20" fill="{LIGHT_ACCENT}" />',
-            '  <path fill="#ffffff" d="M10 4.2a5.8 5.8 0 0 0-1.8 11.3c.3.1.4-.1.4-.3v-1.1c-1.7.4-2.1-.7-2.1-.7-.3-.7-.7-.9-.7-.9-.6-.4 0-.4 0-.4.6 0 1 .7 1 .7.6 1 1.5.7 1.9.5.1-.4.2-.7.4-.8-1.4-.2-2.8-.7-2.8-2.9 0-.6.2-1.2.6-1.6-.1-.2-.3-.8.1-1.6 0 0 .5-.2 1.6.6a5.5 5.5 0 0 1 2.9 0c1.1-.8 1.6-.6 1.6-.6.4.8.2 1.4.1 1.6.4.4.6 1 .6 1.6 0 2.2-1.4 2.7-2.8 2.9.2.2.4.6.4 1.1v1.6c0 .2.1.4.4.3A5.8 5.8 0 0 0 10 4.2Z" />',
-            '  <g fill="#ffffff" font-family="\'Segoe UI\',Ubuntu,sans-serif" font-size="11">',
-            f'    <text x="21" y="14">{_text(badge.label)}</text>',
-            f'    <text x="{value_center:.1f}" y="14" text-anchor="middle" font-weight="600">{_text(badge.value)}</text>',
-            "  </g>",
-            "</svg>",
-            "",
-        )
-    )
-
-
-def account_years(created_at: datetime, now: datetime) -> int:
-    created = created_at.astimezone(timezone.utc)
-    current = now.astimezone(timezone.utc)
-    years = current.year - created.year
-    if (current.month, current.day) < (created.month, created.day):
-        years -= 1
-    if years < 0:
-        raise GenerationError("GitHub account creation time is in the future")
-    return years
-
-
 def validate_svg(filename: str, content: str) -> None:
     try:
         root = ET.fromstring(content)
@@ -1027,7 +909,6 @@ def build_assets(
     monthly_commits = fetch_monthly_commits(fetcher, username, now, headers)
     total_commits = fetch_total_commits(fetcher, username, headers)
     contribution = fetch_contribution_stats(fetcher, username, headers)
-    visits = fetch_visits(fetcher, username)
     language_entries = displayed_languages(
         aggregate_weights(fetch_language_counts(fetcher, owned_repositories, headers))
     )
@@ -1040,27 +921,12 @@ def build_assets(
         username=account_data.username,
         total_stars=total_stars,
         total_commits=total_commits,
+        monthly_commits=monthly_commits,
         total_prs=contribution.total_prs,
         total_issues=contribution.total_issues,
         contributed_to=contribution.contributed_to,
         avatar_data_uri=avatar_data_uri,
     )
-    badges = (
-        ("badge-visits.svg", MetricBadge("visits", visits)),
-        (
-            "badge-years.svg",
-            MetricBadge("years", str(account_years(account_data.created_at, now))),
-        ),
-        (
-            "badge-repos.svg",
-            MetricBadge("repos", str(account_data.public_repositories)),
-        ),
-        (
-            "badge-commits-monthly.svg",
-            MetricBadge("commits/month", str(monthly_commits)),
-        ),
-    )
-
     rendered: dict[str, str] = {}
     for spec, repository in repositories:
         rendered[f"{spec.asset_stem}-light.svg"] = render_repository_card(
@@ -1071,8 +937,6 @@ def build_assets(
         )
     rendered["stats-light.svg"] = render_account_card(account, dark=False)
     rendered["stats-dark.svg"] = render_account_card(account, dark=True)
-    for filename, badge in badges:
-        rendered[filename] = render_badge(badge)
     rendered["languages-light.svg"] = render_language_card(language_entries, dark=False)
     rendered["languages-dark.svg"] = render_language_card(language_entries, dark=True)
     rendered["overview-light.svg"] = compose_overview_svg(

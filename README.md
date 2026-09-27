@@ -13,13 +13,6 @@ I study the representations and training dynamics of large language models, with
   <a href="https://x.com/XudongZhu3944"><img src="https://img.shields.io/badge/X-@XudongZhu3944-000000?style=flat-square&logo=x&logoColor=white" alt="X: @XudongZhu3944" /></a>
 </p>
 
-<p>
-  <a href="https://github.com/xzAscC"><img src="./assets/badge-visits.svg" alt="Visits" /></a>
-  <a href="https://github.com/xzAscC"><img src="./assets/badge-years.svg" alt="Years" /></a>
-  <a href="https://github.com/xzAscC?tab=repositories"><img src="./assets/badge-repos.svg" alt="Repos" /></a>
-  <a href="https://github.com/xzAscC"><img src="./assets/badge-commits-monthly.svg" alt="Commits this month" /></a>
-</p>
-
 </div>
 
 ---
@@ -61,4 +54,4 @@ If you are interested in collaboration, feel free to open an issue or connect wi
 
 ### Acknowledgments
 
-Profile metrics are regenerated daily as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the stats card shows the account avatar instead of a rank. Card styling is inspired by the same project.
+Profile metrics are regenerated daily as tracked SVG assets from GitHub REST/GraphQL data. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the stats card shows the account avatar instead of a rank. Card styling is inspired by the same project.
