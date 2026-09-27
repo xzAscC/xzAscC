@@ -5,7 +5,7 @@ Run from project root:
 
 These tests cover the pure functions only; network I/O
 (``fetch_repositories``, ``fetch_repository_languages``) is exercised by
-the weekly GitHub Actions workflow.
+the daily GitHub Actions workflow.
 """
 
 from __future__ import annotations
@@ -222,7 +222,7 @@ class TestWriteIfChanged(unittest.TestCase):
 
     def test_preserves_file_when_content_unchanged(self) -> None:
         # Critical for the workflow: identical content must NOT trigger a
-        # rewrite, otherwise the weekly commit is polluted by no-op bumps
+        # rewrite, otherwise the daily commit is polluted by no-op bumps
         # in mtime (and potentially byte-identical rewrites on weird FSes).
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "out.svg"
