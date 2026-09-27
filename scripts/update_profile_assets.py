@@ -94,6 +94,13 @@ STAT_ICONS = {
         "0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 "
         "00-.25-.25h-3.5a.25.25 0 00-.25.25z"
     ),
+    "calendar": (
+        "M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 "
+        "1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 "
+        "2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25"
+        ".25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-4H2.75a.25.25 0 0 0-.25.25V6h11V3.75a"
+        ".25.25 0 0 0-.25-.25Z"
+    ),
     "fork": (
         "M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 "
         "2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 "
@@ -109,11 +116,6 @@ query($login: String!) {
     pullRequests(first: 1) { totalCount }
     openIssues: issues(states: OPEN) { totalCount }
     closedIssues: issues(states: CLOSED) { totalCount }
-    followers { totalCount }
-    repositoriesContributedTo(
-      first: 1
-      contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]
-    ) { totalCount }
   }
 }
 """.strip()
@@ -195,19 +197,16 @@ class RepositoryStats:
 class ContributionStats:
     total_prs: int
     total_issues: int
-    contributed_to: int
-    followers: int
 
 
 @dataclass(frozen=True, slots=True)
 class AccountStats:
-    username: str
+    display_name: str
     total_stars: int
     total_commits: int
     monthly_commits: int
     total_prs: int
     total_issues: int
-    contributed_to: int
     avatar_data_uri: str
 
 
@@ -220,6 +219,7 @@ class OwnedRepository:
 @dataclass(frozen=True, slots=True)
 class AccountData:
     username: str
+    display_name: str
     avatar_url: str
 
 
@@ -427,8 +427,10 @@ def fetch_account(
     login = _string(data, "login", url)
     if login.casefold() != username.casefold():
         raise GenerationError(f"{url}.login does not match the requested account")
+    name = _optional_string(data, "name", url)
     return AccountData(
         username=login,
+        display_name=name.split()[0] if name and name.split() else login,
         avatar_url=_string(data, "avatar_url", url),
     )
 
@@ -543,14 +545,6 @@ def fetch_contribution_stats(
         _field(user, "closedIssues", f"{GITHUB_GRAPHQL}.data.user"),
         f"{GITHUB_GRAPHQL}.data.user.closedIssues",
     )
-    followers = _mapping(
-        _field(user, "followers", f"{GITHUB_GRAPHQL}.data.user"),
-        f"{GITHUB_GRAPHQL}.data.user.followers",
-    )
-    contributed = _mapping(
-        _field(user, "repositoriesContributedTo", f"{GITHUB_GRAPHQL}.data.user"),
-        f"{GITHUB_GRAPHQL}.data.user.repositoriesContributedTo",
-    )
     return ContributionStats(
         total_prs=_integer(
             pull_requests, "totalCount", f"{GITHUB_GRAPHQL}.data.user.pullRequests"
@@ -560,14 +554,6 @@ def fetch_contribution_stats(
         )
         + _integer(
             closed_issues, "totalCount", f"{GITHUB_GRAPHQL}.data.user.closedIssues"
-        ),
-        contributed_to=_integer(
-            contributed,
-            "totalCount",
-            f"{GITHUB_GRAPHQL}.data.user.repositoriesContributedTo",
-        ),
-        followers=_integer(
-            followers, "totalCount", f"{GITHUB_GRAPHQL}.data.user.followers"
         ),
     )
 
@@ -683,15 +669,13 @@ def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
 
 def render_account_card(account: AccountStats, *, dark: bool) -> str:
     theme = _theme(dark)
-    display_name = f"{account.username[:1].upper()}{account.username[1:]}"
-    title = f"{display_name}'s GitHub Stats"
+    title = f"{account.display_name}'s GitHub Stats"
     metrics = (
         ("stars", "Total Stars Earned", account.total_stars),
         ("commits", "Total Commits", account.total_commits),
-        ("commits", "Commits This Month", account.monthly_commits),
+        ("calendar", "Commits This Month", account.monthly_commits),
         ("prs", "Total PRs", account.total_prs),
         ("issues", "Total Issues", account.total_issues),
-        ("contribs", "Contributed to (last year)", account.contributed_to),
     )
     metric_nodes: list[str] = []
     for index, (icon_name, label, value) in enumerate(metrics):
@@ -781,13 +765,12 @@ def build_assets(
         repository.stars for repository in owned_repositories if not repository.fork
     )
     account = AccountStats(
-        username=account_data.username,
+        display_name=account_data.display_name,
         total_stars=total_stars,
         total_commits=total_commits,
         monthly_commits=monthly_commits,
         total_prs=contribution.total_prs,
         total_issues=contribution.total_issues,
-        contributed_to=contribution.contributed_to,
         avatar_data_uri=avatar_data_uri,
     )
     rendered: dict[str, str] = {}

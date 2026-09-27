@@ -150,8 +150,6 @@ def complete_responses() -> dict[str, bytes]:
                         "pullRequests": {"totalCount": 1700},
                         "openIssues": {"totalCount": 8},
                         "closedIssues": {"totalCount": 14},
-                        "followers": {"totalCount": 42},
-                        "repositoriesContributedTo": {"totalCount": 18},
                     }
                 }
             }
@@ -277,13 +275,12 @@ class TestRenderers(unittest.TestCase):
 
     def test_account_card_matches_github_stats_extended_layout(self) -> None:
         account = AccountStats(
-            username="xzAscC",
+            display_name="Xudong",
             total_stars=53,
             total_commits=10700,
             monthly_commits=19,
             total_prs=1700,
             total_issues=22,
-            contributed_to=18,
             avatar_data_uri=AVATAR_DATA_URI,
         )
         dark = render_account_card(account, dark=True)
@@ -293,17 +290,16 @@ class TestRenderers(unittest.TestCase):
             root = ET.fromstring(svg)
             self.assertEqual(root.attrib["width"], "419")
             self.assertEqual(root.attrib["height"], "195")
-            self.assertIn("XzAscC's GitHub Stats", svg)
+            self.assertIn("Xudong's GitHub Stats", svg)
             self.assertIn("Total Stars Earned", svg)
             self.assertIn("Total Commits", svg)
             self.assertIn("Total PRs", svg)
             self.assertIn("Total Issues", svg)
-            self.assertIn("Contributed to (last year)", svg)
+            self.assertNotIn("Contributed to", svg)
             self.assertIn("10.7k", svg)
             self.assertIn("1.7k", svg)
             self.assertIn(">53<", svg)
             self.assertIn(">22<", svg)
-            self.assertIn(">18<", svg)
             self.assertNotIn("rank", svg.casefold())
             self.assertNotIn(">A<", svg)
             self.assertIn(f'href="{AVATAR_DATA_URI}"', svg)
@@ -330,7 +326,7 @@ class TestRenderers(unittest.TestCase):
             dark=False,
         )
         account = render_account_card(
-            AccountStats("xzAscC", 1, 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
+            AccountStats("Xudong", 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
         )
         pairs = (
             ("repository title", css_fill(repository, "title"), LIGHT_THEME.background),
@@ -374,6 +370,7 @@ class TestGeneration(unittest.TestCase):
             with self.subTest(filename=filename):
                 _ = ET.fromstring(svg)
         self.assertNotIn("Rank", first["stats-dark.svg"])
+        self.assertIn("Xudong's GitHub Stats", first["stats-dark.svg"])
         self.assertIn(AVATAR_DATA_URI, first["stats-light.svg"])
         self.assertFalse(
             any(name.startswith(("overview-", "languages-")) for name in first)
