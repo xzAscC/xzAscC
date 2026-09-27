@@ -30,12 +30,7 @@
   <a href="https://github.com/GoXzascc/AbsTopK-SAE"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" /><img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="120" alt="AbsTopK-SAE" /></picture></a>
 </div>
 
-<p align="center">
-  Papers:
-  <a href="https://openreview.net/forum?id=EEs6I4cO7S">AbsTopK</a> (ICLR 2026) &nbsp;·&nbsp;
-  <a href="https://arxiv.org/abs/2506.12217">From Emergence to Control</a> (TMLR 2026) &nbsp;·&nbsp;
-  <a href="https://xudongzhu.com/publications/">All publications →</a>
-</p>
+<p align="center"><a href="https://xudongzhu.com/publications/"><b>Full publication list&nbsp;→</b></a></p>
 
 ### Building in Public
 

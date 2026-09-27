@@ -486,19 +486,16 @@ class TestRepositoryIntegration(unittest.TestCase):
         self.assertIn("(prefers-color-scheme: dark)", readme)
         self.assertIn("(prefers-color-scheme: light)", readme)
 
-    def test_readme_links_papers_under_research_without_duplicate_news(
-        self,
-    ) -> None:
+    def test_readme_research_ends_with_a_single_publications_link(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         research = readme.split("### Research", 1)[1].split("###", 1)[0]
+        after_cards = research.rsplit("</div>", 1)[1]
 
         self.assertNotIn("### News", readme)
-        for link in (
-            "https://openreview.net/forum?id=EEs6I4cO7S",
-            "https://arxiv.org/abs/2506.12217",
-            "https://xudongzhu.com/publications/",
-        ):
-            self.assertIn(f'href="{link}"', research)
+        self.assertNotIn("Papers:", research)
+        self.assertEqual(re.findall(r'href="([^"]+)"', after_cards), [
+            "https://xudongzhu.com/publications/"
+        ])
 
     def test_readme_header_uses_plain_links_instead_of_remote_badges(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
