@@ -728,7 +728,7 @@ class TestRepositoryIntegration(unittest.TestCase):
         )
 
         self.assertIn("workflow_dispatch:", workflow)
-        self.assertIn('cron: "17 8 * * 1"', workflow)
+        self.assertIn('cron: "17 8 * * *"', workflow)
         self.assertIn("contents: write", workflow)
         self.assertIn(
             "actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd", workflow
