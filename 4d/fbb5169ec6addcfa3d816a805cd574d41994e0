@@ -1,0 +1,21 @@
+.gitignore
+  s_0e8c9dc71fc387::t_ca7b312c7a0ca5 4
+.ignore
+  s_0e8c9dc71fc387::t_ca7b312c7a0ca5 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4dfbb5169ec6addcfa3d816a805cd574d41994e0",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
