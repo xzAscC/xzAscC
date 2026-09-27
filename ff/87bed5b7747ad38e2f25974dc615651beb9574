@@ -1,0 +1,41 @@
+assets/pin-dotfiles-light.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 6-9,12-13,19,21
+assets/pin-robustdim-prefixsteering-dark.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-18,21,23
+assets/pin-llmusage-light.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-16,19,21
+assets/pin-goxzascc-abstopk-sae-dark.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-18,21,23
+assets/pin-postdyn-dark.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-18,21,23
+assets/pin-probingreflection-light.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-18,21,23
+assets/pin-robustdim-prefixsteering-light.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-18,21,23
+assets/pin-goxzascc-abstopk-sae-light.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-18,21,23
+assets/pin-postdyn-light.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-18,21,23
+assets/pin-llmusage-dark.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-16,19,21
+assets/pin-dotfiles-dark.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 6-9,12-13,17,19,21
+assets/pin-probingreflection-dark.svg
+  s_0e8c9dc71fc387::t_b062f507c5c8ad 3,6-9,12-13,15-18,21,23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ff87bed5b7747ad38e2f25974dc615651beb9574",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
