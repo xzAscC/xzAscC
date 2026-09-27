@@ -42,6 +42,8 @@ class Theme:
     icon: str
     border: str
     ring: str
+    chip: str
+    chip_text: str
 
 
 DARK_THEME = Theme(
@@ -51,6 +53,8 @@ DARK_THEME = Theme(
     icon="#e18a6e",
     border="#30363d",
     ring="#aeb8ff",
+    chip="#34395c",
+    chip_text="#c8ceff",
 )
 LIGHT_THEME = Theme(
     background="#ffffff",
@@ -59,6 +63,8 @@ LIGHT_THEME = Theme(
     icon="#b65f45",
     border="#d8d0c4",
     ring=LIGHT_ACCENT,
+    chip="#e4e5f1",
+    chip_text=LIGHT_ACCENT,
 )
 
 STAT_ICONS = {
@@ -132,6 +138,9 @@ AVATAR_MEDIA_TYPES = {
 }
 REPO_CARD_WIDTH = 400
 REPO_CARD_HEIGHT = 120
+TITLE_CHAR_WIDTH = 8.6
+VENUE_CHAR_WIDTH = 6.4
+VENUE_PADDING = 9
 
 
 @dataclass(frozen=True, slots=True)
@@ -140,21 +149,41 @@ class RepositorySpec:
     name: str
     asset_stem: str
     description: str | None = None
+    venue: str | None = None
 
 
 REPOSITORIES = (
     RepositorySpec(
-        "xzAscC", "RobustDiM-PrefixSteering", "pin-robustdim-prefixsteering"
+        "xzAscC",
+        "RobustDiM-PrefixSteering",
+        "pin-robustdim-prefixsteering",
+        "Not All Tokens Are Equally Useful for Steering: Robust Directions "
+        "and Prefix Steering",
+        "Under review",
     ),
-    RepositorySpec("xzAscC", "ProbingReflection", "pin-probingreflection"),
+    RepositorySpec(
+        "xzAscC",
+        "ProbingReflection",
+        "pin-probingreflection",
+        "From Emergence to Control: Probing and Modulating Self-Reflection "
+        "in Language Models",
+        "TMLR 2026",
+    ),
     RepositorySpec(
         "xzAscC",
         "PostDyn",
         "pin-postdyn",
-        "[Ongoing] Post-training dynamics of SFT/RL: checkpoint "
-        "trajectories and concept directions.",
+        "Post-training dynamics of SFT/RL: checkpoint trajectories and "
+        "concept directions.",
+        "Ongoing",
     ),
-    RepositorySpec("GoXzascc", "AbsTopK-SAE", "pin-goxzascc-abstopk-sae"),
+    RepositorySpec(
+        "GoXzascc",
+        "AbsTopK-SAE",
+        "pin-goxzascc-abstopk-sae",
+        "AbsTopK: Rethinking Sparse Autoencoders For Bidirectional Features",
+        "ICLR 2026",
+    ),
     RepositorySpec(
         "xzAscC",
         "LLMUsage",
@@ -191,6 +220,7 @@ class RepositoryStats:
     stars: int
     forks: int
     language: str | None
+    venue: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -416,6 +446,7 @@ def fetch_repository(
         stars=_integer(data, "stargazers_count", url),
         forks=_integer(data, "forks_count", url),
         language=_optional_string(data, "language", url),
+        venue=spec.venue,
     )
 
 
@@ -609,23 +640,72 @@ def _wrapped_lines(value: str, limit: int = 49) -> tuple[str, ...]:
     return (lines[0], second)
 
 
+def _relative_luminance(color: str) -> float:
+    channels = tuple(int(color[index : index + 2], 16) / 255 for index in (1, 3, 5))
+    linear = tuple(
+        value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4
+        for value in channels
+    )
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+
+def _contrast(first: str, second: str) -> float:
+    lighter, darker = sorted(
+        (_relative_luminance(first), _relative_luminance(second)), reverse=True
+    )
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+def _visible_dot_color(color: str, background: str) -> str:
+    """Lighten a language color until it stands out from the card background."""
+    if _contrast(color, background) >= 3.0:
+        return color
+    channels = tuple(int(color[index : index + 2], 16) for index in (1, 3, 5))
+    for step in range(1, 11):
+        mix = step / 10
+        candidate = "#" + "".join(
+            f"{round(channel + (255 - channel) * mix):02x}" for channel in channels
+        )
+        if _contrast(candidate, background) >= 3.0:
+            return candidate
+    return "#ffffff"
+
+
+def _venue_pill(venue: str | None, theme: Theme) -> tuple[float, tuple[str, ...]]:
+    if venue is None:
+        return 0.0, ()
+    width = round(len(venue) * VENUE_CHAR_WIDTH + 2 * VENUE_PADDING)
+    right = REPO_CARD_WIDTH - 25
+    return width, (
+        f'  <rect x="{right - width}" y="18" width="{width}" height="19" rx="9.5" '
+        f'fill="{theme.chip}" />',
+        f'  <text x="{right - VENUE_PADDING}" y="31.5" text-anchor="end" '
+        f'class="venue">{_text(venue)}</text>',
+    )
+
+
 def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
     theme = _theme(dark)
     header = repository.full_name.rpartition("/")[2] or repository.full_name
-    if len(header) > 35:
-        header = f"{header[:34]}…"
+    pill_width, pill_nodes = _venue_pill(repository.venue, theme)
+    title_room = REPO_CARD_WIDTH - 25 - 50 - (pill_width + 10 if pill_width else 0)
+    max_title_chars = int(title_room // TITLE_CHAR_WIDTH)
+    if len(header) > max_title_chars:
+        header = f"{header[: max_title_chars - 1]}…"
     description_lines = _wrapped_lines(repository.description, limit=52)
     language = repository.language or "Unspecified"
-    language_color = LANGUAGE_COLORS.get(
-        repository.language or "", LANGUAGE_COLORS["Other"]
+    language_color = _visible_dot_color(
+        LANGUAGE_COLORS.get(repository.language or "", LANGUAGE_COLORS["Other"]),
+        theme.background,
     )
     stars_text = format_stat_number(repository.stars)
     forks_text = format_stat_number(repository.forks)
     language_width = max(24.0, min(90.0, 8.0 + len(language) * 6.5))
     star_x = 25 + language_width + 18
     fork_x = star_x + 16 + max(12.0, len(stars_text) * 7.0) + 18
+    venue_note = f" ({repository.venue})" if repository.venue else ""
     accessible_description = (
-        f"{repository.description}. {repository.stars} stars, {repository.forks} forks, "
+        f"{repository.description}{venue_note}. {repository.stars} stars, {repository.forks} forks, "
         f"primary language {language}."
     )
     description_nodes = tuple(
@@ -647,6 +727,8 @@ def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
             + f"fill: {theme.text}; }}",
             "      .meta { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; "
             + f"fill: {theme.text}; }}",
+            "      .venue { font: 600 11px 'Segoe UI', Ubuntu, sans-serif; "
+            + f"fill: {theme.chip_text}; }}",
             "    </style>",
             "  </defs>",
             f'  <rect x="0.5" y="0.5" width="{REPO_CARD_WIDTH - 1}" '
@@ -654,6 +736,7 @@ def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
             f'stroke="{theme.border}" stroke-width="1" />',
             f"  {_octicon('contribs', x=25, y=18, fill=theme.icon, size=16)}",
             f'  <text x="50" y="32" class="title">{_text(header)}</text>',
+            *pill_nodes,
             *description_nodes,
             f'  <circle cx="25" cy="98" r="5" fill="{language_color}" />',
             f'  <text x="38" y="102" class="meta">{_text(language)}</text>',

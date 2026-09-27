@@ -244,7 +244,59 @@ class TestRenderers(unittest.TestCase):
                     self.assertNotIn("…", svg)
                     self.assertIn(spec.description.split(" ")[0], svg)
         overridden = {spec.name for spec in REPOSITORIES if spec.description}
-        self.assertEqual(overridden, {"PostDyn", "LLMUsage"})
+        self.assertEqual(
+            overridden,
+            {
+                "RobustDiM-PrefixSteering",
+                "ProbingReflection",
+                "PostDyn",
+                "AbsTopK-SAE",
+                "LLMUsage",
+            },
+        )
+
+    def test_research_cards_show_a_venue_pill(self) -> None:
+        venues = {spec.name: spec.venue for spec in REPOSITORIES}
+        self.assertEqual(
+            venues,
+            {
+                "RobustDiM-PrefixSteering": "Under review",
+                "ProbingReflection": "TMLR 2026",
+                "PostDyn": "Ongoing",
+                "AbsTopK-SAE": "ICLR 2026",
+                "LLMUsage": None,
+                "dotfiles": None,
+            },
+        )
+        assets = build_assets(
+            FakeFetcher(complete_responses()), username="xzAscC", now=NOW
+        )
+        for spec in REPOSITORIES:
+            for theme in ("light", "dark"):
+                with self.subTest(repository=spec.name, theme=theme):
+                    svg = assets[f"{spec.asset_stem}-{theme}.svg"]
+                    root = ET.fromstring(svg)
+                    pills = [
+                        node
+                        for node in root.iter(f"{SVG_NAMESPACE}text")
+                        if node.attrib.get("class") == "venue"
+                    ]
+                    if spec.venue is None:
+                        self.assertEqual(pills, [])
+                        continue
+                    self.assertEqual([node.text for node in pills], [spec.venue])
+                    self.assertEqual(pills[0].attrib["text-anchor"], "end")
+                    self.assertNotIn(f"[{spec.venue}]", svg)
+
+    def test_language_dot_stays_visible_on_dark_cards(self) -> None:
+        repository = RepositoryStats("xzAscC/dotfiles", "Dotfiles", 1, 0, "Lua")
+        for dark, background in ((True, "#0d1117"), (False, "#ffffff")):
+            with self.subTest(dark=dark):
+                root = ET.fromstring(render_repository_card(repository, dark=dark))
+                dot = next(root.iter(f"{SVG_NAMESPACE}circle"))
+                self.assertGreaterEqual(
+                    contrast_ratio(dot.attrib["fill"], background), 3.0
+                )
 
     def test_repository_card_is_accessible_valid_escaped_and_themed(self) -> None:
         repository = RepositoryStats(
@@ -325,6 +377,10 @@ class TestRenderers(unittest.TestCase):
             RepositoryStats("xzAscC/example", "Description", 1, 1, "Python"),
             dark=False,
         )
+        venue_card = render_repository_card(
+            RepositoryStats("xzAscC/example", "Description", 1, 1, "Python", "ICLR 2026"),
+            dark=False,
+        )
         account = render_account_card(
             AccountStats("Xudong", 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
         )
@@ -340,6 +396,7 @@ class TestRenderers(unittest.TestCase):
                 css_fill(repository, "meta"),
                 LIGHT_THEME.background,
             ),
+            ("venue pill", css_fill(venue_card, "venue"), LIGHT_THEME.chip),
             ("account heading", css_fill(account, "heading"), LIGHT_THEME.background),
             ("account stat", css_fill(account, "stat"), LIGHT_THEME.background),
         )
