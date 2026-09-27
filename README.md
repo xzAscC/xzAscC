@@ -4,10 +4,10 @@
 
 PhD @ [The Ohio State University](https://www.osu.edu/), advised by [Zhihui Zhu](https://zhihuizhu.github.io/). B.Eng @ [UESTC](https://en.uestc.edu.cn/), advised by [Zhao Kang](https://sites.google.com/site/zhaokanghomepage/) and [Hao Dong](https://sites.google.com/view/hao-dong/home).
 
-I work on representation learning for large language models.
+I study the representations and training dynamics of large language models, with an eye toward mechanistic interpretability.
 
 <p>
-  <a href="https://xudongzhu.com/"><img src="https://img.shields.io/badge/xudongzhu.com-14b8a6?style=flat-square&logo=safari&logoColor=white" alt="Website" /></a>
+  <a href="https://xudongzhu.com/"><img src="https://img.shields.io/badge/xudongzhu.com-404b91?style=flat-square&logo=safari&logoColor=white" alt="Website" /></a>
   <a href="mailto:zhu.3944@osu.edu"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
   <a href="https://scholar.google.com/citations?user=U55yracAAAAJ&hl=zh-CN"><img src="https://img.shields.io/badge/Scholar-4285F4?style=flat-square&logo=google-scholar&logoColor=white" alt="Google Scholar" /></a>
   <a href="https://x.com/XudongZhu3944"><img src="https://img.shields.io/badge/X-@XudongZhu3944-000000?style=flat-square&logo=x&logoColor=white" alt="X: @XudongZhu3944" /></a>
@@ -23,6 +23,11 @@ I work on representation learning for large language models.
 </div>
 
 ---
+
+### News
+
+- **ICLR 2026** · *AbsTopK: Rethinking Sparse Autoencoders For Bidirectional Features* accepted. [Paper](https://openreview.net/forum?id=EEs6I4cO7S) · [Code](https://github.com/GoXzascc/AbsTopK-SAE)
+- **TMLR 2026** · *From Emergence to Control: Probing and Modulating Self-Reflection in Language Models* accepted. [Paper](https://arxiv.org/abs/2506.12217) · [Code](https://github.com/xzAscC/ProbingReflection)
 
 ### Research
 

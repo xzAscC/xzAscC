@@ -768,6 +768,20 @@ class TestRepositoryIntegration(unittest.TestCase):
         self.assertIn("(prefers-color-scheme: dark)", readme)
         self.assertIn("(prefers-color-scheme: light)", readme)
 
+    def test_readme_lists_news_with_paper_and_code_links(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        news = readme.split("### News", 1)[1].split("###", 1)[0]
+
+        for link in (
+            "https://openreview.net/forum?id=EEs6I4cO7S",
+            "https://github.com/GoXzascc/AbsTopK-SAE",
+            "https://arxiv.org/abs/2506.12217",
+            "https://github.com/xzAscC/ProbingReflection",
+        ):
+            self.assertIn(f"({link})", news)
+        self.assertIn("ICLR 2026", news)
+        self.assertIn("TMLR 2026", news)
+
     def test_workflow_refreshes_and_conditionally_stages_all_assets(self) -> None:
         workflow = (ROOT / ".github/workflows/update-language-stats.yml").read_text(
             encoding="utf-8"
