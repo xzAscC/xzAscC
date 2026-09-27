@@ -20,6 +20,7 @@ from urllib.parse import quote, urlencode, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 DEFAULT_USERNAME = os.environ.get("GITHUB_REPOSITORY_OWNER", "xzAscC")
+DISPLAY_NAME = "Xudong"
 GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = f"{GITHUB_API}/graphql"
 MAX_RESPONSE_BYTES = 1_000_000
@@ -249,7 +250,6 @@ class OwnedRepository:
 @dataclass(frozen=True, slots=True)
 class AccountData:
     username: str
-    display_name: str
     avatar_url: str
 
 
@@ -458,10 +458,8 @@ def fetch_account(
     login = _string(data, "login", url)
     if login.casefold() != username.casefold():
         raise GenerationError(f"{url}.login does not match the requested account")
-    name = _optional_string(data, "name", url)
     return AccountData(
         username=login,
-        display_name=name.split()[0] if name and name.split() else login,
         avatar_url=_string(data, "avatar_url", url),
     )
 
@@ -848,7 +846,7 @@ def build_assets(
         repository.stars for repository in owned_repositories if not repository.fork
     )
     account = AccountStats(
-        display_name=account_data.display_name,
+        display_name=DISPLAY_NAME,
         total_stars=total_stars,
         total_commits=total_commits,
         monthly_commits=monthly_commits,

@@ -128,7 +128,7 @@ def complete_responses() -> dict[str, bytes]:
         "https://api.github.com/users/xzAscC": json_bytes(
             {
                 "login": "xzAscC",
-                "name": "Xudong Zhu",
+                "name": "xzAscC",
                 "public_repos": 31,
                 "followers": 42,
                 "created_at": "2018-09-01T00:00:00Z",
