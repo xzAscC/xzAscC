@@ -140,6 +140,7 @@ class RepositorySpec:
     owner: str
     name: str
     asset_stem: str
+    description: str | None = None
 
 
 REPOSITORIES = (
@@ -147,9 +148,21 @@ REPOSITORIES = (
         "xzAscC", "RobustDiM-PrefixSteering", "pin-robustdim-prefixsteering"
     ),
     RepositorySpec("xzAscC", "ProbingReflection", "pin-probingreflection"),
-    RepositorySpec("xzAscC", "PostDyn", "pin-postdyn"),
+    RepositorySpec(
+        "xzAscC",
+        "PostDyn",
+        "pin-postdyn",
+        "[Ongoing] Post-training dynamics of SFT/RL: checkpoint "
+        "trajectories and concept directions.",
+    ),
     RepositorySpec("GoXzascc", "AbsTopK-SAE", "pin-goxzascc-abstopk-sae"),
-    RepositorySpec("xzAscC", "LLMUsage", "pin-llmusage"),
+    RepositorySpec(
+        "xzAscC",
+        "LLMUsage",
+        "pin-llmusage",
+        "Local-first LLM subscription usage in your Hyprland bar: "
+        "OpenAI, GLM, Grok, Claude.",
+    ),
     RepositorySpec("xzAscC", "dotfiles", "pin-dotfiles"),
 )
 
@@ -459,7 +472,7 @@ def fetch_repository(
         raise GenerationError(
             f"{url}.full_name does not match the requested repository"
         )
-    description = _optional_string(data, "description", url)
+    description = spec.description or _optional_string(data, "description", url)
     return RepositoryStats(
         full_name=full_name,
         description=description or "No description provided.",

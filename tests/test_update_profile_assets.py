@@ -21,6 +21,7 @@ from scripts.update_profile_assets import (
     GenerationError,
     MetricBadge,
     RepositoryStats,
+    REPOSITORIES,
     build_assets,
     calculate_rank,
     fetch_monthly_commits,
@@ -244,6 +245,19 @@ class TestRenderers(unittest.TestCase):
 
         self.assertIn('class="title">AbsTopK-SAE</text>', svg)
         self.assertNotIn(">GoXzascc/AbsTopK-SAE</text>", svg)
+
+    def test_pinned_description_overrides_fit_without_truncation(self) -> None:
+        responses = complete_responses()
+        for spec in REPOSITORIES:
+            with self.subTest(repository=spec.name):
+                svg = build_assets(
+                    FakeFetcher(responses), username="xzAscC", now=NOW
+                )[f"{spec.asset_stem}-dark.svg"]
+                if spec.description is not None:
+                    self.assertNotIn("…", svg)
+                    self.assertIn(spec.description.split(" ")[0], svg)
+        overridden = {spec.name for spec in REPOSITORIES if spec.description}
+        self.assertEqual(overridden, {"PostDyn", "LLMUsage"})
 
     def test_repository_card_is_accessible_valid_escaped_and_themed(self) -> None:
         repository = RepositoryStats(
