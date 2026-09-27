@@ -1,0 +1,27 @@
+assets/link-publications-light.svg
+  s_0e8c9dc71fc387::t_6d8cfae493c258 1-16
+tests/test_update_profile_assets.py
+  s_0e8c9dc71fc387::t_5df041cf837f1e 24,251-269,345-349,515,519-524,554
+README.md
+  s_0e8c9dc71fc387::t_d8e7d7b775de7c 33-35
+scripts/update_profile_assets.py
+  s_0e8c9dc71fc387::t_d8e7d7b775de7c 88-89,160-161,489-525,551-554
+assets/link-publications-dark.svg
+  s_0e8c9dc71fc387::t_6d8cfae493c258 1-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b42a87798c97529b499f32319d84ad54c0ebf0c4",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
