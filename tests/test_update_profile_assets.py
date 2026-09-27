@@ -782,6 +782,18 @@ class TestRepositoryIntegration(unittest.TestCase):
         self.assertIn("ICLR 2026", news)
         self.assertIn("TMLR 2026", news)
 
+    def test_readme_pin_links_wrap_cards_without_underlined_whitespace(
+        self,
+    ) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        anchors = re.findall(r"<a [^>]*>(.*?)</a>", readme, flags=re.DOTALL)
+        pins = [body for body in anchors if "<picture>" in body]
+
+        self.assertEqual(len(pins), 6)
+        for body in pins:
+            self.assertEqual(body, body.strip())
+            self.assertNotIn("\n", body)
+
     def test_workflow_refreshes_and_conditionally_stages_all_assets(self) -> None:
         workflow = (ROOT / ".github/workflows/update-language-stats.yml").read_text(
             encoding="utf-8"

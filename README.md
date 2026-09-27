@@ -32,53 +32,17 @@ I study the representations and training dynamics of large language models, with
 ### Research
 
 <div align="center">
-  <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-robustdim-prefixsteering-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-robustdim-prefixsteering-light.svg" />
-      <img src="./assets/pin-robustdim-prefixsteering-dark.svg" height="120" alt="RobustDiM-PrefixSteering" />
-    </picture>
-  </a>
-  <a href="https://github.com/xzAscC/ProbingReflection">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-probingreflection-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-probingreflection-light.svg" />
-      <img src="./assets/pin-probingreflection-dark.svg" height="120" alt="ProbingReflection" />
-    </picture>
-  </a>
-  <a href="https://github.com/xzAscC/PostDyn">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-postdyn-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-postdyn-light.svg" />
-      <img src="./assets/pin-postdyn-dark.svg" height="120" alt="PostDyn" />
-    </picture>
-  </a>
-  <a href="https://github.com/GoXzascc/AbsTopK-SAE">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" />
-      <img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="120" alt="AbsTopK-SAE" />
-    </picture>
-  </a>
+  <a href="https://github.com/xzAscC/RobustDiM-PrefixSteering"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-robustdim-prefixsteering-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-robustdim-prefixsteering-light.svg" /><img src="./assets/pin-robustdim-prefixsteering-dark.svg" height="120" alt="RobustDiM-PrefixSteering" /></picture></a>
+  <a href="https://github.com/xzAscC/ProbingReflection"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-probingreflection-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-probingreflection-light.svg" /><img src="./assets/pin-probingreflection-dark.svg" height="120" alt="ProbingReflection" /></picture></a>
+  <a href="https://github.com/xzAscC/PostDyn"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-postdyn-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-postdyn-light.svg" /><img src="./assets/pin-postdyn-dark.svg" height="120" alt="PostDyn" /></picture></a>
+  <a href="https://github.com/GoXzascc/AbsTopK-SAE"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" /><img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="120" alt="AbsTopK-SAE" /></picture></a>
 </div>
 
 ### Building in Public
 
 <div align="center">
-  <a href="https://github.com/xzAscC/LLMUsage">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-llmusage-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-llmusage-light.svg" />
-      <img src="./assets/pin-llmusage-dark.svg" height="120" alt="LLMUsage" />
-    </picture>
-  </a>
-  <a href="https://github.com/xzAscC/dotfiles">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="./assets/pin-dotfiles-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="./assets/pin-dotfiles-light.svg" />
-      <img src="./assets/pin-dotfiles-dark.svg" height="120" alt="dotfiles" />
-    </picture>
-  </a>
+  <a href="https://github.com/xzAscC/LLMUsage"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-llmusage-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-llmusage-light.svg" /><img src="./assets/pin-llmusage-dark.svg" height="120" alt="LLMUsage" /></picture></a>
+  <a href="https://github.com/xzAscC/dotfiles"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-dotfiles-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-dotfiles-light.svg" /><img src="./assets/pin-dotfiles-dark.svg" height="120" alt="dotfiles" /></picture></a>
 </div>
 
 ### GitHub Stats
@@ -95,6 +59,6 @@ I study the representations and training dynamics of large language models, with
 
 If you are interested in collaboration, feel free to open an issue or connect with me.
 
-## Acknowledgments
+### Acknowledgments
 
 Profile metrics are regenerated daily as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the stats card shows the account avatar instead of a rank. Card styling is inspired by the same project.
