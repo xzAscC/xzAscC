@@ -145,10 +145,10 @@ def render_svg(entries: list[tuple[str, float]], *, dark: bool) -> str:
         raise RuntimeError("No public repository languages were found")
 
     total = sum(weight for _, weight in entries)
-    heading_color = "#5eead4" if dark else "#0f766e"
-    label_color = "#94a3b8" if dark else "#334155"
+    heading_color = "#aeb8ff" if dark else "#404b91"
+    label_color = "#bdb2a7" if dark else "#6f655d"
     background = "#0d1117" if dark else "#ffffff"
-    border = "#1e3a32" if dark else "#e2e8f0"
+    border = "#30363d" if dark else "#d8d0c4"
     descriptions = "; ".join(
         f"{name} {weight / total * 100:.2f} percent" for name, weight in entries
     )

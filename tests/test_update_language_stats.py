@@ -166,10 +166,10 @@ class TestRenderSvg(unittest.TestCase):
     def test_dark_and_light_themes_use_expected_colors(self) -> None:
         dark = render_svg([("Python", 1.0)], dark=True)
         light = render_svg([("Python", 1.0)], dark=False)
-        self.assertIn("fill: #5eead4", dark)
-        self.assertIn("fill: #94a3b8", dark)
-        self.assertIn("fill: #0f766e", light)
-        self.assertIn("fill: #334155", light)
+        self.assertIn("fill: #aeb8ff", dark)
+        self.assertIn("fill: #bdb2a7", dark)
+        self.assertIn("fill: #404b91", light)
+        self.assertIn("fill: #6f655d", light)
 
     def test_desc_lists_each_language_percentage(self) -> None:
         svg = render_svg([("Python", 0.5), ("TeX", 0.5)], dark=False)
@@ -198,8 +198,8 @@ class TestRenderSvg(unittest.TestCase):
         self.assertIsNotNone(dark_card)
         if light_card is None or dark_card is None:
             raise AssertionError("Language card is missing its frame")
-        self.assertEqual(light_card.attrib["stroke"], "#e2e8f0")
-        self.assertEqual(dark_card.attrib["stroke"], "#1e3a32")
+        self.assertEqual(light_card.attrib["stroke"], "#d8d0c4")
+        self.assertEqual(dark_card.attrib["stroke"], "#30363d")
         self.assertEqual(light_card.attrib["fill"], "#ffffff")
         self.assertEqual(dark_card.attrib["fill"], "#0d1117")
 

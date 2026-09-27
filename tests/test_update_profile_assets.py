@@ -202,7 +202,7 @@ class TestRenderers(unittest.TestCase):
             language="Python",
         )
 
-        for dark, expected_border in ((False, "#e2e8f0"), (True, "#1e3a32")):
+        for dark, expected_border in ((False, "#d8d0c4"), (True, "#30363d")):
             with self.subTest(dark=dark):
                 svg = render_repository_card(repository, dark=dark)
                 root = ET.fromstring(svg)
@@ -281,11 +281,11 @@ class TestRenderers(unittest.TestCase):
             self.assertIn("aria-labelledby", root.attrib)
             self.assertIn("Research&lt;&amp;&gt;", svg)
             self.assertIn("&lt;reasoning&gt; &amp; representations", svg)
-        self.assertIn("#5eead4", dark)
-        self.assertIn("#94a3b8", dark)
+        self.assertIn("#aeb8ff", dark)
+        self.assertIn("#bdb2a7", dark)
         self.assertIn("#0d1117", dark)
-        self.assertIn("#0f766e", light)
-        self.assertIn("#334155", light)
+        self.assertIn("#404b91", light)
+        self.assertIn("#6f655d", light)
         self.assertIn("#ffffff", light)
         self.assertGreaterEqual(dark.count('class="icon"'), 3)
 
@@ -326,8 +326,8 @@ class TestRenderers(unittest.TestCase):
             self.assertNotIn("Commits This Month", svg)
             self.assertNotIn("Public Repositories", svg)
             self.assertNotIn("Followers", svg)
-        self.assertIn("#14b8a6", dark)
-        self.assertIn("#0f766e", light)
+        self.assertIn("#aeb8ff", dark)
+        self.assertIn("#404b91", light)
         self.assertNotEqual(dark, light)
 
     def test_overview_card_places_stats_and_languages_side_by_side(self) -> None:

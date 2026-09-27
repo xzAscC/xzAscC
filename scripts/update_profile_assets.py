@@ -32,7 +32,7 @@ DEFAULT_USERNAME = os.environ.get("GITHUB_REPOSITORY_OWNER", "xzAscC")
 GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = f"{GITHUB_API}/graphql"
 MAX_RESPONSE_BYTES = 1_000_000
-LIGHT_ACCENT = "#0f766e"
+LIGHT_ACCENT = "#404b91"
 VISIT_VALUE_PATTERN = re.compile(r"[0-9]+(?:[.,][0-9]+)*(?:[kKmMbB])?")
 
 
@@ -48,18 +48,18 @@ class Theme:
 
 DARK_THEME = Theme(
     background="#0d1117",
-    title="#5eead4",
-    text="#94a3b8",
-    icon="#f59e0b",
-    border="#1e3a32",
-    ring="#14b8a6",
+    title="#aeb8ff",
+    text="#bdb2a7",
+    icon="#e18a6e",
+    border="#30363d",
+    ring="#aeb8ff",
 )
 LIGHT_THEME = Theme(
     background="#ffffff",
     title=LIGHT_ACCENT,
-    text="#334155",
-    icon="#d97706",
-    border="#e2e8f0",
+    text="#6f655d",
+    icon="#b65f45",
+    border="#d8d0c4",
     ring=LIGHT_ACCENT,
 )
 
@@ -970,7 +970,7 @@ def render_badge(badge: MetricBadge) -> str:
             f"  <title>{_text(accessible)}</title>",
             f"  <desc>{_text(accessible)}.</desc>",
             '  <linearGradient id="surface" x2="0" y2="100%">',
-            '    <stop offset="0" stop-color="#334155" />',
+            '    <stop offset="0" stop-color="#29231f" />',
             '    <stop offset="1" stop-color="#0d1117" />',
             "  </linearGradient>",
             f'  <rect width="{label_width}" height="20" fill="url(#surface)" />',
