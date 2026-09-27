@@ -23,7 +23,6 @@ from scripts.update_profile_assets import (
     RepositoryStats,
     REPOSITORIES,
     build_assets,
-    calculate_rank,
     fetch_monthly_commits,
     fetch_owned_repositories,
     format_stat_number,
@@ -40,6 +39,8 @@ from scripts.update_language_stats import render_svg as render_language_svg
 ROOT = Path(__file__).resolve().parents[1]
 NOW = datetime(2026, 8, 15, 12, 0, tzinfo=timezone.utc)
 SVG_NAMESPACE = "{http://www.w3.org/2000/svg}"
+AVATAR_JPEG = b"\xff\xd8\xff\xe0fake-jpeg-avatar"
+AVATAR_DATA_URI = "data:image/jpeg;base64,/9j/4GZha2UtanBlZy1hdmF0YXI="
 
 
 def css_fill(svg: str, class_name: str) -> str:
@@ -136,8 +137,10 @@ def complete_responses() -> dict[str, bytes]:
                 "public_repos": 31,
                 "followers": 42,
                 "created_at": "2018-09-01T00:00:00Z",
+                "avatar_url": "https://avatars.githubusercontent.com/u/91479366?v=4",
             }
         ),
+        "https://avatars.githubusercontent.com/u/91479366?v=4&s=160": AVATAR_JPEG,
         "https://api.github.com/search/commits?q=author%3AxzAscC+committer-date%3A2026-08-01..2026-08-31&per_page=1": json_bytes(
             {"total_count": 19, "incomplete_results": False, "items": []}
         ),
@@ -294,8 +297,7 @@ class TestRenderers(unittest.TestCase):
             total_prs=1700,
             total_issues=22,
             contributed_to=18,
-            rank_level="A",
-            rank_percentile=24.0,
+            avatar_data_uri=AVATAR_DATA_URI,
         )
         dark = render_account_card(account, dark=True)
         light = render_account_card(account, dark=False)
@@ -315,10 +317,11 @@ class TestRenderers(unittest.TestCase):
             self.assertIn(">53<", svg)
             self.assertIn(">22<", svg)
             self.assertIn(">18<", svg)
-            self.assertIn(">A<", svg)
-            self.assertIn("rank-circle", svg)
-            self.assertIn('transform="rotate(-90)"', svg)
-            self.assertIn('stroke-dashoffset="118.1239"', svg)
+            self.assertNotIn("rank", svg.casefold())
+            self.assertNotIn(">A<", svg)
+            self.assertIn(f'href="{AVATAR_DATA_URI}"', svg)
+            self.assertIn('clip-path="url(#avatar-clip)"', svg)
+            self.assertIn('<clipPath id="avatar-clip">', svg)
             self.assertIn('class="icon"', svg)
             self.assertNotIn("Commits This Month", svg)
             self.assertNotIn("Public Repositories", svg)
@@ -328,7 +331,7 @@ class TestRenderers(unittest.TestCase):
         self.assertNotEqual(dark, light)
 
     def test_overview_card_places_stats_and_languages_side_by_side(self) -> None:
-        account = AccountStats("xzAscC", 1, 1, 1, 1, 1, "A", 47.0)
+        account = AccountStats("xzAscC", 1, 1, 1, 1, 1, AVATAR_DATA_URI)
         stats = render_account_card(account, dark=True)
         languages = render_language_svg([("Python", 1.0)], dark=True)
         overview = compose_overview_svg(stats, languages)
@@ -344,20 +347,7 @@ class TestRenderers(unittest.TestCase):
         self.assertIn("Top Languages by Repository", overview)
         self.assertIn('id="lang-bar-clip"', overview)
         self.assertIn("lang-heading", overview)
-
-    def test_calculate_rank_matches_github_stats_extended(self) -> None:
-        rank = calculate_rank(
-            all_commits=True,
-            commits=10700,
-            prs=1700,
-            issues=22,
-            reviews=0,
-            stars=138,
-            followers=33,
-        )
-        self.assertEqual(rank.level, "A")
-        self.assertGreater(rank.percentile, 0)
-        self.assertLessEqual(rank.percentile, 100)
+        self.assertIn('clip-path="url(#stats-avatar-clip)"', overview)
 
     def test_format_stat_number_uses_short_k_suffix(self) -> None:
         self.assertEqual(format_stat_number(999), "999")
@@ -383,7 +373,7 @@ class TestRenderers(unittest.TestCase):
             dark=False,
         )
         account = render_account_card(
-            AccountStats("xzAscC", 1, 1, 1, 1, 1, "C", 100.0), dark=False
+            AccountStats("xzAscC", 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
         )
         language = render_language_svg([("Python", 1.0)], dark=False)
         badge = render_badge(MetricBadge("visits", "100"))
@@ -461,8 +451,8 @@ class TestGeneration(unittest.TestCase):
         for filename, svg in first.items():
             with self.subTest(filename=filename):
                 _ = ET.fromstring(svg)
-        self.assertIn("Rank: A", first["stats-dark.svg"])
-        self.assertIn('stroke-dashoffset="118.1239"', first["stats-light.svg"])
+        self.assertNotIn("Rank", first["stats-dark.svg"])
+        self.assertIn(AVATAR_DATA_URI, first["stats-light.svg"])
         self.assertIn("XzAscC's GitHub Stats", first["overview-dark.svg"])
         self.assertIn("Top Languages by Repository", first["overview-light.svg"])
         self.assertEqual(
@@ -500,6 +490,10 @@ class TestGeneration(unittest.TestCase):
         )
         self.assertIn("https://api.github.com/graphql", decoded_requests)
         self.assertIn(
+            "https://avatars.githubusercontent.com/u/91479366?v=4&s=160",
+            decoded_requests,
+        )
+        self.assertIn(
             "https://badges.strrl.dev/visits/xzAscC/xzAscC?style=flat-square&color=black&logo=github&v=2",
             decoded_requests,
         )
@@ -531,6 +525,29 @@ class TestGeneration(unittest.TestCase):
             )
         )
         self.assertNotIn("Authorization", visits_headers)
+        avatar_headers = next(
+            headers
+            for url, headers in fetcher.request_headers
+            if url.startswith("https://avatars.githubusercontent.com/")
+        )
+        self.assertNotIn("Authorization", avatar_headers)
+
+    def test_avatar_must_come_from_github_and_be_an_image(self) -> None:
+        account_url = "https://api.github.com/users/xzAscC"
+        for avatar_url, payload in (
+            ("https://evil.example/avatar.png", AVATAR_JPEG),
+            ("https://avatars.githubusercontent.com/u/91479366?v=4", b"<html>"),
+        ):
+            with self.subTest(avatar_url=avatar_url):
+                responses = complete_responses()
+                account = json.loads(responses[account_url])
+                account["avatar_url"] = avatar_url
+                responses[account_url] = json_bytes(account)
+                responses[f"{avatar_url}&s=160"] = payload
+                with self.assertRaises(GenerationError):
+                    _ = build_assets(
+                        FakeFetcher(responses), username="xzAscC", now=NOW
+                    )
 
     def test_non_github_languages_url_is_rejected_before_fetch(self) -> None:
         responses = complete_responses()

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import base64
 import calendar
 import json
-import math
 import os
 import re
 import sys
@@ -120,12 +120,16 @@ query($login: String!) {
 }
 """.strip()
 
-RANK_CIRCUMFERENCE = 2.0 * math.pi * 40.0
 STATS_CARD_WIDTH = 419
 STATS_CARD_HEIGHT = 195
 STATS_LINE_HEIGHT = 25
-STATS_RANK_LEVEL = "A"
-STATS_RANK_FILL_PERCENT = 53.0
+AVATAR_RADIUS = 40
+AVATAR_SIZE = 160
+AVATAR_HOST = "avatars.githubusercontent.com"
+AVATAR_MEDIA_TYPES = {
+    b"\xff\xd8\xff": "image/jpeg",
+    b"\x89PNG\r\n\x1a\n": "image/png",
+}
 LANGUAGE_CARD_WIDTH = 419
 LANGUAGE_CARD_HEIGHT = STATS_CARD_HEIGHT
 OVERVIEW_GAP = 16
@@ -203,12 +207,6 @@ class RepositoryStats:
 
 
 @dataclass(frozen=True, slots=True)
-class Rank:
-    level: str
-    percentile: float
-
-
-@dataclass(frozen=True, slots=True)
 class ContributionStats:
     total_prs: int
     total_issues: int
@@ -224,8 +222,7 @@ class AccountStats:
     total_prs: int
     total_issues: int
     contributed_to: int
-    rank_level: str
-    rank_percentile: float
+    avatar_data_uri: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -247,6 +244,7 @@ class AccountData:
     public_repositories: int
     followers: int
     created_at: datetime
+    avatar_url: str
 
 
 class GenerationError(RuntimeError):
@@ -504,7 +502,30 @@ def fetch_account(
         public_repositories=_integer(data, "public_repos", url),
         followers=_integer(data, "followers", url),
         created_at=created_at,
+        avatar_url=_string(data, "avatar_url", url),
     )
+
+
+def fetch_avatar_data_uri(fetcher: Fetcher, avatar_url: str) -> str:
+    parsed = urlsplit(avatar_url)
+    if (
+        parsed.scheme != "https"
+        or parsed.hostname != AVATAR_HOST
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.fragment
+    ):
+        raise GenerationError("avatar_url must be a GitHub avatar URL")
+    separator = "&" if parsed.query else "?"
+    url = f"{avatar_url}{separator}s={AVATAR_SIZE}"
+    payload = _fetch_bytes(
+        fetcher, url, {"Accept": "image/*", "User-Agent": public_headers()["User-Agent"]}
+    )
+    for signature, media_type in AVATAR_MEDIA_TYPES.items():
+        if payload.startswith(signature):
+            encoded = base64.b64encode(payload).decode("ascii")
+            return f"data:{media_type};base64,{encoded}"
+    raise GenerationError(f"{url} did not return a JPEG or PNG image")
 
 
 def _search_total_count(
@@ -634,60 +655,6 @@ def format_stat_number(value: int) -> str:
     scaled = value / 1000
     text = f"{scaled:.1f}".rstrip("0").rstrip(".")
     return f"{text}k"
-
-
-def calculate_rank(
-    *,
-    all_commits: bool,
-    commits: int,
-    prs: int,
-    issues: int,
-    reviews: int,
-    stars: int,
-    followers: int,
-) -> Rank:
-    commits_median = 1000.0 if all_commits else 250.0
-    commits_weight = 2.0
-    prs_median = 50.0
-    prs_weight = 3.0
-    issues_median = 25.0
-    issues_weight = 1.0
-    reviews_median = 2.0
-    reviews_weight = 1.0
-    stars_median = 50.0
-    stars_weight = 4.0
-    followers_median = 10.0
-    followers_weight = 1.0
-    total_weight = (
-        commits_weight
-        + prs_weight
-        + issues_weight
-        + reviews_weight
-        + stars_weight
-        + followers_weight
-    )
-
-    def exponential_cdf(value: float) -> float:
-        return 1.0 - 2.0 ** (-value)
-
-    def log_normal_cdf(value: float) -> float:
-        return value / (1.0 + value)
-
-    score = (
-        commits_weight * exponential_cdf(commits / commits_median)
-        + prs_weight * exponential_cdf(prs / prs_median)
-        + issues_weight * exponential_cdf(issues / issues_median)
-        + reviews_weight * exponential_cdf(reviews / reviews_median)
-        + stars_weight * log_normal_cdf(stars / stars_median)
-        + followers_weight * log_normal_cdf(followers / followers_median)
-    ) / total_weight
-    percentile = (1.0 - score) * 100.0
-    thresholds = (1.0, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5, 100.0)
-    levels = ("S", "A+", "A", "A-", "B+", "B", "B-", "C+", "C")
-    for threshold, level in zip(thresholds, levels, strict=True):
-        if percentile <= threshold:
-            return Rank(level=level, percentile=percentile)
-    return Rank(level="C", percentile=percentile)
 
 
 def _octicon(name: str, *, x: float, y: float, fill: str, size: float = 16) -> str:
@@ -881,10 +848,8 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
                 f"{format_stat_number(value)}</text>",
             )
         )
-    progress = STATS_RANK_FILL_PERCENT
-    dash_offset = ((100.0 - progress) / 100.0) * RANK_CIRCUMFERENCE
-    rank_x = 350
-    rank_y = STATS_CARD_HEIGHT / 2
+    avatar_x = 350
+    avatar_y = STATS_CARD_HEIGHT / 2
     description = ", ".join(
         f"{label}: {format_stat_number(value)}" for _, label, value in metrics
     )
@@ -893,7 +858,7 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             f'<svg xmlns="http://www.w3.org/2000/svg" width="{STATS_CARD_WIDTH}" '
             f'height="{STATS_CARD_HEIGHT}" viewBox="0 0 {STATS_CARD_WIDTH} {STATS_CARD_HEIGHT}" '
             'role="img" aria-labelledby="title desc">',
-            f'  <title id="title">{_text(title)}, Rank: {_text(STATS_RANK_LEVEL)}</title>',
+            f'  <title id="title">{_text(title)}</title>',
             f'  <desc id="desc">{_text(description)}.</desc>',
             "  <defs>",
             "    <style>",
@@ -902,29 +867,24 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             "      .stat { font: 600 14px 'Segoe UI', Ubuntu, sans-serif; "
             + f"fill: {theme.text}; }}",
             "      .value { text-anchor: end; }",
-            "      .rank-text { font: 800 24px 'Segoe UI', Ubuntu, sans-serif; "
-            + f"fill: {theme.text}; }}",
-            "      .rank-circle-rim { "
-            + f"stroke: {theme.ring}; fill: none; stroke-width: 6; opacity: 0.2; }}",
-            "      .rank-circle { "
-            + f"stroke: {theme.ring}; fill: none; stroke-width: 6; stroke-linecap: round; "
-            "opacity: 0.8; }",
+            "      .avatar-ring { "
+            + f"stroke: {theme.ring}; fill: none; stroke-width: 3; opacity: 0.8; }}",
             "    </style>",
+            '    <clipPath id="avatar-clip">',
+            f'      <circle cx="{avatar_x}" cy="{avatar_y:g}" r="{AVATAR_RADIUS}" />',
+            "    </clipPath>",
             "  </defs>",
             f'  <rect x="0.5" y="0.5" width="{STATS_CARD_WIDTH - 1}" '
             f'height="{STATS_CARD_HEIGHT - 1}" rx="4.5" fill="{theme.background}" '
             f'stroke="{theme.border}" stroke-width="1" />',
             f'  <text x="25" y="32" class="heading">{_text(title)}</text>',
             *metric_nodes,
-            f'  <g data-testid="rank-circle" transform="translate({rank_x:g}, {rank_y:g})">',
-            '    <circle class="rank-circle-rim" cx="0" cy="0" r="40" />',
-            f'    <circle class="rank-circle" cx="0" cy="0" r="40" '
-            'transform="rotate(-90)" '
-            f'stroke-dasharray="{RANK_CIRCUMFERENCE:.4f}" '
-            f'stroke-dashoffset="{dash_offset:.4f}" />',
-            f'    <text class="rank-text" x="0" y="1" text-anchor="middle" '
-            f'dominant-baseline="central">{_text(STATS_RANK_LEVEL)}</text>',
-            "  </g>",
+            f'  <image x="{avatar_x - AVATAR_RADIUS}" y="{avatar_y - AVATAR_RADIUS:g}" '
+            f'width="{2 * AVATAR_RADIUS}" height="{2 * AVATAR_RADIUS}" '
+            f'href="{account.avatar_data_uri}" clip-path="url(#avatar-clip)" '
+            'preserveAspectRatio="xMidYMid slice" />',
+            f'  <circle class="avatar-ring" cx="{avatar_x}" cy="{avatar_y:g}" '
+            f'r="{AVATAR_RADIUS}" />',
             "</svg>",
             "",
         )
@@ -1063,6 +1023,7 @@ def build_assets(
         (spec, fetch_repository(fetcher, spec, headers)) for spec in REPOSITORIES
     )
     account_data = fetch_account(fetcher, username, headers)
+    avatar_data_uri = fetch_avatar_data_uri(fetcher, account_data.avatar_url)
     monthly_commits = fetch_monthly_commits(fetcher, username, now, headers)
     total_commits = fetch_total_commits(fetcher, username, headers)
     contribution = fetch_contribution_stats(fetcher, username, headers)
@@ -1082,8 +1043,7 @@ def build_assets(
         total_prs=contribution.total_prs,
         total_issues=contribution.total_issues,
         contributed_to=contribution.contributed_to,
-        rank_level=STATS_RANK_LEVEL,
-        rank_percentile=100.0 - STATS_RANK_FILL_PERCENT,
+        avatar_data_uri=avatar_data_uri,
     )
     badges = (
         ("badge-visits.svg", MetricBadge("visits", visits)),

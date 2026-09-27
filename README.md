@@ -92,4 +92,4 @@ If you are interested in collaboration, feel free to open an issue or connect wi
 
 ## Acknowledgments
 
-Profile metrics are regenerated daily as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the rank letter and ring fill are hardcoded. Card styling is inspired by the same project.
+Profile metrics are regenerated daily as tracked SVG assets from GitHub REST/GraphQL data; the visits value is refreshed from [badges.strrl.dev](https://badges.strrl.dev/) and rendered locally. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the stats card shows the account avatar instead of a rank. Card styling is inspired by the same project.
