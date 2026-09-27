@@ -85,6 +85,8 @@ STAT_ICONS = {
 
 REPO_CARD_WIDTH = 400
 REPO_CARD_HEIGHT = 120
+LINK_BAR_WIDTH = 2 * REPO_CARD_WIDTH + 4
+LINK_BAR_HEIGHT = 44
 TITLE_CHAR_WIDTH = 8.6
 VENUE_CHAR_WIDTH = 6.4
 VENUE_PADDING = 9
@@ -155,6 +157,8 @@ ASSET_FILENAMES = (
     "pin-llmusage-dark.svg",
     "pin-dotfiles-light.svg",
     "pin-dotfiles-dark.svg",
+    "link-publications-light.svg",
+    "link-publications-dark.svg",
 )
 
 
@@ -482,6 +486,43 @@ def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
     )
 
 
+def render_link_bar(label: str, hint: str, *, dark: bool) -> str:
+    theme = _theme(dark)
+    middle = LINK_BAR_HEIGHT / 2
+    arrow_x = LINK_BAR_WIDTH - 25
+    return "\n".join(
+        (
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="{LINK_BAR_WIDTH}" '
+            f'height="{LINK_BAR_HEIGHT}" viewBox="0 0 {LINK_BAR_WIDTH} {LINK_BAR_HEIGHT}" '
+            'role="img" aria-labelledby="title desc">',
+            f"  <title id=\"title\">{_text(label)}</title>",
+            f"  <desc id=\"desc\">{_text(label)} at {_text(hint)}.</desc>",
+            "  <defs>",
+            "    <style>",
+            "      .label { font: 600 14px 'Segoe UI', Ubuntu, sans-serif; "
+            + f"fill: {theme.title}; }}",
+            "      .hint { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; "
+            + f"fill: {theme.text}; }}",
+            "      .arrow { fill: none; "
+            + f"stroke: {theme.title}; stroke-width: 1.75; stroke-linecap: round; "
+            "stroke-linejoin: round; }",
+            "    </style>",
+            "  </defs>",
+            f'  <rect x="0.5" y="0.5" width="{LINK_BAR_WIDTH - 1}" '
+            f'height="{LINK_BAR_HEIGHT - 1}" rx="4.5" fill="{theme.background}" '
+            f'stroke="{theme.border}" stroke-width="1" />',
+            f"  {_octicon('contribs', x=25, y=middle - 8, fill=theme.icon, size=16)}",
+            f'  <text x="50" y="{middle + 5:g}" class="label">{_text(label)}</text>',
+            f'  <text x="{arrow_x - 22}" y="{middle + 4:g}" text-anchor="end" '
+            f'class="hint">{_text(hint)}</text>',
+            f'  <path class="arrow" d="M{arrow_x - 12} {middle:g}h12m-4.5 -4.5 '
+            '4.5 4.5 -4.5 4.5" />',
+            "</svg>",
+            "",
+        )
+    )
+
+
 def validate_svg(filename: str, content: str) -> None:
     try:
         root = ET.fromstring(content)
@@ -506,6 +547,10 @@ def build_assets(fetcher: Fetcher) -> dict[str, str]:
         )
         rendered[f"{spec.asset_stem}-dark.svg"] = render_repository_card(
             repository, dark=True
+        )
+    for theme in ("light", "dark"):
+        rendered[f"link-publications-{theme}.svg"] = render_link_bar(
+            "Full publication list", "xudongzhu.com/publications", dark=theme == "dark"
         )
 
     if set(rendered) != set(ASSET_FILENAMES):

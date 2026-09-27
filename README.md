@@ -30,7 +30,9 @@
   <a href="https://github.com/GoXzascc/AbsTopK-SAE"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" /><img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="120" alt="AbsTopK-SAE" /></picture></a>
 </div>
 
-<p align="center"><a href="https://xudongzhu.com/publications/"><b>Full publication list&nbsp;→</b></a></p>
+<div align="center">
+  <a href="https://xudongzhu.com/publications/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/link-publications-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/link-publications-light.svg" /><img src="./assets/link-publications-dark.svg" height="44" alt="Full publication list" /></picture></a>
+</div>
 
 ### Building in Public
 

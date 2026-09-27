@@ -21,6 +21,7 @@ from scripts.update_profile_assets import (
     REPOSITORIES,
     build_assets,
     format_stat_number,
+    render_link_bar,
     render_repository_card,
     update_assets,
 )
@@ -247,6 +248,25 @@ class TestRenderers(unittest.TestCase):
                     contrast_ratio(dot.attrib["fill"], background), 3.0
                 )
 
+    def test_publications_link_bar_spans_the_card_grid(self) -> None:
+        for dark, theme_title in ((False, "#404b91"), (True, "#aeb8ff")):
+            with self.subTest(dark=dark):
+                svg = render_link_bar(
+                    "Full publication list", "xudongzhu.com/publications", dark=dark
+                )
+                root = ET.fromstring(svg)
+                self.assertEqual(root.attrib["width"], "804")
+                self.assertEqual(root.attrib["height"], "44")
+                texts = {
+                    node.attrib.get("class"): node.text
+                    for node in root.iter(f"{SVG_NAMESPACE}text")
+                }
+                self.assertEqual(texts["label"], "Full publication list")
+                self.assertEqual(texts["hint"], "xudongzhu.com/publications")
+                self.assertEqual(css_fill(svg, "label"), theme_title)
+                self.assertNotIn("→", svg)
+                self.assertIn('class="arrow"', svg)
+
     def test_repository_card_is_accessible_valid_escaped_and_themed(self) -> None:
         repository = RepositoryStats(
             full_name="xzAscC/Research<&>",
@@ -322,8 +342,11 @@ class TestGeneration(unittest.TestCase):
 
         self.assertEqual(tuple(first), ASSET_FILENAMES)
         self.assertEqual(first, second)
-        self.assertEqual(len(first), 12)
-        self.assertTrue(all(name.startswith("pin-") for name in first))
+        self.assertEqual(len(first), 14)
+        self.assertEqual(
+            {name for name in first if not name.startswith("pin-")},
+            {"link-publications-light.svg", "link-publications-dark.svg"},
+        )
         for filename, svg in first.items():
             with self.subTest(filename=filename):
                 _ = ET.fromstring(svg)
@@ -489,13 +512,16 @@ class TestRepositoryIntegration(unittest.TestCase):
     def test_readme_research_ends_with_a_single_publications_link(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         research = readme.split("### Research", 1)[1].split("###", 1)[0]
-        after_cards = research.rsplit("</div>", 1)[1]
+        after_pins = research.split('alt="AbsTopK-SAE" /></picture></a>', 1)[1]
 
         self.assertNotIn("### News", readme)
         self.assertNotIn("Papers:", research)
-        self.assertEqual(re.findall(r'href="([^"]+)"', after_cards), [
-            "https://xudongzhu.com/publications/"
-        ])
+        self.assertEqual(
+            re.findall(r'href="([^"]+)"', after_pins),
+            ["https://xudongzhu.com/publications/"],
+        )
+        self.assertIn('alt="Full publication list"', after_pins)
+        self.assertIn("./assets/link-publications-light.svg", after_pins)
 
     def test_readme_header_uses_plain_links_instead_of_remote_badges(self) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
@@ -525,7 +551,7 @@ class TestRepositoryIntegration(unittest.TestCase):
         anchors = re.findall(r"<a [^>]*>(.*?)</a>", readme, flags=re.DOTALL)
         pins = [body for body in anchors if "<picture>" in body]
 
-        self.assertEqual(len(pins), 6)
+        self.assertEqual(len(pins), 7)
         for body in pins:
             self.assertEqual(body, body.strip())
             self.assertNotIn("\n", body)
