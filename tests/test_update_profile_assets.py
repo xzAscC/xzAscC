@@ -25,12 +25,10 @@ from scripts.update_profile_assets import (
     fetch_monthly_commits,
     fetch_owned_repositories,
     format_stat_number,
-    compose_overview_svg,
     render_account_card,
     render_repository_card,
     update_assets,
 )
-from scripts.update_language_stats import render_svg as render_language_svg
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -177,11 +175,6 @@ def complete_responses() -> dict[str, bytes]:
             language="Python" if name != "dotfiles" else "Lua",
         )
         responses[f"https://api.github.com/repos/{owner}/{name}"] = json_bytes(payload)
-    for repository in repositories:
-        language_url = repository["languages_url"]
-        if not isinstance(language_url, str):
-            raise AssertionError("Fixture languages_url must be a string")
-        responses[language_url] = json_bytes({"Python": 800, "TeX": 200})
     return responses
 
 
@@ -325,25 +318,6 @@ class TestRenderers(unittest.TestCase):
         self.assertIn("#404b91", light)
         self.assertNotEqual(dark, light)
 
-    def test_overview_card_places_stats_and_languages_side_by_side(self) -> None:
-        account = AccountStats("xzAscC", 1, 1, 1, 1, 1, 1, AVATAR_DATA_URI)
-        stats = render_account_card(account, dark=True)
-        languages = render_language_svg([("Python", 1.0)], dark=True)
-        overview = compose_overview_svg(stats, languages)
-        root = ET.fromstring(overview)
-        nested = [child for child in root if child.tag == f"{SVG_NAMESPACE}svg"]
-
-        self.assertEqual(root.attrib["width"], "854")
-        self.assertEqual(root.attrib["height"], "195")
-        self.assertEqual(len(nested), 2)
-        self.assertEqual(nested[0].attrib["x"], "0")
-        self.assertEqual(nested[1].attrib["x"], "435")
-        self.assertIn("XzAscC's GitHub Stats", overview)
-        self.assertIn("Top Languages by Repository", overview)
-        self.assertIn('id="lang-bar-clip"', overview)
-        self.assertIn("lang-heading", overview)
-        self.assertIn('clip-path="url(#stats-avatar-clip)"', overview)
-
     def test_format_stat_number_uses_short_k_suffix(self) -> None:
         self.assertEqual(format_stat_number(999), "999")
         self.assertEqual(format_stat_number(1000), "1k")
@@ -358,7 +332,6 @@ class TestRenderers(unittest.TestCase):
         account = render_account_card(
             AccountStats("xzAscC", 1, 1, 1, 1, 1, 1, AVATAR_DATA_URI), dark=False
         )
-        language = render_language_svg([("Python", 1.0)], dark=False)
         pairs = (
             ("repository title", css_fill(repository, "title"), LIGHT_THEME.background),
             (
@@ -373,8 +346,6 @@ class TestRenderers(unittest.TestCase):
             ),
             ("account heading", css_fill(account, "heading"), LIGHT_THEME.background),
             ("account stat", css_fill(account, "stat"), LIGHT_THEME.background),
-            ("language heading", css_fill(language, "heading"), "#ffffff"),
-            ("language label", css_fill(language, "label"), "#ffffff"),
         )
         for label, foreground, background in pairs:
             with self.subTest(label=label):
@@ -397,17 +368,15 @@ class TestGeneration(unittest.TestCase):
 
         self.assertEqual(tuple(first), ASSET_FILENAMES)
         self.assertEqual(first, second)
-        self.assertEqual(len(first), 18)
+        self.assertEqual(len(first), 14)
         self.assertFalse(any(name.startswith("badge-") for name in first))
         for filename, svg in first.items():
             with self.subTest(filename=filename):
                 _ = ET.fromstring(svg)
         self.assertNotIn("Rank", first["stats-dark.svg"])
         self.assertIn(AVATAR_DATA_URI, first["stats-light.svg"])
-        self.assertIn("XzAscC's GitHub Stats", first["overview-dark.svg"])
-        self.assertIn("Top Languages by Repository", first["overview-light.svg"])
-        self.assertEqual(
-            ET.fromstring(first["overview-dark.svg"]).attrib["width"], "854"
+        self.assertFalse(
+            any(name.startswith(("overview-", "languages-")) for name in first)
         )
 
     def test_expected_refresh_sources_are_requested(self) -> None:
@@ -448,7 +417,7 @@ class TestGeneration(unittest.TestCase):
         language_requests = [
             url for url in decoded_requests if url.endswith("/languages")
         ]
-        self.assertEqual(len(language_requests), 5)
+        self.assertEqual(language_requests, [])
 
     def test_authorization_is_only_sent_to_github(self) -> None:
         fetcher = FakeFetcher(complete_responses())
@@ -490,17 +459,6 @@ class TestGeneration(unittest.TestCase):
                     _ = build_assets(
                         FakeFetcher(responses), username="xzAscC", now=NOW
                     )
-
-    def test_non_github_languages_url_is_rejected_before_fetch(self) -> None:
-        responses = complete_responses()
-        repository = repository_payload("xzAscC", "unsafe")
-        repository["languages_url"] = "https://example.test/token-target"
-        responses[
-            "https://api.github.com/users/xzAscC/repos?type=owner&per_page=100&page=1"
-        ] = json_bytes([repository])
-
-        with self.assertRaisesRegex(GenerationError, "languages_url"):
-            _ = build_assets(FakeFetcher(responses), username="xzAscC", now=NOW)
 
     def test_exactly_one_thousand_repositories_is_supported(self) -> None:
         repository = repository_payload("xzAscC", "example")
@@ -559,34 +517,6 @@ class TestGeneration(unittest.TestCase):
                 _ = (assets / filename).write_text(f"old:{filename}", encoding="utf-8")
 
             with self.assertRaises(GenerationError):
-                update_assets(
-                    FakeFetcher(responses), assets, username="xzAscC", now=NOW
-                )
-
-            self.assertEqual(
-                {
-                    path.name: path.read_text(encoding="utf-8")
-                    for path in assets.iterdir()
-                },
-                {filename: f"old:{filename}" for filename in ASSET_FILENAMES},
-            )
-
-    def test_empty_language_data_is_controlled_and_leaves_assets_untouched(
-        self,
-    ) -> None:
-        responses = complete_responses()
-        responses[
-            "https://api.github.com/users/xzAscC/repos?type=owner&per_page=100&page=1"
-        ] = json_bytes([])
-        with tempfile.TemporaryDirectory() as directory:
-            assets = Path(directory) / "assets"
-            assets.mkdir()
-            for filename in ASSET_FILENAMES:
-                _ = (assets / filename).write_text(f"old:{filename}", encoding="utf-8")
-
-            with self.assertRaisesRegex(
-                GenerationError, "No public repository languages were found"
-            ):
                 update_assets(
                     FakeFetcher(responses), assets, username="xzAscC", now=NOW
                 )
@@ -690,8 +620,6 @@ class TestRepositoryIntegration(unittest.TestCase):
         for filename in ASSET_FILENAMES:
             with self.subTest(filename=filename):
                 self.assertTrue((ROOT / "assets" / filename).is_file())
-                if filename.startswith(("stats-", "languages-")):
-                    continue
                 self.assertIn(f"./assets/{filename}", readme)
         for name in (
             "RobustDiM-PrefixSteering",
@@ -702,7 +630,7 @@ class TestRepositoryIntegration(unittest.TestCase):
             "dotfiles",
         ):
             self.assertIn(f'height="120" alt="{name}"', readme)
-        self.assertIn('src="./assets/overview-dark.svg" alt="GitHub Stats"', readme)
+        self.assertIn('src="./assets/stats-dark.svg" alt="GitHub Stats"', readme)
         self.assertNotIn("<table", readme)
         self.assertIn('href="https://github.com/GoXzascc/AbsTopK-SAE"', readme)
         self.assertIn("(prefers-color-scheme: dark)", readme)
@@ -735,7 +663,7 @@ class TestRepositoryIntegration(unittest.TestCase):
             self.assertNotIn("\n", body)
 
     def test_workflow_refreshes_and_conditionally_stages_all_assets(self) -> None:
-        workflow = (ROOT / ".github/workflows/update-language-stats.yml").read_text(
+        workflow = (ROOT / ".github/workflows/update-profile-assets.yml").read_text(
             encoding="utf-8"
         )
 

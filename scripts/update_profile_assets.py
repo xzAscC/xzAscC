@@ -5,7 +5,6 @@ import base64
 import calendar
 import json
 import os
-import re
 import sys
 import tempfile
 import xml.etree.ElementTree as ET
@@ -18,14 +17,6 @@ from pathlib import Path
 from typing import Protocol, cast
 from urllib.parse import quote, urlencode, urlsplit
 
-from scripts.update_language_stats import (
-    LANGUAGE_COLORS,
-    aggregate_weights,
-    displayed_languages,
-    render_svg as render_language_card,
-)
-
-
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets"
 DEFAULT_USERNAME = os.environ.get("GITHUB_REPOSITORY_OWNER", "xzAscC")
@@ -34,6 +25,13 @@ GITHUB_GRAPHQL = f"{GITHUB_API}/graphql"
 MAX_RESPONSE_BYTES = 1_000_000
 USER_AGENT = "xzAscC-profile-static-assets"
 LIGHT_ACCENT = "#404b91"
+LANGUAGE_COLORS = {
+    "Lua": "#000080",
+    "Python": "#3572A5",
+    "TeX": "#3D6117",
+    "TypeScript": "#3178c6",
+    "Other": "#64748b",
+}
 
 
 @dataclass(frozen=True, slots=True)
@@ -130,11 +128,6 @@ AVATAR_MEDIA_TYPES = {
     b"\xff\xd8\xff": "image/jpeg",
     b"\x89PNG\r\n\x1a\n": "image/png",
 }
-LANGUAGE_CARD_WIDTH = 419
-LANGUAGE_CARD_HEIGHT = STATS_CARD_HEIGHT
-OVERVIEW_GAP = 16
-OVERVIEW_WIDTH = STATS_CARD_WIDTH + OVERVIEW_GAP + LANGUAGE_CARD_WIDTH
-OVERVIEW_HEIGHT = STATS_CARD_HEIGHT
 REPO_CARD_WIDTH = 400
 REPO_CARD_HEIGHT = 120
 
@@ -186,10 +179,6 @@ ASSET_FILENAMES = (
     "pin-dotfiles-dark.svg",
     "stats-light.svg",
     "stats-dark.svg",
-    "overview-light.svg",
-    "overview-dark.svg",
-    "languages-light.svg",
-    "languages-dark.svg",
 )
 
 
@@ -224,7 +213,6 @@ class AccountStats:
 
 @dataclass(frozen=True, slots=True)
 class OwnedRepository:
-    languages_url: str
     stars: int
     fork: bool
 
@@ -378,33 +366,6 @@ def _fetch_bytes(
     return payload
 
 
-def _validated_languages_url(value: str, context: str) -> str:
-    parsed = urlsplit(value)
-    try:
-        port = parsed.port
-    except ValueError as error:
-        raise GenerationError(f"{context}.languages_url has an invalid port") from error
-    path_parts = parsed.path.split("/")
-    if (
-        parsed.scheme != "https"
-        or parsed.hostname != "api.github.com"
-        or port is not None
-        or parsed.username is not None
-        or parsed.password is not None
-        or parsed.query
-        or parsed.fragment
-        or len(path_parts) != 5
-        or path_parts[1] != "repos"
-        or not path_parts[2]
-        or not path_parts[3]
-        or path_parts[4] != "languages"
-    ):
-        raise GenerationError(
-            f"{context}.languages_url must be a GitHub API repository languages URL"
-        )
-    return value
-
-
 def fetch_owned_repositories(
     fetcher: Fetcher, username: str, headers: Mapping[str, str]
 ) -> tuple[OwnedRepository, ...]:
@@ -427,9 +388,6 @@ def fetch_owned_repositories(
             data = _mapping(item, context)
             repositories.append(
                 OwnedRepository(
-                    languages_url=_validated_languages_url(
-                        _string(data, "languages_url", context), context
-                    ),
                     stars=_integer(data, "stargazers_count", context),
                     fork=_boolean(data, "fork", context),
                 )
@@ -634,30 +592,6 @@ def _octicon(name: str, *, x: float, y: float, fill: str, size: float = 16) -> s
     )
 
 
-def fetch_language_counts(
-    fetcher: Fetcher,
-    repositories: tuple[OwnedRepository, ...],
-    headers: Mapping[str, str],
-) -> list[dict[str, int]]:
-    per_repository: list[dict[str, int]] = []
-    for repository in repositories:
-        if repository.fork:
-            continue
-        data = _mapping(
-            _fetch_json(fetcher, repository.languages_url, headers),
-            repository.languages_url,
-        )
-        counts: dict[str, int] = {}
-        for language, value in data.items():
-            if type(value) is not int or value < 0:
-                raise GenerationError(
-                    f"{repository.languages_url}.{language} must be a non-negative integer"
-                )
-            counts[language] = value
-        per_repository.append(counts)
-    return per_repository
-
-
 def _theme(dark: bool) -> Theme:
     return DARK_THEME if dark else LIGHT_THEME
 
@@ -813,72 +747,6 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
     )
 
 
-def _svg_body(svg: str) -> str:
-    open_end = svg.find(">")
-    close_start = svg.rfind("</svg>")
-    if open_end < 0 or close_start < 0 or close_start <= open_end:
-        raise GenerationError("SVG is missing a root element")
-    return svg[open_end + 1 : close_start].strip("\n")
-
-
-def _svg_child_text(svg: str, tag: str) -> str:
-    match = re.search(rf"<{tag}[^>]*>(.*?)</{tag}>", svg, flags=re.DOTALL)
-    if match is None:
-        raise GenerationError(f"SVG is missing a {tag} element")
-    return match.group(1)
-
-
-def _prefix_svg_ids(markup: str, prefix: str) -> str:
-    result = markup
-    for svg_id in dict.fromkeys(re.findall(r'\bid="([^"]+)"', markup)):
-        result = result.replace(f'id="{svg_id}"', f'id="{prefix}{svg_id}"')
-        result = result.replace(f"url(#{svg_id})", f"url(#{prefix}{svg_id})")
-    return result
-
-
-def _rename_svg_class(markup: str, old: str, new: str) -> str:
-    return (
-        markup.replace(f".{old} {{", f".{new} {{")
-        .replace(f'class="{old}"', f'class="{new}"')
-        .replace(f'class="{old} ', f'class="{new} ')
-    )
-
-
-def compose_overview_svg(stats_svg: str, languages_svg: str) -> str:
-    stats_body = _prefix_svg_ids(_svg_body(stats_svg), "stats-")
-    languages_body = _rename_svg_class(
-        _prefix_svg_ids(_svg_body(languages_svg), "lang-"),
-        "heading",
-        "lang-heading",
-    )
-    language_x = STATS_CARD_WIDTH + OVERVIEW_GAP
-    language_y = (OVERVIEW_HEIGHT - LANGUAGE_CARD_HEIGHT) / 2
-    title = f"{_svg_child_text(stats_svg, 'title')}; {_svg_child_text(languages_svg, 'title')}"
-    description = (
-        f"{_svg_child_text(stats_svg, 'desc')} {_svg_child_text(languages_svg, 'desc')}"
-    )
-    return "\n".join(
-        (
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{OVERVIEW_WIDTH}" '
-            f'height="{OVERVIEW_HEIGHT}" viewBox="0 0 {OVERVIEW_WIDTH} {OVERVIEW_HEIGHT}" '
-            'role="img" aria-labelledby="title desc">',
-            f'  <title id="title">{title}</title>',
-            f'  <desc id="desc">{description}</desc>',
-            f'  <svg x="0" y="0" width="{STATS_CARD_WIDTH}" '
-            f'height="{STATS_CARD_HEIGHT}" viewBox="0 0 {STATS_CARD_WIDTH} {STATS_CARD_HEIGHT}">',
-            stats_body,
-            "  </svg>",
-            f'  <svg x="{language_x}" y="{language_y:g}" width="{LANGUAGE_CARD_WIDTH}" '
-            f'height="{LANGUAGE_CARD_HEIGHT}" '
-            f'viewBox="0 0 {LANGUAGE_CARD_WIDTH} {LANGUAGE_CARD_HEIGHT}">',
-            languages_body,
-            "  </svg>",
-            "</svg>",
-            "",
-        )
-    )
-
-
 def validate_svg(filename: str, content: str) -> None:
     try:
         root = ET.fromstring(content)
@@ -909,11 +777,6 @@ def build_assets(
     monthly_commits = fetch_monthly_commits(fetcher, username, now, headers)
     total_commits = fetch_total_commits(fetcher, username, headers)
     contribution = fetch_contribution_stats(fetcher, username, headers)
-    language_entries = displayed_languages(
-        aggregate_weights(fetch_language_counts(fetcher, owned_repositories, headers))
-    )
-    if not language_entries:
-        raise GenerationError("No public repository languages were found")
     total_stars = sum(
         repository.stars for repository in owned_repositories if not repository.fork
     )
@@ -937,14 +800,6 @@ def build_assets(
         )
     rendered["stats-light.svg"] = render_account_card(account, dark=False)
     rendered["stats-dark.svg"] = render_account_card(account, dark=True)
-    rendered["languages-light.svg"] = render_language_card(language_entries, dark=False)
-    rendered["languages-dark.svg"] = render_language_card(language_entries, dark=True)
-    rendered["overview-light.svg"] = compose_overview_svg(
-        rendered["stats-light.svg"], rendered["languages-light.svg"]
-    )
-    rendered["overview-dark.svg"] = compose_overview_svg(
-        rendered["stats-dark.svg"], rendered["languages-dark.svg"]
-    )
 
     if set(rendered) != set(ASSET_FILENAMES):
         raise GenerationError("Generated asset inventory does not match the manifest")

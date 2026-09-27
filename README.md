@@ -42,9 +42,9 @@ I study the representations and training dynamics of large language models, with
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/overview-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="./assets/overview-light.svg" />
-    <img src="./assets/overview-dark.svg" alt="GitHub Stats" />
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="./assets/stats-light.svg" />
+    <img src="./assets/stats-dark.svg" alt="GitHub Stats" />
   </picture>
 </div>
 
