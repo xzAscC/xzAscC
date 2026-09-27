@@ -1,0 +1,22 @@
+tests/test_update_profile_assets.py
+  s_0e8c9dc71fc387::t_71b6219b206754 233-246
+  s_0e8c9dc71fc387::t_d4f8032fb0e066 247
+scripts/update_profile_assets.py
+  s_0e8c9dc71fc387::t_3d5ca40117cb9f 793
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0e163e4df3f1f1fa395cea3e726521b47d2fe3d9",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
