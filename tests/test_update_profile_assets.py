@@ -230,6 +230,21 @@ class TestRenderers(unittest.TestCase):
                 self.assertNotIn("★", svg)
                 self.assertNotIn("⑂", svg)
 
+    def test_repository_card_title_omits_owner_for_external_repositories(
+        self,
+    ) -> None:
+        repository = RepositoryStats(
+            full_name="GoXzascc/AbsTopK-SAE",
+            description="A deterministic repository card",
+            stars=1,
+            forks=1,
+            language="Python",
+        )
+        svg = render_repository_card(repository, dark=True)
+
+        self.assertIn('class="title">AbsTopK-SAE</text>', svg)
+        self.assertNotIn(">GoXzascc/AbsTopK-SAE</text>", svg)
+
     def test_repository_card_is_accessible_valid_escaped_and_themed(self) -> None:
         repository = RepositoryStats(
             full_name="xzAscC/Research<&>",

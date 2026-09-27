@@ -790,12 +790,7 @@ def _wrapped_lines(value: str, limit: int = 49) -> tuple[str, ...]:
 
 def render_repository_card(repository: RepositoryStats, *, dark: bool) -> str:
     theme = _theme(dark)
-    owner, separator, repo_name = repository.full_name.partition("/")
-    header = (
-        repository.full_name
-        if separator and owner != DEFAULT_USERNAME
-        else (repo_name or repository.full_name)
-    )
+    header = repository.full_name.rpartition("/")[2] or repository.full_name
     if len(header) > 35:
         header = f"{header[:34]}…"
     description_lines = _wrapped_lines(repository.description, limit=52)
