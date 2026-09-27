@@ -1,26 +1,25 @@
 <div align="center">
 
-### Hey, I'm Xudong 👋
-
-PhD @ [The Ohio State University](https://www.osu.edu/), advised by [Zhihui Zhu](https://zhihuizhu.github.io/). B.Eng @ [UESTC](https://en.uestc.edu.cn/), advised by [Zhao Kang](https://sites.google.com/site/zhaokanghomepage/) and [Hao Dong](https://sites.google.com/view/hao-dong/home).
-
-I study the representations and training dynamics of large language models, with an eye toward mechanistic interpretability.
+<h1>Xudong Zhu</h1>
 
 <p>
-  <a href="https://xudongzhu.com/"><img src="https://img.shields.io/badge/xudongzhu.com-404b91?style=flat-square&logo=safari&logoColor=white" alt="Website" /></a>
-  <a href="mailto:zhu.3944@osu.edu"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email" /></a>
-  <a href="https://scholar.google.com/citations?user=U55yracAAAAJ&hl=zh-CN"><img src="https://img.shields.io/badge/Scholar-4285F4?style=flat-square&logo=google-scholar&logoColor=white" alt="Google Scholar" /></a>
-  <a href="https://x.com/XudongZhu3944"><img src="https://img.shields.io/badge/X-@XudongZhu3944-000000?style=flat-square&logo=x&logoColor=white" alt="X: @XudongZhu3944" /></a>
+  PhD student at <a href="https://www.osu.edu/">The Ohio State University</a>, advised by <a href="https://zhihuizhu.github.io/">Zhihui Zhu</a>.<br />
+  B.Eng. from <a href="https://en.uestc.edu.cn/">UESTC</a>, advised by <a href="https://sites.google.com/site/zhaokanghomepage/">Zhao Kang</a> and <a href="https://sites.google.com/view/hao-dong/home">Hao Dong</a>.
+</p>
+
+<p>
+  I study the representations and training dynamics of large language models,<br />
+  with an eye toward mechanistic interpretability.
+</p>
+
+<p>
+  <a href="https://xudongzhu.com/"><b>Website</b></a> &nbsp;·&nbsp;
+  <a href="https://scholar.google.com/citations?user=U55yracAAAAJ"><b>Google Scholar</b></a> &nbsp;·&nbsp;
+  <a href="mailto:zhu.3944@osu.edu"><b>Email</b></a> &nbsp;·&nbsp;
+  <a href="https://x.com/XudongZhu3944"><b>X / Twitter</b></a>
 </p>
 
 </div>
-
----
-
-### News
-
-- **ICLR 2026** · *AbsTopK: Rethinking Sparse Autoencoders For Bidirectional Features* accepted. [Paper](https://openreview.net/forum?id=EEs6I4cO7S) · [Code](https://github.com/GoXzascc/AbsTopK-SAE)
-- **TMLR 2026** · *From Emergence to Control: Probing and Modulating Self-Reflection in Language Models* accepted. [Paper](https://arxiv.org/abs/2506.12217) · [Code](https://github.com/xzAscC/ProbingReflection)
 
 ### Research
 
@@ -31,6 +30,13 @@ I study the representations and training dynamics of large language models, with
   <a href="https://github.com/GoXzascc/AbsTopK-SAE"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-goxzascc-abstopk-sae-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-goxzascc-abstopk-sae-light.svg" /><img src="./assets/pin-goxzascc-abstopk-sae-dark.svg" height="120" alt="AbsTopK-SAE" /></picture></a>
 </div>
 
+<p align="center">
+  Papers:
+  <a href="https://openreview.net/forum?id=EEs6I4cO7S">AbsTopK</a> (ICLR 2026) &nbsp;·&nbsp;
+  <a href="https://arxiv.org/abs/2506.12217">From Emergence to Control</a> (TMLR 2026) &nbsp;·&nbsp;
+  <a href="https://xudongzhu.com/publications/">All publications →</a>
+</p>
+
 ### Building in Public
 
 <div align="center">
@@ -38,20 +44,14 @@ I study the representations and training dynamics of large language models, with
   <a href="https://github.com/xzAscC/dotfiles"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/pin-dotfiles-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="./assets/pin-dotfiles-light.svg" /><img src="./assets/pin-dotfiles-dark.svg" height="120" alt="dotfiles" /></picture></a>
 </div>
 
-### GitHub Stats
-
-<div align="center">
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/stats-dark.svg" />
     <source media="(prefers-color-scheme: light)" srcset="./assets/stats-light.svg" />
     <img src="./assets/stats-dark.svg" alt="GitHub Stats" />
   </picture>
-</div>
+</p>
 
 ---
 
-If you are interested in collaboration, feel free to open an issue or connect with me.
-
-### Acknowledgments
-
-Profile metrics are regenerated daily as tracked SVG assets from GitHub REST/GraphQL data. Stats metrics follow [github-stats-extended](https://github.com/stats-organization/github-stats-extended); the stats card shows the account avatar instead of a rank. Card styling is inspired by the same project.
+<p align="center"><sub>Happy to chat about interpretability and LLM research — <a href="mailto:zhu.3944@osu.edu">email me</a>.<br />Cards are regenerated daily from public GitHub data by a GitHub Action; styling adapted from <a href="https://github.com/stats-organization/github-stats-extended">github-stats-extended</a>.</sub></p>

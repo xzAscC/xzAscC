@@ -709,19 +709,40 @@ class TestRepositoryIntegration(unittest.TestCase):
         self.assertIn("(prefers-color-scheme: dark)", readme)
         self.assertIn("(prefers-color-scheme: light)", readme)
 
-    def test_readme_lists_news_with_paper_and_code_links(self) -> None:
+    def test_readme_links_papers_under_research_without_duplicate_news(
+        self,
+    ) -> None:
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        news = readme.split("### News", 1)[1].split("###", 1)[0]
+        research = readme.split("### Research", 1)[1].split("###", 1)[0]
 
+        self.assertNotIn("### News", readme)
         for link in (
             "https://openreview.net/forum?id=EEs6I4cO7S",
-            "https://github.com/GoXzascc/AbsTopK-SAE",
             "https://arxiv.org/abs/2506.12217",
-            "https://github.com/xzAscC/ProbingReflection",
+            "https://xudongzhu.com/publications/",
         ):
-            self.assertIn(f"({link})", news)
-        self.assertIn("ICLR 2026", news)
-        self.assertIn("TMLR 2026", news)
+            self.assertIn(f'href="{link}"', research)
+
+    def test_readme_header_uses_plain_links_instead_of_remote_badges(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        header = readme.split("### Research", 1)[0]
+
+        self.assertIn("<h1>Xudong Zhu</h1>", header)
+        self.assertNotIn("img.shields.io", readme)
+        for link in (
+            "https://xudongzhu.com/",
+            "mailto:zhu.3944@osu.edu",
+            "https://scholar.google.com/citations?user=U55yracAAAAJ",
+            "https://x.com/XudongZhu3944",
+        ):
+            self.assertIn(f'href="{link}"', header)
+
+    def test_readme_ends_with_a_single_small_footer(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+        self.assertNotIn("Acknowledgments", readme)
+        self.assertTrue(readme.rstrip().endswith("</sub></p>"))
+        self.assertIn("github-stats-extended", readme)
 
     def test_readme_pin_links_wrap_cards_without_underlined_whitespace(
         self,
