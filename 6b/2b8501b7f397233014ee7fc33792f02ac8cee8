@@ -1,0 +1,25 @@
+scripts/update_language_stats.py
+  s_0e8c9dc71fc387::t_671efe98438b3e 148-149,151
+scripts/update_profile_assets.py
+  s_0e8c9dc71fc387::t_671efe98438b3e 35,51-55,60-62,973
+tests/test_update_language_stats.py
+  s_0e8c9dc71fc387::t_f540f16e60178c 169-172,201-202
+tests/test_update_profile_assets.py
+  s_0e8c9dc71fc387::t_f540f16e60178c 205,284-285,287-288,329-330
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "6b2b8501b7f397233014ee7fc33792f02ac8cee8",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
