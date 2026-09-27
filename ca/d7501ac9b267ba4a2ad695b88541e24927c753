@@ -1,0 +1,24 @@
+tests/test_update_profile_assets.py
+  s_0e8c9dc71fc387::t_6ad3705403b796 290,320-321,329,359,400-401,447,554
+scripts/update_profile_assets.py
+  s_0e8c9dc71fc387::t_1bce2631d93e51 218,251,490,757
+  s_0e8c9dc71fc387::t_be063e880c5a1c 35,924
+README.md
+  s_0e8c9dc71fc387::t_14047a8f8896ac 57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cad7501ac9b267ba4a2ad695b88541e24927c753",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
