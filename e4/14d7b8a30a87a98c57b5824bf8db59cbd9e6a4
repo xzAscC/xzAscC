@@ -1,0 +1,26 @@
+tests/test_update_profile_assets.py
+  s_0e8c9dc71fc387::t_b06903dd391681 192-193,399,438
+  s_0e8c9dc71fc387::t_a96777ac348f9c 109,320,325-326,331,333,335-340,346,365,374,378,483
+  s_0e8c9dc71fc387::t_67ef8d6894342e 222,321,386,407,409
+scripts/update_profile_assets.py
+  s_0e8c9dc71fc387::t_6526ee31ae9be3 499,502-503,569-570,576
+  s_0e8c9dc71fc387::t_28cbfcdb0d70e2 15
+README.md
+  s_0e8c9dc71fc387::t_12e96bbfc944e7 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e414d7b8a30a87a98c57b5824bf8db59cbd9e6a4",
+  "prompts": {},
+  "sessions": {
+    "s_0e8c9dc71fc387": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5d7c8c8-a372-4f4d-bc95-02e2c329e61d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}
