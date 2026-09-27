@@ -1,0 +1,2 @@
+# ripgrep/agent search: re-include paths hidden by .gitignore
+!.playwright-mcp/
