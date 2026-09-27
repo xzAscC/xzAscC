@@ -127,10 +127,9 @@ query($login: String!) {
 }
 """.strip()
 
-STATS_CARD_WIDTH = 419
-STATS_CARD_HEIGHT = 195
-STATS_LINE_HEIGHT = 25
-AVATAR_RADIUS = 40
+STATS_CARD_WIDTH = 804
+STATS_CARD_HEIGHT = 120
+AVATAR_RADIUS = 38
 AVATAR_SIZE = 160
 AVATAR_HOST = "avatars.githubusercontent.com"
 AVATAR_MEDIA_TYPES = {
@@ -752,25 +751,27 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
     theme = _theme(dark)
     title = f"{account.display_name}'s GitHub Stats"
     metrics = (
-        ("stars", "Total Stars Earned", account.total_stars),
-        ("commits", "Total Commits", account.total_commits),
-        ("calendar", "Commits This Month", account.monthly_commits),
-        ("prs", "Total PRs", account.total_prs),
-        ("issues", "Total Issues", account.total_issues),
+        ("stars", "Stars earned", account.total_stars),
+        ("commits", "Total commits", account.total_commits),
+        ("calendar", "Commits this month", account.monthly_commits),
+        ("prs", "Pull requests", account.total_prs),
+        ("issues", "Issues", account.total_issues),
     )
+    avatar_x = 25 + AVATAR_RADIUS
+    avatar_y = STATS_CARD_HEIGHT / 2
+    column_x = avatar_x + AVATAR_RADIUS + 30
+    column_width = (STATS_CARD_WIDTH - 25 - column_x) / len(metrics)
     metric_nodes: list[str] = []
     for index, (icon_name, label, value) in enumerate(metrics):
-        y = 55 + index * STATS_LINE_HEIGHT
+        x = column_x + index * column_width
         metric_nodes.extend(
             (
-                f"  {_octicon(icon_name, x=25, y=y - 13, fill=theme.icon, size=16)}",
-                f'  <text x="50" y="{y}" class="stat">{_text(label)}</text>',
-                f'  <text x="280" y="{y}" class="stat value">'
+                f"  {_octicon(icon_name, x=x, y=64, fill=theme.icon, size=16)}",
+                f'  <text x="{x + 22:g}" y="78" class="value">'
                 f"{format_stat_number(value)}</text>",
+                f'  <text x="{x:g}" y="100" class="label">{_text(label)}</text>',
             )
         )
-    avatar_x = 350
-    avatar_y = STATS_CARD_HEIGHT / 2
     description = ", ".join(
         f"{label}: {format_stat_number(value)}" for _, label, value in metrics
     )
@@ -783,11 +784,12 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             f'  <desc id="desc">{_text(description)}.</desc>',
             "  <defs>",
             "    <style>",
-            "      .heading { font: 600 18px 'Segoe UI', Ubuntu, sans-serif; "
+            "      .heading { font: 600 16px 'Segoe UI', Ubuntu, sans-serif; "
             + f"fill: {theme.title}; }}",
-            "      .stat { font: 600 14px 'Segoe UI', Ubuntu, sans-serif; "
+            "      .value { font: 700 18px 'Segoe UI', Ubuntu, sans-serif; "
+            + f"fill: {theme.title}; }}",
+            "      .label { font: 400 12px 'Segoe UI', Ubuntu, sans-serif; "
             + f"fill: {theme.text}; }}",
-            "      .value { text-anchor: end; }",
             "      .avatar-ring { "
             + f"stroke: {theme.ring}; fill: none; stroke-width: 3; opacity: 0.8; }}",
             "    </style>",
@@ -798,7 +800,7 @@ def render_account_card(account: AccountStats, *, dark: bool) -> str:
             f'  <rect x="0.5" y="0.5" width="{STATS_CARD_WIDTH - 1}" '
             f'height="{STATS_CARD_HEIGHT - 1}" rx="4.5" fill="{theme.background}" '
             f'stroke="{theme.border}" stroke-width="1" />',
-            f'  <text x="25" y="32" class="heading">{_text(title)}</text>',
+            f'  <text x="{column_x}" y="38" class="heading">{_text(title)}</text>',
             *metric_nodes,
             f'  <image x="{avatar_x - AVATAR_RADIUS}" y="{avatar_y - AVATAR_RADIUS:g}" '
             f'width="{2 * AVATAR_RADIUS}" height="{2 * AVATAR_RADIUS}" '

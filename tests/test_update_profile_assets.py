@@ -340,13 +340,32 @@ class TestRenderers(unittest.TestCase):
 
         for svg in (dark, light):
             root = ET.fromstring(svg)
-            self.assertEqual(root.attrib["width"], "419")
-            self.assertEqual(root.attrib["height"], "195")
+            self.assertEqual(root.attrib["width"], "804")
+            self.assertEqual(root.attrib["height"], "120")
             self.assertIn("Xudong's GitHub Stats", svg)
-            self.assertIn("Total Stars Earned", svg)
-            self.assertIn("Total Commits", svg)
-            self.assertIn("Total PRs", svg)
-            self.assertIn("Total Issues", svg)
+            labels = [
+                node.text
+                for node in root.iter(f"{SVG_NAMESPACE}text")
+                if node.attrib.get("class") == "label"
+            ]
+            self.assertEqual(
+                labels,
+                [
+                    "Stars earned",
+                    "Total commits",
+                    "Commits this month",
+                    "Pull requests",
+                    "Issues",
+                ],
+            )
+            label_xs = [
+                float(node.attrib["x"])
+                for node in root.iter(f"{SVG_NAMESPACE}text")
+                if node.attrib.get("class") == "label"
+            ]
+            gaps = {round(b - a, 3) for a, b in zip(label_xs, label_xs[1:])}
+            self.assertEqual(len(gaps), 1)
+            self.assertGreaterEqual(gaps.pop(), len("Commits this month") * 6.5)
             self.assertNotIn("Contributed to", svg)
             self.assertIn("10.7k", svg)
             self.assertIn("1.7k", svg)
@@ -358,7 +377,6 @@ class TestRenderers(unittest.TestCase):
             self.assertIn('clip-path="url(#avatar-clip)"', svg)
             self.assertIn('<clipPath id="avatar-clip">', svg)
             self.assertIn('class="icon"', svg)
-            self.assertIn("Commits This Month", svg)
             self.assertIn(">19<", svg)
             self.assertNotIn("Public Repositories", svg)
             self.assertNotIn("Followers", svg)
@@ -398,7 +416,8 @@ class TestRenderers(unittest.TestCase):
             ),
             ("venue pill", css_fill(venue_card, "venue"), LIGHT_THEME.chip),
             ("account heading", css_fill(account, "heading"), LIGHT_THEME.background),
-            ("account stat", css_fill(account, "stat"), LIGHT_THEME.background),
+            ("account label", css_fill(account, "label"), LIGHT_THEME.background),
+            ("account value", css_fill(account, "value"), LIGHT_THEME.background),
         )
         for label, foreground, background in pairs:
             with self.subTest(label=label):
